@@ -11,16 +11,12 @@ The equations of motion and mass conservation that describe ocean flow in the sh
 %environment centres all equations
 
 \vspace{-0.5cm}
-\begin{equation}
-\begin{split}
-\partial_t \eta + \nabla \cdot \left(h \bm{u}\right) = 0\, , \label{eq:mass}\\ 
-\end{split}
-\end{equation}
-\begin{equation}
-\begin{split}
-\partial_t \bm{u} + 2 \bm{\Omega} \times \bm{u} + \alpha\bm{u} + \frac{c_D}{h} \left|\bm{u}\right| \bm{u}  + g \nabla \eta \\ = (1 + k_2 - h_2) \nabla U_2 \, . \label{eq:mom}\\ 
-\end{split}
-\end{equation}
+\begin{gather}
+\partial_t \eta + \nabla \cdot \left(h \bm{u}\right) = 0\, , \label{eq:mass}\\
+\begin{aligned} 
+\partial_t \bm{u} + 2 \bm{\Omega} \times \bm{u} + \alpha\bm{u} + \frac{c_D}{h} \left|\bm{u}\right| \bm{u}  + g \nabla \eta \\ = (1 + k_2 - h_2) \nabla U_2 \, . \label{eq:mom}\\
+\end{aligned} 
+\end{gather}
 
 Equation \ref{eq:mass} consists of two terms. The first is the time rate of change of vertical sea surface displacement about some equilibrium level. $\eta$ denotes this displacement. The second term represents the divergence of the surface velocity vector, $\bm{u} \equiv (u, v)$, where $u$ and $v$ are the eastward and northward velocity components respectively. In our calculations, we assume the ocean's undisturbed depth, $h$, to be constant. 
 
@@ -36,16 +32,28 @@ The numerical model outlined below is based on the models extensively discussed 
 
 As in \citep{sears1995tidal}, we expand equations \ref{eq:mass} and \ref{eq:mom} in a semi-implicit finite difference scheme in spherical coordinates. By expanding $\bm{u}$ into its components, the momentum equation becomes,
 
-\begin{equation}
-\begin{split}
-u_{ij}^{t+1} &= \left[ 2 \Omega \bar{v}_{ij} \sin{\lambda_i} - \alpha u_{ij}^{t} - \frac{c_D}{h}\left(\left(u_{ij}^{t}\right)^2 + \left(\bar{v}_{ij}\right)^2\right)^{1/2} - \frac{g}{R \cos{\lambda_i}} \frac{\partial \eta_{ij}^{t}}{\phi_j}\right. \\ &+ \left(1 + k_2 - h_2\right) \frac{1}{R \cos{\lambda_i}} \left.\vphantom{\frac{\partial U_{2,ij}^{t}}{\partial \phi_j}} \right] \Delta t + u_{ij}^{t} \, . \label{eq:momu_fd}
-\end{split}
-\end{equation}
+\vspace{-0.6cm}
+\begin{multline}
+u_{ij}^{t+1} =  \left[ \,2 \Omega \bar{v}_{ij} \sin{\lambda_i} \vphantom{\frac{c_D}{h}\sqrt{\left(u_{ij}^{t}\right)^2}} - \alpha u_{ij}^{t} \right. \\ 
+- \frac{c_D}{h}\sqrt{\left(u_{ij}^{t}\right)^2 + \left(\bar{v}_{ij}^{t}\right)^2}\cdot\left(u_{ij}^{t}\right)^2 - \frac{g}{R \cos{\lambda_i}} \frac{\partial \eta_{ij}^{t}}{\phi_j} \\  
++ \left.\left(1 + k_2 - h_2\right) \frac{1}{R \cos{\lambda_i}} \frac{\partial U_{2,ij}^{t}}{\partial \phi_j} \right]  \Delta t + u_{ij}^{t} \, , \label{eq:momu_fd}
+\end{multline}
+\vspace{-0.6cm}
+\begin{multline}
+v_{ij}^{t+1} =  \left[ \,2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{\frac{c_D}{h}\sqrt{\left(u_{ij}^{t}\right)^2}} - \alpha v_{ij}^{t} \right. \\ 
+- \frac{c_D}{h}\sqrt{\left(\bar{u}_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2}\cdot\left(v_{ij}^{t}\right)^2 - \frac{g}{R} \frac{\partial \eta_{ij}^{t}}{\lambda_i} \\  
++ \left.\left(1 + k_2 - h_2\right) \frac{1}{R} \frac{\partial U_{2,ij}^{t}}{\partial \lambda_i} \right]  \Delta t + v_{ij}^{t} \, , \label{eq:momv_fd}
+\end{multline}
+
+whereas the mass equation becomes, 
 
 \begin{equation}
-\begin{split}
-\partial_t \eta + \nabla \cdot \left(h \bm{u}\right) = 0\, , \label{eq:mass_fd}\\ 
-\end{split}
+\eta_{ij}^{t+1} = 
+-\frac{h}{R \cos{\lambda_i}}\left(
+\frac{\partial \left(v_{ij}^{t+1} \cos{\lambda_i}\right)}{\partial	\lambda_i}  
++\frac{\partial u_{ij}^{t+1}}{\partial	\phi_j}\right)
+\Delta t
++ \eta_{ij}^{t}\, . \label{eq:mass_fd}
 \end{equation}
 
 
