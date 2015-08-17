@@ -26,7 +26,7 @@ The time derivative of velocity is given by the first term on the left hand side
 
 \subsection{Numerical Model \label{subsec:model}}
 
-The numerical model outlined below is based on the models extensively discussed in \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}.In this section we first provide a description of the numerical grid setup, before giving an overview of the finite difference scheme itself.
+The numerical model outlined below is based on the models extensively discussed in \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. In this section we first provide a description of the numerical grid setup, before giving an overview of the finite difference scheme itself.
 
 \subsubsection{Discretized Grid}
 
@@ -72,5 +72,40 @@ All derivatives of the degree-2 tidal potential have analytical solutions (secti
 where $w$ represents $u$, $v$ or $\eta$. $\Delta \lambda$ and $\Delta \phi$ are the latitude and longitude grid spacing, respectively. 
 
 Examining equations \ref{eq:gen1} and \ref{eq:gen2} reveals that each derivative is evaluated halfway between the grid points where $w$ is stored. Consequently, any derivative of $w$ is calculated at the grid position held by a different function. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$ as $u_{i,j-\nicefrac{1}{2}}$ and $u_{i,j+\nicefrac{1}{2}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is best visualized in figure ...
+
+\subsubsection{Numerical Scheme}
+
+ODIS begins its calculations by determining the mass of each volume element in the initial ocean, whether it be undisturbed or from some other initial condition. With the mass calculated in each cell, it is then possible to update the Rayleigh or bottom friction dissipated energy.
+
+The next step in the numerical integration is to calculate $\nabla U_2$ across all $u$ and $v$ grid points. This gives the initial force per unit mass to begin any ocean flow.
+
+Once the tidal forcing is known, ODIS directly calculates $u$ and $v$ over the grid by solving equations \ref{eq:momu_fd} and \ref{eq:momv_fd}. This step is purely explicit as $u$ and $v$ depend only on information from the previous time step, $t$. Following this, $\eta$ is then updated using the new velocity values. In contrast to the velocity calculations, this step is semi-implicit as it relies on both values from the current and previous time steps, as shown in Equation \ref{eq:mass_fd}.
+
+After $u$, $v$, and $\eta$ are solved for at the new time step, $t+1$, the energy calculations begin. For Rayleigh friction dissipation, we calculate and store,
+\begin{equation}
+\dot{E}_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha m_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:alpha_E}
+\end{equation}
+
+for $n$ and $m$ grid points in latitude and longitude, respectively. 
+
+The summed terms in Equation \ref{eq:alpha_E} give the total dissipated energy in the system at the current time step, while the factor in front averages this quantity over the satellites surface area (\si{\watt \per \metre \squared}). For bottom friction dissipation the equivalent expression is,
+\begin{equation}
+\dot{E}_{c_D}^{t+1} = \frac{1}{4 \pi h R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}
+\end{equation}
+Details of these derivations are discussed in the appendix.
+
+All previous steps are completed every time step. Finally, at the end of each orbit, $\dot{E}_\alpha$ or $\dot{E}_{c_D}$ is summed and averaged over the orbital period. This gives the orbitally averaged surface heat flux through tidal dissipation for Rayleigh friction,
+\begin{multline}
+\left\langle F_\alpha \right\rangle_{orbit} = \frac{1}{4 \pi R^2 } \\
+\times \sum_{t=0}^{p} \sum_{i=1}^{n} \sum_{j=1}^{m} \alpha m_{ij} \left[\left(u_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2\right] \,
+\end{multline}
+
+and for bottom friction,
+\begin{multline}
+\left\langle F_\alpha \right\rangle_{orbit} = \frac{1}{4 \pi h R^2 } \\
+\times \sum_{t=0}^{p} \sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2\right]^{\nicefrac{3}{2}} \,
+\end{multline}
+
+where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$.
 
 Discuss semi-implicitness, over-sampling, pole discontinuity.
