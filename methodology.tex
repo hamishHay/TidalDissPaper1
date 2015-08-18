@@ -28,7 +28,7 @@ The time derivative of velocity is given by the first term on the left hand side
 
 The numerical model outlined below is based on the models extensively discussed in \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. In this section we first provide a description of the numerical grid setup, before giving an overview of the finite difference scheme itself.
 
-\subsubsection{Discretized Grid}
+\subsubsection{Discretized Grid \label{subsec:grid}}
 
 We made grid. 
 
@@ -88,24 +88,31 @@ After the solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+
 
 for $n$ and $m$ grid points in latitude and longitude, respectively. 
 
-The summed terms in Equation \ref{eq:alpha_E} give the total dissipated energy in the system across the current time step, while the factor in front averages this quantity over the satellites surface area giving a quantity in watts per square metre. For bottom friction the equivalent expression is,
+The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, while the factor in front averages this quantity over the satellites surface area giving a quantity in watts per square metre. For bottom friction the equivalent expression is,
 \begin{equation}
-\dot{E}_{c_D}^{t+1} = \frac{1}{4 \pi h R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}} \label{eq:E_cd}
+\dot{E}_{c_D}^{t+1} = \frac{1}{4 \pi h R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}\, . \label{eq:E_cd}
 \end{equation}
 Details of these derivations are discussed in the appendix.
 
-All previous steps are completed every time step. Finally, at the end of each orbit, $\dot{E}_\alpha$ or $\dot{E}_{c_D}$ is summed and averaged over the orbital period. This gives the orbitally averaged surface heat flux through tidal dissipation for Rayleigh friction,
-\begin{multline}
-\left\langle F_\alpha \right\rangle_{orbit} = \frac{1}{4 \pi R^2 } \\
-\times \sum_{t=0}^{p} \sum_{i=1}^{n} \sum_{j=1}^{m} \alpha m_{ij} \left[\left(u_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2\right] \, \label{eq:E_alpha_orbit}
-\end{multline}
+Every time step the previous calculations are repeated, beginning from determining $\nabla U_2$. Finally, at the end of each orbit, $\dot{E}_\alpha$ or $\dot{E}_{c_D}$ is summed and averaged over the orbital period. This gives the orbitally averaged surface heat flux through tidal dissipation for Rayleigh friction,
+\begin{align}
+\left\langle F_\alpha \right\rangle_{orbit} &= \frac{1}{4 \pi p R^2 } \notag\\
+&\times \sum_{t=0}^{p} \sum_{i=1}^{n} \sum_{j=1}^{m} \alpha m_{ij} \left[\left(u_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2\right] \, , \label{eq:E_alpha_orbit}
+\shortintertext{and for bottom friction,}
+\left\langle F_{c_D} \right\rangle_{orbit} &= \frac{1}{4 \pi p h R^2 } \notag\\
+&\times \sum_{t=0}^{p} \sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2\right]^{\nicefrac{3}{2}} \, . \label{eq:E_cd_orbit}
+\end{align}
 
-and for bottom friction,
-\begin{multline}
-\left\langle F_\alpha \right\rangle_{orbit} = \frac{1}{4 \pi h R^2 } \\
-\times \sum_{t=0}^{p} \sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2\right]^{\nicefrac{3}{2}} \, \label{eq:E_cd_orbit}
-\end{multline}
+where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$. These expressions are consistent with \citep{sears1995tidal}.
 
-where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$.
+This is repeated until the model has converged onto a periodic solution. Convergence is declared by ODIS when $\left\langle F \right\rangle_{orbit}$ varies by less than $10^{-6}$ to $10^{-8}$ \si{\watt\per\square\metre} over the previous five orbits. Care must be taken when selcting convergence criteria, as simulations involving deep oceans and low dissipation will oscillate about their converged solution with periods of 10-20 orbits. These simulations require longer run-time.
 
-Discuss semi-implicitness, over-sampling, pole discontinuity.
+Add flow chart?
+
+A natural issue arising from the choice of grid is the time step used. As described in section \ref{subsec:grid}, the fixed latitude-longitude grid causes meridian lines to converge at the pole. Nodes near the pole therefore have much smaller spatial sperations than those at the equator. As a result, in order to satisfy the Courant-Friedrichs-Lewy (CFL) condition required for numerical stability, $\Delta t \lesssim 40 \si{\second}$ if $\Delta \lambda = \Delta \phi = 4^{\circ}$ \citep{arakawa1977computational,sears1995tidal}. This massive constraint on the time step is often referred to as the ``pole problem''. Several workarounds to ease the time step have been applied throughout the literature \citep{comblen2009finite}. For example, it is common to apply a fourier filter to remove high wavenumber components of the solvable fields near the poles \citep{murray2002fourier}, or to implement the spectral transform method as reviewed by \citet{swarztrauber1996spectral}. In this work, however, we apply none of these methods, and obey the CFL condition by selecting the appropriate time step for the model resolution.
+
+A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the pole become singularities in space, where the normal directions east and west used to define the velocity components suddenly become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. To solve for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero. As the derivative of $u$ in Equation \ref{eq:momu_fd} is also zero, we find that surface displacment at the pole must become zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. 
+
+To workaround this problem, we employ one dimensional quadratic Lagrangian interpolation for all $u$ and $\eta$ nodes located at the pole, consequently avoiding having to directly solve for these points. We then take the mean of the interpolated points, and prescribe that to the pole. The interpolation obviously works better for higher grid resolutions, so for the deepest oceans we are forced to decrease $\Delta \lambda$ and $\Delta phi$ to maintain pole stability. This is turn forces a greater constraint on the model's time step.
+
+
