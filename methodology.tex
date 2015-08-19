@@ -30,7 +30,12 @@ The numerical model outlined below is based on the models extensively discussed 
 
 \subsubsection{Discretized Grid \label{subsec:grid}}
 
-We made grid. 
+\begin{figure*}
+\centering
+\includegraphics[width=0.8\linewidth]{Figures/GridDiagram}
+\caption{The staggered grid structure used in ODIS. A single cell is show on the right of the figure, where surface displacement, $\eta$ ,represents a cell centered quantity. $u$ velocity nodes are staggered eastward of $\eta$, whereas $v$ velocity nodes are staggered southwards.
+Both $u$ and $v$ are defined at the cell walls. Lines of meridian merge to singularities at the poles, where both a single $u$ and $\eta$ point are stored.}
+\end{figure*}
 
 \subsubsection{Finite Difference Expansions}
 
@@ -113,6 +118,6 @@ A natural issue arising from the choice of grid is the time step used. As descri
 
 A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the pole become singularities in space, where the normal directions east and west used to define the velocity components suddenly become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. To solve for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero. As the derivative of $u$ in Equation \ref{eq:momu_fd} is also zero, we find that surface displacment at the pole must become zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. 
 
-To workaround this problem, we employ one dimensional quadratic Lagrangian interpolation for all $u$ and $\eta$ nodes located at the pole, consequently avoiding having to directly solve for these points. We then take the mean of the interpolated points, and prescribe that to the pole. The interpolation obviously works better for higher grid resolutions, so for the deepest oceans we are forced to decrease $\Delta \lambda$ and $\Delta phi$ to maintain pole stability. This is turn forces a greater constraint on the model's time step.
+To workaround this problem, we employ one dimensional quadratic Lagrangian interpolation for all $u$ and $\eta$ nodes located at the pole, consequently avoiding having to directly solve for these points. We then take the mean of the interpolated points, and prescribe that to the pole. The interpolation obviously works better for higher grid resolutions, so for the deepest oceans we are forced to decrease $\Delta \lambda$ and $\Delta \phi$ to maintain pole stability. This is turn forces a greater constraint on the model's time step.
 
 
