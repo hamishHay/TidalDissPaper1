@@ -22,7 +22,7 @@ Equation \ref{eq:mass} consists of two terms. The first is the time rate of chan
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.8\linewidth]{Figures/GridDiagram}
+\includegraphics[width=0.7\linewidth]{Figures/GridDiagram}
 \caption{The staggered grid structure used in ODIS. A single cell is show on the right of the figure, where surface displacement, $\eta$, represents a cell centered quantity. $u$ velocity nodes are staggered eastward of $\eta$, whereas $v$ velocity nodes are staggered southwards. Both $u$ and $v$ are defined at the cell walls. Lines of meridian merge to singularities at the poles, where both a single $u$ and $\eta$ point are stored.\label{fig:grid}}
 \end{figure*}
 
@@ -34,15 +34,19 @@ The time derivative of velocity is given by the first term on the left hand side
 
 \subsection{Numerical Model \label{subsec:model}}
 
-The numerical model outlined below is based on the models extensively discussed in \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. In this section we first provide a description of the numerical grid setup, before giving an overview of the finite difference scheme itself.
+In this section we outline our numerical model Ocean Dissipation in Icy Satellites (ODIS). In its current form, ODIS is based extensively on the models discussed in and developed by \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. Firstly, we provide a description of the numerical grid design. We then give an overview of the finite difference scheme itself, before finishing on limitations of the finite difference scheme and grid choice.
 
 \subsubsection{Discretized Grid \label{subsec:grid}}
 
-We employ a fixed latitude-longitude grid for our numerical simulations. The gird is constructed in a staggered manner, meaning that velocity nodes are placed to the east and south of their parent displacement nodes. This is illustrated in Figure \ref{fig:grid}. A staggered approach is reasonably common in CFD problems, as it avoids oscillations building up in the solution by calculating derivatives \textit{between} grid points, rather than over them. This is discussed further in section \ref{subsec:fd_expan}. 
+We employ a fixed latitude-longitude grid for our numerical simulations, defined in a spherical coordinate system. The grid is constructed in a staggered manner, meaning that velocity nodes are placed to the east and south of their parent displacement nodes. This is illustrated in Figure \ref{fig:grid}, where we define $u$ and $v$ as the eastward and northward velocity components, respectively ($\bm{u} \equiv \left(u,v\right))$. $\Delta \lambda$ is the latitude grid spacing, whereas $\Delta \phi$ is the longitude grid spacing. A staggered approach is reasonably common in CFD problems as it avoids oscillations that grow in the solution by calculating derivatives \textit{between} grid points, rather than over them. This is discussed further in section \ref{subsec:fd_expan}.
+
+As is clear from Figure \ref{fig:grid}, lines of meridian all converge to single points at either pole. As a result, the model is forced to go from $m$ points immediately surrounding the pole, to merely a single point at either pole. Accordingly, both single values of $\eta$ and $u$ are stored at each pole. This approach slightly differs from \citet{sears1995tidal}, whom stored only a single $\eta$ value at the poles.
+
+ODIS stores three separate 2D arrays for $\eta$, $u$ and $v$. They are accessed in a parent-child configuration, whereby the velocity nodes immediately east and south of a displacement node are the children to their parent $\eta$. Both $u$ and $v$ at the southern and eastern walls of the cell in Figure \ref{fig:grid} are children to the central $\eta$ node. This fact is of little unimportance to the model's computations, but does lend some insight into the model's infrastructure.
 
 \subsubsection{Finite Difference Expansions \label{subsec:fd_expan}}
 
-As in \citep{sears1995tidal}, we expand equations \ref{eq:mass} and \ref{eq:mom} in a semi-implicit finite difference scheme in spherical coordinates. By expanding $\bm{u}$ into its components, the momentum equation becomes,
+In order to solve the LTEs, we expand equations \ref{eq:mass} and \ref{eq:mom} in a semi-implicit finite difference scheme in spherical coordinates, following \citep{sears1995tidal}. By expanding $\bm{u}$ into its components, the momentum equation becomes,
 
 \vspace{-0.6cm}
 \begin{multline}
@@ -57,7 +61,7 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{
 + \left.\left(1 + k_2 - h_2\right) \frac{1}{R} \frac{\partial U_{2,ij}^{t}}{\partial \lambda_i} \right]  \Delta t + v_{ij}^{t} \, , \label{eq:momv_fd}
 \end{multline}
 
-and the mass conservation equation becomes, 
+\noindent and the mass conservation equation becomes, 
 \begin{equation}
 \eta_{ij}^{t+1} \approx 
 -\frac{h}{R \cos{\lambda_i}}\left(
@@ -77,15 +81,15 @@ All derivatives of the degree-2 tidal potential have analytical solutions (secti
 \frac{\partial w_{ij}}{\partial \phi} &\approx \frac{w_{i,j+\nicefrac{1}{2}} - w_{i,j-\nicefrac{1}{2}}}{\Delta \phi} \, , \label{eq:gen2}
 \end{align}
 
-where $w$ represents $u$, $v$ or $\eta$. $\Delta \lambda$ and $\Delta \phi$ are the latitude and longitude grid spacing, respectively. 
+\noindent where $w$ represents $u$, $v$ or $\eta$.
 
-Examining equations \ref{eq:gen1} and \ref{eq:gen2} reveals that each derivative is evaluated halfway between the grid points where $w$ is stored. Consequently, any derivative of $w$ is calculated at the grid position held by a different function. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$ as $u_{i,j-\nicefrac{1}{2}}$ and $u_{i,j+\nicefrac{1}{2}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is best visualized in figure ...
+Examining equations \ref{eq:gen1} and \ref{eq:gen2} reveals that each derivative is evaluated halfway between the grid points where $w$ is stored. Consequently, any derivative of $w$ is calculated at the grid position held by a different function. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$ as $u_{i,j-\nicefrac{1}{2}}$ and $u_{i,j+\nicefrac{1}{2}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is shown in Figure \ref{fig:grid}.
 
 \subsubsection{Numerical Scheme}
 
 ODIS begins its calculations by determining the mass of each volume element in the initial ocean, whether it be undisturbed or from some other initial condition. With the mass calculated in each cell, it is then possible to update the Rayleigh or bottom friction dissipated energy.
 
-The next step in the numerical integration is to calculate $\nabla U_2$ across all $u$ and $v$ grid points. This gives the initial force per unit mass experienced by an element in the model domain.
+The next step in the numerical integration is to calculate $\nabla U_2$ across all $u$ and $v$ grid points. This gives the initial force per unit mass experienced by a fluid element in the model domain.
 
 Once the tidal forcing is known, ODIS directly calculates $u$ and $v$ over the grid by solving equations \ref{eq:momu_fd} and \ref{eq:momv_fd}. This step is purely explicit as $u$ and $v$ depend only on information from the previous time step, $t$. Following this, $\eta$ is then updated using the new velocity values. In contrast to the velocity calculations, this step is semi-implicit as it relies on both values from the current and previous time steps, as shown in Equation \ref{eq:mass_fd}.
 
@@ -117,10 +121,15 @@ This is repeated until the model has converged onto a periodic solution. Converg
 
 Add flow chart?
 
-A natural issue arising from the choice of grid is the time step used. As described in section \ref{subsec:grid}, the fixed latitude-longitude grid causes meridian lines to converge at the pole. Nodes near the pole therefore have much smaller spatial sperations than those at the equator. As a result, in order to satisfy the Courant-Friedrichs-Lewy (CFL) condition required for numerical stability, $\Delta t \lesssim 40 \si{\second}$ if $\Delta \lambda = \Delta \phi = 4^{\circ}$ \citep{arakawa1977computational,sears1995tidal}. This massive constraint on the time step is often referred to as the ``pole problem''. Several workarounds to ease the time step have been applied throughout the literature \citep{comblen2009finite}. For example, it is common to apply a fourier filter to remove high wavenumber components of the solvable fields near the poles \citep{murray2002fourier}, or to implement the spectral transform method as reviewed by \citet{swarztrauber1996spectral}. In this work, however, we apply none of these methods, and obey the CFL condition by selecting the appropriate time step for the model resolution.
+A natural issue arising from the choice of grid is the time step used. As described in section \ref{subsec:grid}, the fixed latitude-longitude grid causes meridian lines to converge at the pole. Nodes near the pole therefore have much smaller spatial sperations than those at the equator. As a result, in order to satisfy the Courant-Friedrichs-Lewy (CFL) condition required for numerical stability, $\Delta t \lesssim 40 \si{\second}$ if $\Delta \lambda = \Delta \phi = 4^{\circ}$ \citep{arakawa1977computational,sears1995tidal}. This massive constraint on the time step is often referred to as the ``pole problem''. Several workarounds to ease the time step have been applied throughout the literature \citep{comblen2009finite}. For example, it is common to apply a fourier filter to remove high wavenumber components of the solvable fields near the poles \citep{murray2002fourier}, or to use the spectral transform method as reviewed by \citet{swarztrauber1996spectral}. In this work, however, we apply none of these methods, and obey the CFL condition by selecting the appropriate time step for the model resolution.
 
-A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the pole become singularities in space, where the normal directions east and west used to define the velocity components suddenly become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. To solve for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero. As the derivative of $u$ in Equation \ref{eq:momu_fd} is also zero, we find that surface displacment at the pole must become zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. 
+A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the pole become singularities in space, where the normal directions east and west used to define the velocity components suddenly become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide, shown in Figure \ref{fig:coord_prob}. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. To solve for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero. As the derivative of $u$ in Equation \ref{eq:momu_fd} is also zero, we find that surface displacment at the pole must become zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. 
 
-To workaround this problem, we employ one dimensional quadratic Lagrangian interpolation for all $u$ and $\eta$ nodes located at the pole, consequently avoiding having to directly solve for these points. We then take the mean of the interpolated points, and prescribe that to the pole. The interpolation obviously works better for higher grid resolutions, so for the deepest oceans we are forced to decrease $\Delta \lambda$ and $\Delta \phi$ to maintain pole stability. This is turn forces a greater constraint on the model's time step.
+To workaround this problem, we employ one dimensional quadratic Lagrangian interpolation for all $u$ and $\eta$ nodes located at the pole, consequently avoiding having to directly solve for these points. We then take the mean of the interpolated points, and prescribe that as the polar values. The interpolation obviously works better for higher grid resolutions, so for the deepest oceans we are forced to decrease $\Delta \lambda$ and $\Delta \phi$ to maintain pole stability. This is turn forces a greater constraint on the model's time step.
 
+
+\begin{figure}[t]
+\includegraphics[width=\linewidth]{Figures/CoordProb}
+\caption{Schematic representation of the ocean tide due to the eccentricity-radial tidal potential ($U_{20}$), at periapsis. Taking a derivative of $v$ across the north pole yields a null result in the spherical coordinate system, despite the clear mass divergence away from the poles leading to $\eta < 0$.\label{fig:coord_prob}}
+\end{figure}
 
