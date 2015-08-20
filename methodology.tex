@@ -20,9 +20,17 @@ The equations of motion and mass conservation that describe ocean flow in the sh
 
 Equation \ref{eq:mass} consists of two terms. The first is the time rate of change of vertical sea surface displacement about some equilibrium level. $\eta$ denotes this displacement. The second term represents the divergence of the surface velocity vector, $\bm{u} \equiv (u, v)$, where $u$ and $v$ are the eastward and northward velocity components respectively. In our calculations, we assume the ocean's undisturbed depth, $h$, to be constant. 
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{Figures/GridDiagram}
+\caption{The staggered grid structure used in ODIS. A single cell is show on the right of the figure, where surface displacement, $\eta$, represents a cell centered quantity. $u$ velocity nodes are staggered eastward of $\eta$, whereas $v$ velocity nodes are staggered southwards. Both $u$ and $v$ are defined at the cell walls. Lines of meridian merge to singularities at the poles, where both a single $u$ and $\eta$ point are stored.\label{fig:grid}}
+\end{figure*}
+
 The term on the right hand side of Equation \ref{eq:mom} is an applied force per unit mass. $\nabla U_2$ is the gradient of the degree-2 tidal potential (discussed in section ...). It is multiplied by Love's reduction factor involving the degree-2 tidal Love numbers, $k_2$ and $h_2$. Love's first number, $k_2$, is a proportionality constant accounting for the additional tidal potential due to the elastic redistribution of mass on the satellite. $h_2$, the second Love number, accounts for the tidal potential arising from solid body surface displacement of the satellite \citep{love1911some}.
 
 The time derivative of velocity is given by the first term on the left hand side of the momentum equation. It is balanced by four other acceleration per unit mass terms on the left hand side. The first of these terms is the coriolis acceleration per unit mass, where $\Omega$ is the satellite's rotational angular velocity. Rayleigh and bottom friction are described in the next two terms, where $\alpha$ and $c_D$ are the Rayliegh (linear)and bottom (quadratic) friction coefficients respectively \citep{sears1995tidal,chen2013tidal}. The last term on the right hand side of Equation \ref{eq:mom} is the gravitational restoring acceleration per unit mass. It acts to balance changes in sea surface displacement, given by the gradient of equilibrium displacement, $\nabla \eta$ .
+
+
 
 \subsection{Numerical Model \label{subsec:model}}
 
@@ -30,14 +38,9 @@ The numerical model outlined below is based on the models extensively discussed 
 
 \subsubsection{Discretized Grid \label{subsec:grid}}
 
-\begin{figure*}
-\centering
-\includegraphics[width=0.8\linewidth]{Figures/GridDiagram}
-\caption{The staggered grid structure used in ODIS. A single cell is show on the right of the figure, where surface displacement, $\eta$ ,represents a cell centered quantity. $u$ velocity nodes are staggered eastward of $\eta$, whereas $v$ velocity nodes are staggered southwards.
-Both $u$ and $v$ are defined at the cell walls. Lines of meridian merge to singularities at the poles, where both a single $u$ and $\eta$ point are stored.}
-\end{figure*}
+We employ a fixed latitude-longitude grid for our numerical simulations. The gird is constructed in a staggered manner, meaning that velocity nodes are placed to the east and south of their parent displacement nodes. This is illustrated in Figure \ref{fig:grid}. A staggered approach is reasonably common in CFD problems, as it avoids oscillations building up in the solution by calculating derivatives \textit{between} grid points, rather than over them. This is discussed further in section \ref{subsec:fd_expan}. 
 
-\subsubsection{Finite Difference Expansions}
+\subsubsection{Finite Difference Expansions \label{subsec:fd_expan}}
 
 As in \citep{sears1995tidal}, we expand equations \ref{eq:mass} and \ref{eq:mom} in a semi-implicit finite difference scheme in spherical coordinates. By expanding $\bm{u}$ into its components, the momentum equation becomes,
 
