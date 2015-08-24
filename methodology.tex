@@ -1,6 +1,6 @@
 \section{Methodology}
 
-This section describes some of the theory and methods involved in this work. The governing equations of the numerical model presented here are discussed in section \ref{subsec:LTE}. Following this, a description of the equations discretisation and the numerical scheme required to solve them are outlined in section \ref{subsec:model}.
+This section describes some of the theory and methods involved in this work. Firstly, we provide analytical expressions for the degree-2 tidal potential in section \ref{subsec:pot}. The governing equations of the numerical model are then discussed in section \ref{subsec:LTE}. Following this, a description of the equations discretisation and the numerical scheme required to solve them are outlined in section \ref{subsec:model}.
 
 \subsection{Laplace Tidal Equations \label{subsec:LTE}}
 
@@ -30,7 +30,24 @@ The term on the right hand side of Equation \ref{eq:mom} is an applied force per
 
 The time derivative of velocity is given by the first term on the left hand side of the momentum equation. It is balanced by four other acceleration per unit mass terms on the left hand side. The first of these terms is the coriolis acceleration per unit mass, where $\Omega$ is the satellite's rotational angular velocity. Rayleigh and bottom friction are described in the next two terms, where $\alpha$ and $c_D$ are the Rayliegh (linear)and bottom (quadratic) friction coefficients respectively \citep{sears1995tidal,chen2013tidal}. The last term on the right hand side of Equation \ref{eq:mom} is the gravitational restoring acceleration per unit mass. It acts to balance changes in sea surface displacement, given by the gradient of equilibrium displacement, $\nabla \eta$ .
 
+\subsection{Tidal Potential \label{subsec:pot}}
 
+Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the full degree two tidal potential into its two primary components, the eccentricity and obliquity tides:
+\begin{align}
+U_2 &= U_{ecc} + U_{obliq}\, . \label{eq:U_2}
+\end{align}
+The eccentricity and obliquity tide can be expressed as \citep{tobie2005tidal,tyler2011tidal,matsuyama2014tidal},
+\begin{multline}
+U_{ecc} = \Omega^2 r^2 e \left\lbrace - \frac{3}{2} P_{20}\left(\cos\theta\right) \cos \left(\Omega t \right) + \frac{1}{8} P_{22}\left( \cos\theta\right) \right. \\ 
+\times \left. \vphantom{\frac{1}{8}} \left[7 \cos \left(2 \phi - \Omega t \right) - \cos \left(2 \phi + \Omega t\right) \right] \right\rbrace, \label{eq:U_ecc}
+\end{multline} and,
+\begin{multline}
+U_{obliq} = \frac{1}{2}\Omega^2 r^2 \theta_0 P_{21}\left(\cos\theta\right)\\
+\times \left[ \cos \left(\phi - \Omega t \right) - \cos \left( \phi + \Omega t\right) \right] \, ,\label{eq:U_obliq}
+\end{multline}
+where $r$ is the satellite's radius, $e$ is its eccentricity, and $\theta_0$ is the obliquity in radians. Co-latitude and longitude are given as $\theta$ and $\phi$ respectively. $P_{lm}$ represent the associated Legendre function of degree $l$ and order $m$. The eccentricity tide in Equation \ref{eq:U_ecc} can be further split into the two terms on its right hand side. From the left, these terms represent the eccentricity-radial ($U_{20}$) and eccentricity-libration ($U_{22}$) tides respectively, as described by \citet{tyler2011tidal}. We can therefore rewrite equation \ref{eq:U_2} as $U_2 = U_{20} + U_{21} + U_{22}$.
+
+The derivatives of equations \ref{eq:U_ecc} and \ref{eq:U_obliq}, required to solve the LTE, are given in the appendix.
 
 \subsection{Numerical Model \label{subsec:model}}
 
@@ -73,7 +90,7 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{
 
 Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude positions within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to averages, a necessity given the staggered nature of the grid.
 
-All derivatives of the degree-2 tidal potential have analytical solutions (section ...), and thus do not require further finite difference expansions. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
+All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansions. These derivatives are given in the appendix. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
 
 \begin{align}
 \frac{\partial w_{ij}}{\partial \lambda} &\approx \frac{w_{i+\nicefrac{1}{2},j} - w_{i-\nicefrac{1}{2},j}}{\Delta \lambda} \, , \label{eq:gen1}
@@ -100,6 +117,8 @@ After the solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+
 
 for $n$ and $m$ grid points in latitude and longitude, respectively. 
 
+
+
 The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, while the factor in front averages this quantity over the satellites surface area giving a quantity in watts per square metre. For bottom friction the equivalent expression is,
 \begin{equation}
 \dot{E}_{c_D}^{t+1} = \frac{1}{4 \pi h R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}\, . \label{eq:E_cd}
@@ -117,7 +136,12 @@ Every time step the previous calculations are repeated, beginning from determini
 
 where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$. These expressions are consistent with \citep{sears1995tidal}.
 
-This is repeated until the model has converged onto a periodic solution. Convergence is declared by ODIS when $\left\langle F \right\rangle_{orbit}$ varies by less than $10^{-6}$ to $10^{-8}$ \si{\watt\per\square\metre} over the previous five orbits. Care must be taken when selcting convergence criteria, as simulations involving deep oceans and low dissipation will oscillate about their converged solution with periods of 10-20 orbits. These simulations require longer run-time.
+This is repeated until the model has converged onto a periodic solution. Convergence is declared by ODIS when $\left\langle F \right\rangle_{orbit}$ varies by less than $10^{-6}$ to $10^{-8}$ \si{\watt\per\square\metre} over the previous five orbits. Care must be taken when selcting convergence criteria, as simulations involving deep oceans and low dissipation will oscillate about their converged solution with periods of 10-20 orbits due to the large inertia present in the system. These simulations require longer run-time.
+
+\begin{figure}[t]
+\includegraphics[width=\linewidth]{Figures/CoordProb}
+\caption{Schematic representation of the ocean tide due to the eccentricity-radial tidal potential ($U_{20}$), at periapsis. Taking a derivative of $v$ across the north pole yields a null result in the spherical coordinate system, despite the clear mass divergence away from the poles leading to $\eta < 0$.\label{fig:coord_prob}}
+\end{figure}
 
 Add flow chart?
 
@@ -128,8 +152,5 @@ A more significant issue arises from the combined choice of coordinate system an
 To workaround this problem, we employ one dimensional quadratic Lagrangian interpolation for all $u$ and $\eta$ nodes located at the pole, consequently avoiding having to directly solve for these points. We then take the mean of the interpolated points, and prescribe that as the polar values. The interpolation obviously works better for higher grid resolutions, so for the deepest oceans we are forced to decrease $\Delta \lambda$ and $\Delta \phi$ to maintain pole stability. This is turn forces a greater constraint on the model's time step.
 
 
-\begin{figure}[t]
-\includegraphics[width=\linewidth]{Figures/CoordProb}
-\caption{Schematic representation of the ocean tide due to the eccentricity-radial tidal potential ($U_{20}$), at periapsis. Taking a derivative of $v$ across the north pole yields a null result in the spherical coordinate system, despite the clear mass divergence away from the poles leading to $\eta < 0$.\label{fig:coord_prob}}
-\end{figure}
+
 
