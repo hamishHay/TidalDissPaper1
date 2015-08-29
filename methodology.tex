@@ -153,8 +153,12 @@ To workaround this problem, we employ one dimensional quadratic Lagrangian inter
 
 \subsection{Model Parameters \label{subsec:param}}
 
+
+
 All numerical results presented in the following section are for surface oceans on Titan, as was the case for \citet{sears1995tidal,sohl1995tidal}. This is an appropriate benchmark for our numerical model because, as already discussed, we base much of the numerical scheme on that described by \citet{sears1995tidal} who also applied his model to Titan.
 
 The main parameters used in our simulations are given in table 1. We first perform both semi-analytical and numerical simulations for the ``canonical'' ocean depth of $h=400 \, \si{\metre}$ \citep{sagan1982tide,sears1995tidal}. These simulations assume Rayleigh friction and provide a means of comparing the numerical results against the analytical solutions. We assume \hbox{$\alpha = 2.28 \times 10^{-7} \, \si{\per\second}$}, corresponding to a tidal $Q$ of $10$ \citep{tyler2011tidal}. A simulation is run for each component of the tidal potential: the eccentricity-libration, eccentricity-raidal, and obliquity tide. Additionally, the numerical solution to the full tidal potential (Equation \ref{eq:U_2}) is also run in order to explore the validation of superposition used in summing the separate analytical solutions.
 
 Following comparison of these individual cases, we then compare the orbitally averaged dissipation between the numerical and analytical solutions across a large parameter space in $h$ and $\alpha$ space. Solutions over this kind of parameter space are what revealed the dissipative resonances first described and discovered by \citet{tyler2011tidal}, providing another excellent test case for our numerical model.
+
+\input{./param_table.tex}
