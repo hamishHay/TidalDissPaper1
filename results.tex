@@ -24,7 +24,7 @@ The following results are split into three main sections. We firstly present sol
 
 The primary task of ODIS is to solve the LTE on a sphere, and it is from these solutions that dissipation is derived. Thus, a useful starting point is to illustrate the actual solutions to the LTE rather than purely concerning the reader with the average tidal dissipation over an orbital period. 
 
-Figure \ref{fig:LTE_solns} illustrates numerical solutions to the LTE at periapse for different components of the tidal potential. Surface displacement, $\eta$, is illustrated on the left, whereas velocity, $\bm{u}$, is on the right. The colour scale in the velocity figures represents the velocity's magnitude, $\left| \bm{u} \right|$, Arrows indicate the direction of flow. The tidal forcing applied is, from a) to c), the eccentricity tide, obliquity tide, and both tides combined together, respectively. All plots are for the ``canonical'' $400 \, \si{\metre}$ ocean outlined by \citet{sagan1982tide} to allow best comparison with \citet{sears1994tidal,sears1995tidal,sohl1995tidal}. The coefficient of Rayleigh friction is maintained at $\alpha = 2.28 \times 10^{-7} \, \si{\per\second}$, as mentioned in section \ref{subsec:param}.
+Figure \ref{fig:LTE_solns} illustrates numerical solutions to the LTE, at periapse, for different components of the tidal potential on Titan. Surface displacement, $\eta$, is illustrated on the left, whereas velocity, $\bm{u}$, is on the right. The colour scale in the velocity figures represents the velocity's magnitude, $\left| \bm{u} \right|$, Arrows indicate the direction of flow. The tidal forcing applied is, from a) to c), the eccentricity tide, obliquity tide, and both tides combined together, respectively. All plots are for the ``canonical'' $400 \, \si{\metre}$ ocean outlined by \citet{sagan1982tide} to allow best comparison with \citet{sears1994tidal,sears1995tidal,sohl1995tidal}. The coefficient of Rayleigh friction is maintained at $\alpha = 2.28 \times 10^{-7} \, \si{\per\second}$, as mentioned in section \ref{subsec:param}.
 
 Surface displacement in Figure \ref{fig:LTE_a} illustrates a classic tidal bulge, centered on the Saturnian ($\phi = 0^{\circ}$) and sub-Saturian ($\phi = 180^{\circ}$) points. Maximum displacement is over $8$ metres. Away from the tidal bulge displacement drops below the equilibrium level to less than $4$ metres. The corresponding flow pattern shows convergence and divergence at the longitudinal positions of steepest gradient in the displacement field, whereas the fastest flow occurs in the most shallow displacement gradients.
 
@@ -32,33 +32,34 @@ The obliquity tide shows markedly different displacement and flow patterns than 
 
 The final plot in figure \ref{fig:LTE_solns} is the solution under the full tidal potential. In many ways, it is similar to the eccentricity tide. Yet, the addition of the obliquity tide adds significant equatorial asymmetry to the solutions. This asymmetry is particularly noticeable in the velocity plot on the right hand side of Figure \ref{fig:LTE_c}, where the areas of fastest flow are skewed north and south of the equator, unlike in Figure \ref{fig:LTE_a}. This is also evident in the displacement field, where the tidal bulge maximum does not lie directly on the equator.
 
-Comparisons made between the results in Figure \ref{fig:LTE_solns} and the analytical solutions show excellent agreement for this test case.
-
-The simulations used in Figure \ref{fig:LTE_solns} were run from undisturbed initial conditions: \hbox{$\eta = 0 \, \si{\metre}$} and \hbox{$\bm{u} = (0,0) \, \si{\metre\per\second}$}. Consequently, there is some start-up time required for the model to converge into its periodic equilibrium, as described by \citet{sears1995tidal}. Figure \ref{fig:diss} illustrates this issue. From left to right, the figure shows orbitally averaged dissipation against time for the eccentricity-libration, eccentricity-radial, and obliquity tides.  The solid lines represent the average dissipation over each orbit in the numerical model, while the dashed lines indicate the analytical time-averaged dissipation value. 
-
 \begin{figure}[!t]
 \centering
 \begin{subfigure}{\linewidth}
 \centering
-\includegraphics[width=0.85\linewidth]{Figures/ecc_lib_diss}
+\includegraphics[width=0.8\linewidth]{Figures/ecc_lib_diss}
 \subcaption{\label{fig:diss_a}}
 \end{subfigure}\vspace*{-0.7cm}
 \begin{subfigure}{\linewidth}
 \centering
-\includegraphics[width=0.85\linewidth]{Figures/ecc_rad_diss}
+\includegraphics[width=0.8\linewidth]{Figures/ecc_rad_diss}
 \subcaption{\label{fig:diss_b}}
 \end{subfigure}\vspace*{-0.7cm}
 \begin{subfigure}{\linewidth}
 \centering
-\includegraphics[width=0.85\linewidth]{Figures/obliq_diss}
+\includegraphics[width=0.8\linewidth]{Figures/obliq_diss}
 \subcaption{\label{fig:diss_c}}
 \end{subfigure}
 \vspace*{-0.8cm}
-\caption{Average dissipation over each orbit under the eccentricity (eq. \ref{eq:U_ecc}), obliquity (eq. \ref{eq:U_obliq}), and full tidal potential (eq. \ref{eq:U_2}). $h = 400 \, \si{\metre}$ and $\alpha = 2.28 \times 10^{-7} \, \si{\per\second}$.\label{fig:diss}}
+\caption{Average dissipation over each orbit under the eccentricity-libration, eccentricity-radial, obliquity tides for $h = 400 \, \si{\metre}$ and $\alpha = 2.28 \times 10^{-7} \, \si{\per\second}$ from undisturbed inital conditions on Titan. The dashed lines represent analytical solutions for the time-averaged dissipation. Solid lines are the numerical solution. \label{fig:diss}}
 \end{figure}
 
+Comparisons made between the results in Figure \ref{fig:LTE_solns} and the analytical solutions show excellent agreement for this test case.
 
+The simulations used in Figure \ref{fig:LTE_solns} were run from undisturbed initial conditions: \hbox{$\eta = 0 \, \si{\metre}$} and \hbox{$\bm{u} = (0,0) \, \si{\metre\per\second}$}. Consequently, there is some start-up time required for the model to converge into its periodic equilibrium, as described by \citet{sears1995tidal}. Figure \ref{fig:diss} illustrates this issue. From left to right, the figure shows orbitally averaged dissipation against time for the eccentricity-libration, eccentricity-radial, and obliquity tides.  The solid lines represent the average dissipation over each orbit in the numerical model, while the dashed lines indicate the analytical time-averaged dissipation value. 
 
+Initially, the time-averaged dissipation for each model differs from the analytical value. The obliquity tide starts with lower dissipation (fig. \ref{fig:diss_c}), whereas the two components of the eccentricity tide begin with higher dissipation (fig. \ref{fig:diss_a} and \ref{fig:diss_b}). With progressing simulation time, the numerical model then converges onto the analytical value. After 40 Titan orbits, all model values are within $3.5 \si{\percent}$ of the analytical solution. In particular, the eccentricity-radial and obliquity tides are within $1 \si{\percent}$ (Table \ref{tb:diss}). The numerical and analytical time-averaged dissipation values shown in Figure \ref{fig:diss} are given in Table \ref{tb:diss}.
+
+\input{./diss_table.tex}
 
 \subsection{Bottom Friction \label{subsec:result_bottom}}
 
