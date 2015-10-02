@@ -1,10 +1,10 @@
 \section{Methodology}
 
-This section describes some of the theory and methods involved in this work. Firstly, the governing equations of the numerical model are discussed in section \ref{subsec:LTE}. We then provide analytical expressions for the degree-2 tidal potential in section \ref{subsec:pot}. Following this, descriptions of the discretisation and numerical scheme are outlined in section \ref{subsec:model}.
+This section describes some of the theory and methods involved in this work. Firstly, the governing equations of the numerical model are discussed in section \ref{subsec:LTE}. We then provide analytical expressions for the degree-2 tidal potential in section \ref{subsec:pot}. Following this, descriptions of the discretisation and numerical scheme are outlined in section \ref{subsec:model}, with a summary of the simulations ran in section \ref{subsec:param}.
 
 \subsection{Laplace Tidal Equations \label{subsec:LTE}}
 
-The equations of motion and mass conservation that describe ocean flow in the shallow water limit are known as the Laplace Tidal Equations (LTE) \citep{lamb1932hydrodynamics}. The main assumption in their derivation is that radial (vertical) ocean flow is negligible when compared to lateral flow, reducing the problem to two dimensions. This is indeed a good approximation for the Earth, where lateral flow length scales span much greater distances than the depth of the ocean. The conservation of mass (eq. \ref{eq:mass}) and momentum (eq. \ref{eq:mom}) that make up the LTE, including both Rayleigh and bottom friction, are given as \citep{sears1995tidal,tyler2008strong,matsuyama2014tidal}:
+The equations of motion and mass conservation that describe ocean flow in the shallow water limit are known as the Laplace Tidal Equations (LTEs) \citep{lamb1932hydrodynamics}. The main assumption leading to this set of equations is that radial (vertical) ocean flow is negligible when compared to lateral flow, reducing the problem to two dimensions. This is indeed a good approximation for the Earth, where lateral flow length scales span much greater distances than the depth of the ocean. The conservation of mass (eq. \ref{eq:mass}) and momentum (eq. \ref{eq:mom}) that make up the LTEs, including both Rayleigh and bottom friction, are given as \citep{sears1995tidal,tyler2008strong,matsuyama2014tidal}:
 
 %Adds vertical space between equations
 %\setlength{\jot}{8pt}
@@ -18,17 +18,15 @@ The equations of motion and mass conservation that describe ocean flow in the sh
 \end{aligned} 
 \end{gather}
 
-Equation \ref{eq:mass} consists of two terms. The first is the time rate of change of vertical sea surface displacement about some equilibrium level, $\eta$. The second term represents the divergence of the surface velocity vector, $\bm{u} \equiv (u, v)$, where $u$ and $v$ are the eastward and northward velocity components, respectively. In our calculations we assume the ocean's undisturbed depth, $h$, to be constant. 
-
-
+Equation \ref{eq:mass} consists of two terms. The first is the time rate of change of vertical sea surface displacement, $\eta$, about some equilibrium level, $h_0$, where the total ocean thickness, $h = h_0 + \eta$. The second term represents the divergence of the ocean depth multiplied by the surface velocity vector, $\bm{u} \equiv (u, v)$, where $u$ and $v$ are the eastward and northward velocity components, respectively.
 
 The term on the right hand side of Equation \ref{eq:mom} is an applied force per unit mass. $\nabla U_2$ is the gradient of the degree-2 tide raising potential, discussed in section \ref{subsec:pot}. It is multiplied by Love's reduction factor, $1 + k_2 - h_2$. Love's first number, $k_2$, is a proportionality constant accounting for the additional tidal potential due to the elastic redistribution of mass on the satellite. $h_2$, the second Love number, accounts for the tidal potential arising from solid body surface displacement of the satellite \citep{love1911some}.
 
-The time derivative of velocity is given as the first term on the left hand side of the momentum equation (eq. \ref{eq:mom}). It is balanced by four other acceleration per unit mass terms on the left hand side. The first of these terms is the coriolis acceleration per unit mass, where $\Omega$ is the satellite's rotational angular velocity. Rayleigh and bottom friction are described in the next two terms, where $\alpha$ and $c_D$ are the Rayliegh (linear) and bottom (quadratic) friction coefficients, respectively \citep{sears1995tidal,chen2013tidal}. The last term on the left hand side of Equation \ref{eq:mom} is the gravitational restoring acceleration per unit mass. It acts to restore changes in sea surface displacement about the undisturbed ocean depth.
+The time derivative of velocity is the first term on the left hand side of the momentum equation (eq. \ref{eq:mom}). It is balanced by four force per unit mass terms on the left hand side. The first of these terms is the coriolis acceleration, where $\Omega$ is the satellite's rotational angular velocity. Rayleigh and bottom friction are described in the next two terms, where $\alpha$ and $c_D$ are the Rayliegh (linear) and bottom (quadratic) friction coefficients, respectively \citep{sears1995tidal,chen2013tidal}. The last term on the left hand side of Equation \ref{eq:mom} is the gravitational restoring acceleration per unit mass. It acts to restore changes in sea surface displacement about the undisturbed ocean depth, $h_0$.
 
 \subsection{Tidal Potential \label{subsec:pot}}
 
-Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. Primarily, it is this libration that induces ocean flow. We therefore find it convenient to split the full degree two tidal potential into its two primary components, the eccentricity and obliquity tides:
+Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the full degree two tidal potential into two main components, the eccentricity and obliquity tides:
 \begin{align}
 U_2 &= U_{ecc} + U_{obliq}\, . \label{eq:U_2}
 \end{align}
@@ -47,7 +45,7 @@ The derivatives of equations \ref{eq:U_ecc} and \ref{eq:U_obliq}, required to so
 
 \subsection{Numerical Model \label{subsec:model}}
 
-In this section we outline our two dimensional, finite difference computational fluid dynamics (CFD) numerical model, Ocean Dissipation in Icy Satellites (ODIS). In its current form, ODIS is based extensively on the models discussed in and developed by \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. Firstly, we provide a description of the numerical grid design. We then give an overview of the finite difference scheme itself, before finishing on limitations of the finite difference scheme and grid choice.
+In this section we outline our two dimensional, finite difference computational fluid dynamics (CFD) model, Ocean Dissipation in Icy Satellites (ODIS). In its current form, ODIS is based extensively on the models discussed in and developed by \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. Firstly, we provide a description of the numerical grid. We then give an overview of the finite difference scheme itself, before summarising and illustrating limitations of the finite difference scheme and grid choice.
 
 \subsubsection{Discretized Grid \label{subsec:grid}}
 
@@ -57,7 +55,7 @@ In this section we outline our two dimensional, finite difference computational 
 \caption{The staggered grid structure used in ODIS. A single cell is show on the right of the figure, where surface displacement, $\eta$, represents a cell centered quantity. $u$ velocity nodes are staggered eastward of $\eta$, whereas $v$ velocity nodes are staggered southwards. Both $u$ and $v$ are defined at the cell walls. Lines of meridian merge to singularities at the poles, where both a single $u$ and $\eta$ point are stored.\label{fig:grid}}
 \end{figure*}
 
-We employ a fixed latitude-longitude grid for our numerical simulations, defined in a spherical coordinate system. The grid is constructed in a staggered manner, meaning that velocity nodes are placed to the east and south of their parent displacement nodes. This is illustrated in Figure \ref{fig:grid}, where we define $u$ and $v$ as the eastward and northward velocity components, respectively ($\bm{u} \equiv \left(u,v\right))$. $\Delta \lambda$ is the latitude grid spacing, whereas $\Delta \phi$ is the longitude grid spacing. A staggered approach is reasonably common in CFD problems as it avoids oscillations that grow in the solution by calculating derivatives \textit{between} grid nodes, rather than over them. This is discussed further in section \ref{subsec:fd_expan}.
+We employ a fixed latitude-longitude grid for our numerical simulations, defined in a spherical coordinate system. The grid is constructed in a staggered manner, meaning that velocity nodes are placed to the east and south of their parent displacement nodes. This is illustrated in Figure \ref{fig:grid}, where we define $u$ and $v$ as the eastward and northward velocity components, respectively. $\Delta \lambda$ is the grid spacing in latitude, whereas $\Delta \phi$ is the grid spacing in the longitudinal direction. A staggered approach is reasonably common in CFD problems as it avoids numerical oscillations that grow in the solution by calculating derivatives \textit{between} grid nodes, rather than over them. This is discussed further in section \ref{subsec:fd_expan}.
 
 As is clear from Figure \ref{fig:grid}, lines of meridian all converge to single points at either pole. As a result, the model is forced to go from $m$ points immediately surrounding the pole, to merely a single point at either pole. Accordingly, both single values of $\eta$ and $u$ are stored at each pole. This approach slightly differs from \citet{sears1995tidal}, whom stored only a single $\eta$ value at the poles.
 
@@ -90,7 +88,7 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{
 + \eta_{ij}^{t}\, . \label{eq:mass_fd}
 \end{equation}
 
-Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude positions within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to averages, a necessity given the staggered nature of the grid.
+Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to averages, a necessity given the staggered nature of the grid.
 
 All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansions. These derivatives are given in the appendix. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
 
@@ -102,38 +100,36 @@ All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \r
 
 \noindent where $w$ represents $u$, $v$ or $\eta$.
 
-Examining equations \ref{eq:gen1} and \ref{eq:gen2} reveals that each derivative is evaluated halfway between the nodes where $w$ is stored. Consequently, any derivative of $w$ is calculated in between $w$; a position held by a different variable because the grid is staggered. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$, as $u_{i,j-\nicefrac{1}{2}}$ and $u_{i,j+\nicefrac{1}{2}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is shown in Figure \ref{fig:grid}.
+Examining equations \ref{eq:gen1} and \ref{eq:gen2} reveals that each derivative is evaluated halfway between the nodes where $w$ is stored. Consequently, any derivative of $w$ is calculated half way between $w$ nodes; a position held by a different variable because the grid is staggered. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$ as $u_{i,j-\nicefrac{1}{2}}$ and $u_{i,j+\nicefrac{1}{2}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is shown in Figure \ref{fig:grid}.
 
 \subsubsection{Numerical Scheme}
 
-ODIS begins its calculations by determining the mass of each volume element in the initial ocean, assuming an undisturbed ocean of depth $h$. With the mass calculated in each cell, it is then possible to find the dissipated energy in the system.
+ODIS begins its calculations by determining the mass of each volume element in the initial ocean assuming an undisturbed ocean of depth $h_0$. With the mass calculated in each cell, it is then possible to find the dissipated energy in the system.
 
 The next step in the numerical integration is to calculate $\nabla U_2$ across all $u$ and $v$ grid points. This gives the initial force per unit mass experienced by a fluid element in the model domain.
 
 Once the tidal forcing is known, ODIS directly calculates $u$ and $v$ over the grid by solving equations \ref{eq:momu_fd} and \ref{eq:momv_fd}. This step is purely explicit as $u$ and $v$ depend only on information from the previous time step, $t$. Following this, $\eta$ is then updated using the new velocity values. In contrast to the velocity calculations, this step is semi-implicit as it relies on values from both the current and previous time steps, as shown in Equation \ref{eq:mass_fd}.
 
-After the solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin. For Rayleigh friction, we calculate and store dissipated energy as,
+After solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin. For Rayleigh friction, ODIS calculates and stores global dissipated energy flux as,
 \begin{equation}
-\dot{E}_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha m_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
+F_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
 \end{equation}
 
 for $n$ and $m$ grid points in latitude and longitude, respectively. 
 
 
 
-The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, while the factor in front averages this quantity over the satellites surface area giving a quantity in watts per square metre. For bottom friction the equivalent expression is,
+The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, for each cell of mass $M$. The factor in front of the summations then averages this quantity over the satellite's surface area giving $F_{\alpha}$ in watts per square metre. For bottom friction the equivalent expression is,
 \begin{equation}
-\dot{E}_{c_D}^{t+1} = \frac{1}{4 \pi h R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}\, . \label{eq:E_cd}
+F_{c_D}^{t+1} = \frac{1}{4 \pi h R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}\, . \label{eq:E_cd}
 \end{equation}
 Details of these derivations are discussed in the appendix.
 
-Every time step the previous calculations are repeated, beginning from determining $\nabla U_2$. Finally, at the end of each orbit, $\dot{E}_\alpha$ or $\dot{E}_{c_D}$ is summed and averaged over the orbital period. This gives the orbitally averaged surface heat flux through tidal dissipation for Rayleigh friction,
+Every time step the previous calculations are repeated, beginning from determining $\nabla U_2$. Finally, at the end of each orbit, $F_\alpha$ or $F_{c_D}$ is summed and averaged over the orbital period. This gives the orbitally averaged surface heat flux through tidal dissipation for Rayleigh friction,
 \begin{align}
-\left\langle F_\alpha \right\rangle_{orbit} &= \frac{1}{4 \pi p R^2 } \notag\\
-&\times \sum_{t=0}^{p} \sum_{i=1}^{n} \sum_{j=1}^{m} \alpha m_{ij} \left[\left(u_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2\right] \, , \label{eq:E_alpha_orbit}
-\shortintertext{and for bottom friction,}
-\left\langle F_{c_D} \right\rangle_{orbit} &= \frac{1}{4 \pi p h R^2 } \notag\\
-&\times \sum_{t=0}^{p} \sum_{i=1}^{n} \sum_{j=1}^{m} c_D m_{ij} \left[\left(u_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2\right]^{\nicefrac{3}{2}} \, . \label{eq:E_cd_orbit}
+\left\langle F_\alpha \right\rangle_{orbit} &= \sum_{t=0}^{p} F_{\alpha}^{t}  \, , \label{eq:E_alpha_orbit}
+\shortintertext{and bottom friction,}
+\left\langle F_{c_D} \right\rangle_{orbit} &= \sum_{t=0}^{p} F_{c_D}^{t}  \, , . \label{eq:E_cd_orbit}
 \end{align}
 
 where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$. These expressions are consistent with \citep{sears1995tidal}.
@@ -149,9 +145,9 @@ Add flow chart?
 
 A natural issue arising from the choice of grid is the time step used. As described in section \ref{subsec:grid}, the fixed latitude-longitude grid causes meridian lines to converge at the poles. Nodes near each pole therefore have much smaller spatial separations than those at the equator. In order to satisfy the Courant-Friedrichs-Lewy (CFL) condition required for numerical stability, $\Delta t \lesssim 40 \si{\second}$ if $\Delta \lambda = \Delta \phi = 4^{\circ}$ \citep{arakawa1977computational,sears1995tidal}. This massive constraint on the time step is often referred to as the ``pole problem''. Several workarounds to ease the time step have been applied throughout the literature \citep{comblen2009finite}. For example, it is common to apply a fourier filter to remove high wavenumber components of the solvable fields near the poles \citep{murray2002fourier}, or to use the spectral transform method as reviewed by \citet{swarztrauber1996spectral}. In this work, however, we apply none of these methods, and obey the CFL condition by selecting the appropriate time step for the model resolution.
 
-A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the poles become singularities in space, where the normal directions east and west used to define the velocity components, become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide, shown in Figure \ref{fig:coord_prob}. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. To solve for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero. As the derivative of $u$ in Equation \ref{eq:momu_fd} is also zero, surface displacment at the pole is forced to zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. 
+A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the poles become singularities in space, where the normal directions east and west used to define the velocity components, become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide, shown in Figure \ref{fig:coord_prob}. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. In solving for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero. Longitudinal symmetry in $u$ causes the $u$ derivative from Equation \ref{eq:momu_fd} to be also zero. This forces surface displacement at the pole to zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. 
 
-To workaround this problem, we employ one dimensional Euler interpolation for all $u$ and $\eta$ nodes located at the pole, avoiding the need to directly solve for these points. We then take the mean of the interpolated $eta$ points and prescribe that as the polar values. The mean is not taken for $u$ as this reduces it to zero for longitudinally symmetric positive and negative sectors around the pole.
+To workaround this problem, we employ first-order accurate one dimensional Euler interpolation for all $u$ and $\eta$ nodes located at the pole, avoiding the need to directly solve for these points. We then take the mean of the interpolated $\eta$ points and prescribe that as the polar value. The mean is not taken for $u$, as this reduces to zero around the pole due to cancellation of longitudinally symmetric positive and negative velocities.
 
 \subsection{Model Setup and Parameters \label{subsec:param}}
 
