@@ -1,26 +1,8 @@
-\section{Results \label{sec:results}}
+\section{Results - Titan \label{sec:results}}
 
 The following results are split into three main sections. We firstly present solutions to the LTEs using Rayleigh friction and compare dissipation between the analytical and numerical solutions in section \ref{subsec:result_rayleigh}. Section \ref{subsec:result_bottom} then presents purely numerical results for dissipation using only bottom friction. Finally, dissipation in the bottom friction case is compared to analytical scaling laws derived by \citet{chen2013tidal} in section \ref{subsec:scaling}.
 
 \subsection{Rayleigh Friction \label{subsec:result_rayleigh}}
-\begin{figure*}[!t]
-\begin{subfigure}{\linewidth}
-\centering
-\includegraphics[width=0.8\linewidth,trim={0 0 0 0.2cm},clip]{Figures/Ecc_test}
-\subcaption{\label{fig:LTE_a}}
-\end{subfigure}\vspace*{-0.7cm}
-\begin{subfigure}{\linewidth}
-\centering
-\includegraphics[width=0.8\linewidth]{Figures/Obliq_test}
-\subcaption{\label{fig:LTE_b}}
-\end{subfigure}\vspace*{-0.7cm}
-\begin{subfigure}{\linewidth}
-\centering
-\includegraphics[width=0.8\linewidth]{Figures/Full_test}
-\subcaption{\label{fig:LTE_c}}
-\end{subfigure}\vspace*{-0.8cm}
-\caption{Solutions to the LTE under the eccentricity (eq. \ref{eq:U_ecc}), obliquity (eq. \ref{eq:U_obliq}), and full tidal potential (eq. \ref{eq:U_2}). $h = 400 \, \si{\metre}$ and $\alpha = 2.28 \times 10^{-7} \, \si{\per\second}$ in a), b) and c).\label{fig:LTE_solns}}
-\end{figure*}
 
 The primary task of ODIS is to solve the LTE on a sphere, and it is from these solutions that dissipation is derived. Thus, a useful starting point are the velocity and displacement solutions to the LTEs rather than purely concerning the reader with the average tidal dissipation over an orbital period. 
 
@@ -61,21 +43,21 @@ Initially, the time-averaged dissipation for each model differs from the analyti
 
 %\input{./diss_table.tex}
 
-\begin{figure*}[!t]
-\centering
-\begin{subfigure}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{Figures/Eccentricity_RayleighFric}
-\subcaption{\label{fig:rayleighFricEcc}}
-\end{subfigure}%
-\begin{subfigure}{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{Figures/Obliquity_RayleighFric}
-\subcaption{\label{fig:rayleighFricObliq}}
-\end{subfigure}
-\vspace*{-0.8cm}
-\caption{Log of the average dissipated energy assuming Rayleigh (linear) friction for the eccentricity and obliquity tides. \label{fig:rayleighFric}}
-\end{figure*}
+%\begin{figure*}[!t]
+%\centering
+%\begin{subfigure}{0.48\linewidth}
+%\centering
+%\includegraphics[width=\linewidth]{Figures/Eccentricity_RayleighFric}
+%\subcaption{\label{fig:rayleighFricEcc}}
+%\end{subfigure}%
+%\begin{subfigure}{0.48\linewidth}
+%\centering
+%\includegraphics[width=\linewidth]{Figures/Obliquity_RayleighFric}
+%\subcaption{\label{fig:rayleighFricObliq}}
+%\end{subfigure}
+%\vspace*{-0.8cm}
+%\caption{Log of the average dissipated energy assuming Rayleigh (linear) friction for the eccentricity and obliquity tides. \label{fig:rayleighFric}}
+%\end{figure*}
 
 \subsection{Bottom Friction \label{subsec:result_bottom}}
 
