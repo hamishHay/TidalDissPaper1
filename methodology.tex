@@ -104,13 +104,13 @@ Examining equations \ref{eq:gen1} and \ref{eq:gen2} reveals that each derivative
 
 \subsubsection{Numerical Scheme}
 
-ODIS begins its calculations by determining the mass of each volume element in the initial ocean assuming an undisturbed ocean of depth $h_0$. With the mass calculated in each cell, it is then possible to find the dissipated energy in the system.
+ODIS begins its calculations by (1) determining the mass of each volume element in the initial ocean assuming an undisturbed ocean of depth $h_0$. With the mass calculated in each cell, it is then possible to find the dissipated energy in the system.
 
-The next step in the numerical integration is to calculate $\nabla U_2$ across all $u$ and $v$ grid points. This gives the initial force per unit mass experienced by a fluid element in the model domain.
+The next step in the numerical integration is to calculate $\nabla U_2$ across all $u$ and $v$ grid points (2). This gives the initial force per unit mass experienced by a fluid element in the model domain.
 
-Once the tidal forcing is known, ODIS directly calculates $u$ and $v$ over the grid by solving equations \ref{eq:momu_fd} and \ref{eq:momv_fd}. This step is purely explicit as $u$ and $v$ depend only on information from the previous time step, $t$. Following this, $\eta$ is then updated using the new velocity values. In contrast to the velocity calculations, this step is semi-implicit as it relies on values from both the current and previous time steps, as shown in Equation \ref{eq:mass_fd}.
+Once the tidal acceleration is known, ODIS directly calculates $u$ and $v$ over the grid by solving equations \ref{eq:momu_fd} and \ref{eq:momv_fd} (3). This step is purely explicit as $u$ and $v$ depend only on information from the previous time step, $t$. Following this, $\eta$ is then updated using the new velocity values (4). In contrast to the velocity calculations, this step is semi-implicit as it relies on values from both the current and previous time steps, as shown in Equation \ref{eq:mass_fd}.
 
-After solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin. For Rayleigh friction, ODIS calculates and stores global dissipated energy flux as,
+After solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin (5). For Rayleigh friction, ODIS calculates and stores global dissipated energy flux as,
 \begin{equation}
 F_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
 \end{equation}
@@ -123,7 +123,7 @@ F_{c_D}^{t+1} = \frac{1}{4 \pi h R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D M_{ij} \
 \end{equation}
 Details of these derivations are discussed in the appendix.
 
-Every time step the previous calculations are repeated, beginning from determining $\nabla U_2$. Finally, at the end of each orbit, $F_\alpha$ or $F_{c_D}$ is summed and averaged over the orbital period. This gives the orbitally averaged surface heat flux through tidal dissipation for Rayleigh friction,
+Every time step the previous calculations (2-5) are repeated, beginning from determining $\nabla U_2$. Finally, at the end of each orbit, $F_\alpha$ or $F_{c_D}$ is summed and averaged over the orbital period (6). This gives the orbitally averaged surface heat flux due to tidal dissipation for Rayleigh friction,
 \begin{align}
 \left\langle F_\alpha \right\rangle_{orbit} &= \sum_{t=0}^{p} F_{\alpha}^{t}  \, , \label{eq:E_alpha_orbit}
 \shortintertext{and bottom friction,}
@@ -132,22 +132,51 @@ Every time step the previous calculations are repeated, beginning from determini
 
 where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$. These expressions are consistent with \citep{sears1995tidal}.
 
-This is repeated until the model has converged onto a periodic solution. Convergence is declared by ODIS when $\left\langle F \right\rangle_{orbit}$ varies by less than $10^{-6}$ to $10^{-8}$ \si{\watt\per\square\metre} over the previous eight orbits. Care must be taken when selecting convergence criteria, as simulations involving deep oceans and small friction coefficients will oscillate about their converged solution with periods of tens of orbits due to the large inertia in the system. These simulations require longer run-time.
+\begin{figure}[!t]\centering
+\begin{subfigure}{\linewidth}
+\centering
+\includegraphics[width=0.95\linewidth]{Figures/res_test}
+\subcaption{\label{fig:conv_a}}
+\end{subfigure}\vspace*{-0.7cm}
+\begin{subfigure}{\linewidth}
+\centering
+\includegraphics[width=0.95\linewidth]{Figures/error}
+\subcaption{\label{fig:conv_b}}
+\end{subfigure}\vspace*{-0.7cm}
+\caption{Convergence and error scaling as a function of grid resolution. Plot \ref{fig:conv_a} on the top shows the time evolution of dissipated energy at periapse. The solid line represents different grid resolutions, whereas the dashed line is the anlytically derived dissipated energy. After 500 - 600 orbits, startup oscillations in the solution begcome neglible and the solution has converged. Figure \ref{fig:conv_b} on the bottom shows the error between the numerical and analytical solutions with increasing resolution. The numerical solution falls between 1st and 2nd order convergence with increasing resolution. All simulations are for the obliquity tide using $h = 1 \, \si{\kilo\metre}$ and $\alpha = 10^{-8} \, \si{\per\second}$. \label{fig:conv}}
+\end{figure}
 
-\begin{figure}[t]
+Steps 2-6 are repeated until the model has converged into a periodic solution. Care must be taken when selecting convergence criteria. Simulations involving deep oceans and small friction coefficients will oscillate about their converged solution with periods of 10 - 100 orbits due to the large inertia associated with deep, poorly dissipative oceans (see Figure \ref{fig:conv_a}). These simulations clearly require longer run-time.
+
+
+\subsubsection{Grid Limitations and Resolution Testing \label{subsubsec:grid_lim}}
+
+As with any numerical solution there are errors associated with discretization of the problem into the model domain. We performed resolution testing across various ocean depths to determine how these errors scale with grid resolution. One of these tests is shown in Figure \ref{fig:conv}. The upper plot shows how the numerical time-averaged dissipated energy solution converges to a final value. As grid resolution is increased the numerical estimate converges to the analytically derived solution. The lower plot (Figure \ref{fig:conv_b}) shows the numerical error as a function of increasing resolution, indicating first to second order convergence in the numerical solution. Based on these resolution tests, all further simulations were ran for grid spacings of $\ang{2}$ in latitude and longitude. 
+
+A natural issue arising from the choice of grid is the time step used. As described in section \ref{subsec:grid}, the fixed latitude-longitude grid causes meridian lines to converge at the poles. Nodes near each pole therefore have much smaller spatial separations than those at the equator. In order to satisfy the Courant-Friedrichs-Lewy (CFL) condition required for numerical stability, $\Delta t \lesssim 40 \si{\second}$ if $\Delta \lambda = \Delta \phi = 4^{\circ}$ \citep{arakawa1977computational,sears1995tidal}. This massive constraint on the time step is often referred to as the ``pole problem''. Several workarounds to ease the time step have been applied throughout the literature \citep{comblen2009finite}. For example, it is common to apply a Fourier filter to remove high wavenumber components of the solvable fields near the poles \citep{murray2002fourier}, or to use the spectral transform method as reviewed by \citet{swarztrauber1996spectral}. In this work, however, we apply none of these methods, and obey the CFL condition by selecting the appropriate time step for the model resolution.
+
+\begin{figure}[!b]
 \includegraphics[width=\linewidth]{Figures/CoordProb}
 \caption{Schematic representation of the ocean tide due to the eccentricity-radial tidal potential ($U_{20}$), at periapsis. Taking a derivative of $v$ across the north pole yields a null result in the spherical coordinate system, despite the clear mass divergence away from the poles leading to $\eta < 0$.\label{fig:coord_prob}}
 \end{figure}
-
-Add flow chart?
-
-A natural issue arising from the choice of grid is the time step used. As described in section \ref{subsec:grid}, the fixed latitude-longitude grid causes meridian lines to converge at the poles. Nodes near each pole therefore have much smaller spatial separations than those at the equator. In order to satisfy the Courant-Friedrichs-Lewy (CFL) condition required for numerical stability, $\Delta t \lesssim 40 \si{\second}$ if $\Delta \lambda = \Delta \phi = 4^{\circ}$ \citep{arakawa1977computational,sears1995tidal}. This massive constraint on the time step is often referred to as the ``pole problem''. Several workarounds to ease the time step have been applied throughout the literature \citep{comblen2009finite}. For example, it is common to apply a Fourier filter to remove high wavenumber components of the solvable fields near the poles \citep{murray2002fourier}, or to use the spectral transform method as reviewed by \citet{swarztrauber1996spectral}. In this work, however, we apply none of these methods, and obey the CFL condition by selecting the appropriate time step for the model resolution.
 
 A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the poles become singularities in space, as the normal directions east and west used to define the velocity components become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide, shown in Figure \ref{fig:coord_prob}. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. In solving for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero. Longitudinal symmetry in $u$ causes the $u$ derivative from Equation \ref{eq:momu_fd} to be also zero. This forces surface displacement at the pole to zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. 
 
 To work around this problem, we employ first-order accurate one dimensional Euler interpolation for all $u$ and $\eta$ nodes located at the pole, avoiding the need to directly solve for these points. We then take the mean of the interpolated $\eta$ points and prescribe that as the polar value. The mean is not taken for $u$, as this reduces to zero around the pole due to cancellation of longitudinally symmetric positive and negative velocities.
 
 \subsection{Model Setup and Parameters \label{subsec:param}}
+
+
+
+All numerical results presented in the following section are for surface oceans on Titan and Enceladus. Titan is an appropriate benchmark for our numerical model because, as already discussed, much of the numerical scheme used in this work is described by \citet{sears1995tidal} who also applied his model to Titan.
+
+We first perform both semi-analytical and numerical simulations for Titan under the eccentricity and obliquity tides. For each tidal component 3381 simulations were run for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$\alpha = 10^{-9} - 10^{-5} \, \si{\per\second}$}. The semi-analytical solution for the orbitally averaged surface heat flux was directly compared to the numerical values to reveal any inaccuracies in the numerical model across this parameter space. 
+
+Following testing and verification of the numerical solutions for Rayleigh friction, ODIS was then run using only bottom friction for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$c_D = 10^{-7} - 10^{-1} \, \si{\per\second}$}. These simulations are again run for both the eccentricity and obliquity tides, where 5037 simulations were run for each main tidal component. With results for both Rayleigh and bottom friction we were able to make comparisons about tidal dissipation under these two friction models.
+
+The above results were then recreated for Enceladus assuming both Rayleigh and bottom friction. The model parameters used for both Titan and Enceladus are shown in Table \ref{tb:param}.
+
+\input{./param_table.tex}
 
 \begin{figure*}[!t]
 \begin{subfigure}{\linewidth}
@@ -169,13 +198,3 @@ To work around this problem, we employ first-order accurate one dimensional Eule
 \end{figure*}
 
 
-All numerical results presented in the following section are for surface oceans on Titan and Enceladus. Titan is an appropriate benchmark for our numerical model because, as already discussed, much of the numerical scheme used in this work is described by \citet{sears1995tidal} who also applied his model to Titan.
-
-We first perform both semi-analytical and numerical simulations for Titan under the eccentricity and obliquity tides. For each tidal component 3381 simulations were run for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$\alpha = 10^{-9} - 10^{-5} \, \si{\per\second}$}. The semi-analytical solution for the orbitally averaged surface heat flux was directly compared to the numerical values to reveal any inaccuracies in the numerical model across this parameter space. 
-
-Following testing and verification of the numerical solutions for Rayleigh friction, ODIS was then run using only bottom friction for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$c_D = 10^{-7} - 10^{-1} \, \si{\per\second}$}. These simulations are again run for both the eccentricity and obliquity tides, where 5037 simulations were run for each main tidal component. With results for both Rayleigh and bottom friction we were able to make comparisons about tidal dissipation under these two friction models.
-
-The above results were then recreated for Enceladus assuming both Rayleigh and bottom friction. The model parameters used for both Titan and Enceladus are shown in Table \ref{tb:param}.
-
-
-\input{./param_table.tex}
