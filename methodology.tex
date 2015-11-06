@@ -168,20 +168,20 @@ To work around this problem, we employ first-order accurate one dimensional Eule
 
 
 
-All numerical results presented in the following section are for surface oceans on Titan and Enceladus. Titan is an appropriate benchmark for our numerical model because, as already discussed, much of the numerical scheme used in this work is described by \citet{sears1995tidal} who also applied his model to Titan.
+All numerical results presented in the following section are for surface oceans on Titan and Enceladus. Titan is an appropriate benchmark for our numerical model because, as already discussed, much of the numerical scheme used in this work is described by \citet{sears1995tidal} who applied his model to Titan.
 
 We first perform both semi-analytical and numerical simulations for Titan under the eccentricity and obliquity tides. For each tidal component 3381 simulations were run for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$\alpha = 10^{-9} - 10^{-5} \, \si{\per\second}$}. The semi-analytical solution for the orbitally averaged surface heat flux was directly compared to the numerical values to reveal any inaccuracies in the numerical model across this parameter space. 
 
-Following testing and verification of the numerical solutions for Rayleigh friction, ODIS was then run using only bottom friction for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$c_D = 10^{-7} - 10^{-1} \, \si{\per\second}$}. These simulations were again run for both the eccentricity and obliquity tides, where 5037 simulations were run for each main tidal component. With results for both Rayleigh and bottom friction we were able to make comparisons about tidal dissipation under these two friction models.
+Following testing and verification of the numerical solutions for Rayleigh friction, ODIS was then run using only bottom friction for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$c_D = 10^{-7} - 10^{-1} \, \si{\per\second}$}. These simulations were again run for both the eccentricity and obliquity tides, where 5037 simulations were run for each main tidal component. With results for both Rayleigh and bottom friction we were able to make comparisons about tidal dissipation under these two friction models. This process was then recreated for Enceladus assuming both Rayleigh and bottom friction. The model parameters used for both Titan and Enceladus are shown in Table \ref{tb:param}.
 
-The above results were then recreated for Enceladus assuming both Rayleigh and bottom friction. The model parameters used for both Titan and Enceladus are shown in Table \ref{tb:param}.
+Numerically solving the LTEs to convergence is computationally an expensive process. As shown in Figure \ref{fig:conv_a}, convergence may only be reached after a significant amount of simulation time. The example given in Figure \ref{fig:conv_a} was run using initial conditions for an at rest, undisturbed ocean. To speed up convergence we employ the technique used by \citep{sears1995tidal}, whereby the final output of one simulation is used as the initial conditions for the next simulation. Upon completion, each running process will spawn one to two `child' simulations. These new process will in turn spawn there own `children' once they are complete. This logical way of solving over such a large parameter space helps to significantly reduce computational run time. Several tests were also ran to unsure that a given simulation would return converge to a single solution, regardless of initial conditions.
 
 \input{./param_table.tex}
 
 \begin{figure*}[!t]
 \begin{subfigure}{\linewidth}
 \centering
-\includegraphics[width=0.8\linewidth,trim={0 0 0 0.2cm},clip]{Figures/Ecc_test}
+\includegraphics[width=0.8\linewidth]{Figures/Ecc_test}
 \subcaption{\label{fig:LTE_a}}
 \end{subfigure}\vspace*{-0.7cm}
 \begin{subfigure}{\linewidth}
