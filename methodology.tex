@@ -30,7 +30,7 @@ Finite eccentricity and obliquity cause libration of the satellite's tidal bulge
 \begin{align}
 U_2 &= U_{ecc} + U_{obliq}\, . \label{eq:U_2}
 \end{align}
-The eccentricity and obliquity tide can be expressed as \citep{tobie2005tidal,tyler2011tidal,matsuyama2014tidal},
+To first order in eccentricity and obliquity, the two primary tidal components can be expressed as \citep{tobie2005tidal,tyler2011tidal,matsuyama2014tidal},
 \begin{multline}
 U_{ecc} = \Omega^2 r^2 e \left\lbrace - \frac{3}{2} P_{20}\left(\cos\theta\right) \cos \left(\Omega t \right) + \frac{1}{8} P_{22}\left( \cos\theta\right) \right. \\ 
 \times \left. \vphantom{\frac{1}{8}} \left[7 \cos \left(2 \phi - \Omega t \right) - \cos \left(2 \phi + \Omega t\right) \right] \right\rbrace, \label{eq:U_ecc}
@@ -88,7 +88,7 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{
 + \eta_{ij}^{t}\, . \label{eq:mass_fd}
 \end{equation}
 
-Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to averages, a necessity given the staggered nature of the grid.
+Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to spatial averages, a necessity given the staggered nature of the grid.
 
 All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansions. These derivatives are given in the appendix. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
 
@@ -125,9 +125,9 @@ Details of these derivations are discussed in the appendix.
 
 Every time step the previous calculations (2-5) are repeated, beginning from determining $\nabla U_2$. Finally, at the end of each orbit, $F_\alpha$ or $F_{c_D}$ is summed and averaged over the orbital period (6). This gives the orbitally averaged surface heat flux due to tidal dissipation for Rayleigh friction,
 \begin{align}
-\left\langle F_\alpha \right\rangle_{orbit} &= \sum_{t=0}^{p} F_{\alpha}^{t}  \, , \label{eq:E_alpha_orbit}
+\left\langle F_\alpha \right\rangle_{orbit} &= \frac{1}{p}\sum_{t=1}^{p} F_{\alpha}^{t}  \, , \label{eq:E_alpha_orbit}
 \shortintertext{and bottom friction,}
-\left\langle F_{c_D} \right\rangle_{orbit} &= \sum_{t=0}^{p} F_{c_D}^{t}  \, , . \label{eq:E_cd_orbit}
+\left\langle F_{c_D} \right\rangle_{orbit} &= \frac{1}{p}\sum_{t=1}^{p} F_{c_D}^{t}  \, , \label{eq:E_cd_orbit}
 \end{align}
 
 where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$. These expressions are consistent with \citep{sears1995tidal}.
@@ -162,7 +162,7 @@ A natural issue arising from the choice of grid is the time step used. As descri
 
 A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the poles become singularities in space, as the normal directions east and west used to define the velocity components become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide, shown in Figure \ref{fig:coord_prob}. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. In solving for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero. Longitudinal symmetry in $u$ causes the $u$ derivative from Equation \ref{eq:momu_fd} to be also zero. This forces surface displacement at the pole to zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. 
 
-To work around this problem, we employ first-order accurate one dimensional Euler interpolation for all $u$ and $\eta$ nodes located at the pole, avoiding the need to directly solve for these points. We then take the mean of the interpolated $\eta$ points and prescribe that as the polar value. The mean is not taken for $u$, as this reduces to zero around the pole due to cancellation of longitudinally symmetric positive and negative velocities.
+To work around this problem, we employ both first-order accurate one dimensional Euler and third order accurate Lagrange interpolation for all $u$ and $\eta$ nodes located at the pole, avoiding the need to directly solve for these points. We then take the mean of the interpolated $\eta$ points and prescribe that as the polar value. For $u$, the mean is taken for the eccentricity tide as eastward velocity tends towards zero at the poles. Average velocity is not computed for the obliquity tide, however, as non-zero eastward velocity components exist at the poles.
 
 \subsection{Model Setup and Parameters \label{subsec:param}}
 
@@ -174,7 +174,7 @@ We first perform both semi-analytical and numerical simulations for Titan under 
 
 Following testing and verification of the numerical solutions for Rayleigh friction, ODIS was then run using only bottom friction for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$c_D = 10^{-7} - 10^{-1} \, \si{\per\second}$}. These simulations were again run for both the eccentricity and obliquity tides, where 5037 simulations were run for each main tidal component. With results for both Rayleigh and bottom friction we were able to make comparisons about tidal dissipation under these two friction models. This process was then recreated for Enceladus assuming both Rayleigh and bottom friction. The model parameters used for both Titan and Enceladus are shown in Table \ref{tb:param}.
 
-Numerically solving the LTEs to convergence is computationally an expensive process. As shown in Figure \ref{fig:conv_a}, convergence may only be reached after a significant amount of simulation time. The example given in Figure \ref{fig:conv_a} was run using initial conditions for an at rest, undisturbed ocean. To speed up convergence we employ the technique used by \citep{sears1995tidal}, whereby the final output of one simulation is used as the initial conditions for the next simulation. Upon completion, each running process will spawn one to two `child' simulations. These new process will in turn spawn there own `children' once they are complete. This logical way of solving over such a large parameter space helps to significantly reduce computational run time. Several tests were also ran to unsure that a given simulation would return converge to a single solution, regardless of initial conditions.
+Numerically solving the LTEs to convergence is a computationally expensive process. As shown in Figure \ref{fig:conv_a}, convergence will only be reached after a significant amount of simulation time. The example given in Figure \ref{fig:conv_a} was run using initial conditions for a stationary, undisturbed ocean. To speed up convergence we employ the technique used by \citep{sears1995tidal}, whereby the final output of one simulation is used as the initial condition for the next simulation. Upon completion, each running process will spawn one to two `child' simulations. These new processes will in turn spawn their own `children' once they are complete. This logical way of solving over such a large parameter space helps to significantly reduce computational run time. Several tests were also run to ensure that a given simulation would converge to a single solution, regardless of initial condition.
 
 \input{./param_table.tex}
 
