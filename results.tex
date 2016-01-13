@@ -12,12 +12,12 @@ Surface displacement in Figure \ref{fig:LTE_a} shows a classic tidal bulge, cent
 
 \begin{figure*}[!t]
 \centering
-\begin{subfigure}{0.85\linewidth}
+\begin{subfigure}{0.9\linewidth}
 \centering
 \includegraphics[width=\linewidth]{Figures/Eccentricity_error}
 \subcaption{\label{fig:lincEccTitan}}
 \end{subfigure}\\\vspace*{-0.5cm}
-\begin{subfigure}{0.85\linewidth}
+\begin{subfigure}{0.9\linewidth}
 \centering
 \includegraphics[width=\linewidth]{Figures/Obliquity_error}
 \subcaption{\label{fig:linObliqTitan}}
@@ -28,7 +28,7 @@ Surface displacement in Figure \ref{fig:LTE_a} shows a classic tidal bulge, cent
 
 The obliquity tide shows markedly different displacement and flow patterns than the eccentricity tide (Figure \ref{fig:LTE_b}). Displacement is now anti-symmetric about the equator. Notably, the longitudinal positions of maxima and minima are offset from the Saturnian and sub-Saturnian points. The tide raised by the obliquity tidal potential is also an order of magnitude less than the eccentricity tide. Flow is mainly poleward, converging south of the equator on the Saturn-facing hemisphere, and north of the equator on the opposite hemisphere.
 
-The final plot in figure \ref{fig:LTE_solns} is the solution under the full tidal potential. In many ways, it is similar to the eccentricity tide. Yet, the addition of the obliquity tide adds significant equatorial asymmetry to the solutions. This asymmetry is particularly noticeable in the velocity plot on the right hand side of Figure \ref{fig:LTE_c}, where the areas of fastest flow are skewed north and south of the equator, unlike in Figure \ref{fig:LTE_a}. This is also evident in the displacement field, where the highest tide is offset from the equator.
+The final plot in figure \ref{fig:LTE_solns} is the solution under the full tidal potential. In many ways it is similar to the eccentricity tide. Yet, the addition of the obliquity tide adds a degree of equatorial asymmetry to the solutions. This asymmetry is particularly noticeable in the velocity plot on the right hand side of Figure \ref{fig:LTE_c}, where the areas of fastest flow are skewed north and south of the equator, unlike in Figure \ref{fig:LTE_a}. This is also evident in the displacement field, where the highest tide is offset from the equator.
 
 These simulations were run from undisturbed initial conditions: \hbox{$\eta = 0 \, \si{\metre}$} and \hbox{$\bm{u} = (0,0) \, \si{\metre\per\second}$}. Consequently, there was some start-up time required for the model to converge into its orbitally-averaged equilibrium, as noted by \citet{sears1995tidal}. Figure \ref{fig:conv_a} illustrates this type of behaviour.
 
@@ -36,7 +36,7 @@ These simulations were run from undisturbed initial conditions: \hbox{$\eta = 0 
 
 \subsubsection{Tidal Dissipation \label{subsubsec:linTitan}}
 
-Dissipated surface heat flux averaged over the tidal period was calculated for over 3000 simulations using equations \ref{eq:E_alpha} and \ref{eq:E_alpha_orbit}. These simulations were over a range of $h$ and $\alpha$ values for each main tidal component, as shown on the left hand side of Figure \ref{fig:linTitan}. The eccentricity tide (Figure \ref{fig:lincEccTitan}) shows three resonant dissipative ocean thicknesses, $h \sim$ \SIlist{2;3;22}{\metre}. The deepest of these resonances has a maximum dissipated surface heat flux of $\sim 10\, \si{\watt\per\square\metre}$, which occurs between $\alpha =$ \SIrange{e-8}{e-7}{\per\second}. Notably, the maximum dissipated energy does not occur for the most friction dominated oceans where $\alpha \sim \num{e-5} \, \si{\per\second}$.
+Dissipated surface heat flux averaged over the tidal period was calculated for over 3000 simulations using equations \ref{eq:E_alpha} and \ref{eq:E_alpha_orbit}. These simulations were over a range of $h$ and $\alpha$ values for each main tidal component, as shown on the left hand side of Figure \ref{fig:linTitan}. The eccentricity tide (Figure \ref{fig:lincEccTitan}) shows three resonant dissipative ocean thicknesses, $h \sim$ \SIlist{2;3;22}{\metre}. These horizontally orientated resonances are the result of excited gravity waves, with the deepest of these having a maximum dissipated surface heat flux of $\sim 10\, \si{\watt\per\square\metre}$, which occurs between $\alpha =$ \SIrange{e-8}{e-7}{\per\second}. Notably, the maximum dissipated energy does not occur for the most friction dominated oceans where $\alpha \sim \num{e-5} \, \si{\per\second}$. 
 
 \begin{figure*}[!t]
 \centering
@@ -64,7 +64,33 @@ Dissipation across $h$ and $c_D$ space (bottom friction) is shown in Figure \ref
 
 The obliquity tide dissipation under bottom friction shows a similar story. Comparing figures \ref{fig:botObliqTitan} and \ref{fig:linObliqTitan}, it is again evident that the horizontal resonances at \SIlist{1;10}{\metre} from the Rayleigh case are replicated when using bottom friction. These resonances rapidly broaden towards higher $c_D$ when friction becomes more dominant. Perhaps the most significant difference between each friction case is the orientation of broad resonance that extends to the deepest oceans. In the Rayleigh case, this resonance extends diagonally across a large range of $h$ and $\alpha$, whereas it is limited to a small range of $c_D$ in the bottom friction case. The resonance also happens to occur across the empirically derived Earth value for $c_D = 0.002$ \citep[e.g.,][]{sohl1995tidal,egbert2001estimates}.
 
+\subsection{Comparison with Scaling Laws \label{subsec:scalTitan}}
+
+While there are no fully analytical solutions to the LTEs when including bottom friction, there are a set of scaling laws for estimating dissipation that neglect resonant features, developed by \citet{chen2013tidal}. We compare cross sections from the ODIS results in Figure \ref{fig:botTitan} with these scaling laws, shown in Figure \ref{fig:scalTitan}.
+
+\begin{figure*}[!t]
+\centering
+\begin{subfigure}{0.4\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Eccentricity_scaling}
+\subcaption{\label{fig:scalEccTitan}}
+\end{subfigure}%
+\begin{subfigure}{0.4\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Obliquity_scaling}
+\subcaption{\label{fig:scalObliqTitan}}
+\end{subfigure}
+\vspace*{-0.8cm}
+\caption{Comparison of the ODIS numerical results (solid lines) and those calculated using the scaling laws (dashed lines) derived in \citet{chen2013tidal}, for Titan. There is excellent agreement between the two results for deep oceans and away from resonances. \label{fig:scalTitan}}
+\end{figure*}
+
+Away from resonances and in deep oceans, there is excellent agreement between the numerical ODIS results and the scaling laws. This is particularly true of the eccentricity tide. Larger discrepancies are found for the obliquity tide (Figure \ref{fig:scalObliqTitan}) in deep oceans, but this is a result of discretisation error. The vertically orientated resonant feature in Figure \ref{fig:botObliqTitan} is also recreated in the scaling laws shown in Figure \ref{fig:scalObliqTitan}. None of the gravity wave resonances are captured by the scaling laws. 
+
 \subsection{Implications for Titan}
+
+Titan likely has an ocean that is several hundred kilometres thick \citep{sohl2003interior}. All of the eccentricity tide resonances fall in oceans much more shallow than this, suggesting that - despite the substantial free eccentricity - there is little contribution from this tidal component to heating Titan's ocean.
+
+Rossby wave resonances from the obliquity tide appear as the diagonal and vertical features in figures \ref{fig:linObliqTitan} and \ref{fig:botObliqTitan}, respectively. The linear friction resonance moves into unrealistically low coefficients of friction ($\alpha \lesssim$ \SI{e-9}{\per\second}) for oceans deeper than about \SI{10}{\kilo\metre}. However, for bottom friction, the Rossby wave resonance is mainly independent of ocean depth above $h \gtrsim$ \SI{100}{\metre}. If Titan's ocean fell within the $c_D =$ \SIrange{e-2}{e-4} range then this Rossby wave resonance could provide a non-neglible thermal energy component to Titan's interior, regardless of the ocean depth. Unfortunately, $c_D$ is an unknown parameter on Titan and there is no reason to suggest it is similar to Earth's value of \num{0.002}, which happens to fall near the center of this resonance (Figure \ref{fig:botObliqTitan}).
 
 \section{Results - Enceladus \label{sec:results_Enceladus}}
 
