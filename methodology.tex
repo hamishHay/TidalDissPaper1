@@ -43,6 +43,15 @@ where $r$ is the satellite's radius, $e$ is its eccentricity, and $\theta_0$ is 
 
 The derivatives of equations \ref{eq:U_ecc} and \ref{eq:U_obliq}, required to solve the LTE, are given in the appendix.
 
+\subsection{Tidal Quality Factor}
+
+A useful parameter in tidal dissipation studies is the quality factor, $Q$. Defined as the ratio of maximum energy stored to the total energy dissipated in an elastic, small values of $Q$ represent a dissipative environment. \citet{tyler2011tidal} and \citet{matsuyama2014tidal} use the kinetic energy $E_k$ of the fluid system to represent the energy stored in the tide;
+\begin{equation}
+Q \equiv 2 \pi \dfrac{\text{max} \left( E_{k} \right)}{E_{diss}} = \dfrac{\Omega}{2 \alpha}
+\end{equation}
+
+where the total time averaged dissipation is $E_{diss}$. This definition is ill-defined, however, as the the kinetic and dissipated energy in the ocean tide are intrinsically related. Large friction coefficients enhance dissipation, but to obey conservation this demands a decrease in the kinetic energy of the system. This coupling makes it difficult to use a definition of $Q$ that is meaningful to the Planetary Science community. We suggest that a more appropriate definition would be using the maximum stored energy in the equilibrium tide (i.e., the theoretical instantaneous tide raised in the absence of dissipation) which is used in dissipation studies of gas giants \citep{goldreich1966q}. For the remainder of this work, however, we prefer to return to simply presenting our results as a function of friction coefficient, rather than potentially misleading readers with alternate definitions of $Q$. 
+
 \subsection{Numerical Model \label{subsec:model}}
 
 In this section we outline our two dimensional, finite difference computational fluid dynamics (CFD) model, known as Ocean Dissipation in Icy Satellites (ODIS). In its current form, ODIS is based extensively on the models discussed in and developed by \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. Firstly, we provide a description of the numerical grid. We then give an overview of the finite difference scheme itself, before summarising and illustrating limitations of the finite difference scheme and grid choice.

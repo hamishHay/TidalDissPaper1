@@ -11,19 +11,20 @@ Figure \ref{fig:LTE_solns} illustrates numerical solutions to the LTE, at periap
 Surface displacement in Figure \ref{fig:LTE_a} shows a classic tidal bulge, centered on the Saturnian ($\phi = 0^{\circ}$) and sub-Saturian ($\phi = 180^{\circ}$) points. Maximum displacement is over $8$ metres. Away from the tidal bulge, displacement drops below the equilibrium level to less than $4$ metres. The corresponding flow shows convergence and divergence at the longitudinal positions of steepest gradient in the displacement field. Fastest flow occurs at the maxima and minima of the displacement.
 
 \begin{figure*}[!t]
-\centering
-\begin{subfigure}{0.9\linewidth}
-\centering
-\includegraphics[width=\linewidth]{Figures/Eccentricity_error}
-\subcaption{\label{fig:lincEccTitan}}
-\end{subfigure}\\\vspace*{-0.5cm}
-\begin{subfigure}{0.9\linewidth}
-\centering
-\includegraphics[width=\linewidth]{Figures/Obliquity_error}
-\subcaption{\label{fig:linObliqTitan}}
-\end{subfigure}
-\vspace*{-0.8cm}
-\caption{Numerical global surface ocean dissipation solution for Titan under the eccentricity and obliquity tides. The logarithm of dissipated energy is shown as function of ocean depth, $h$, and Rayleigh friction coefficient, $\alpha$, on the left hand side of the figure. The numerical error for each tidal component is then shown in the right hand plots. All simulations were performed with $\ang{2}$ grid spacing. \label{fig:linTitan}}
+    \centering
+    \begin{subfigure}[t]{0.9\linewidth} % contains the two plots in a single figure
+        \includegraphics[width=\linewidth]{Figures/titan_linear}
+        \phantomcaption
+        \label{fig:lincEccTitan}
+    \end{subfigure}
+    \begin{subfigure}[t]{0\linewidth} % the hidden unwanted image
+         \includegraphics[width=\linewidth]{Figures/titan_linear}
+         \phantomcaption
+         \label{fig:linObliqTitan}   
+    \end{subfigure}
+    \vspace{-0.5cm}
+\caption{Numerical global surface ocean dissipation solution for Titan under the eccentricity and obliquity tides. The logarithm of dissipated energy is shown as function of ocean depth, $h$, and Rayleigh friction coefficient, $\alpha$, on the left hand side of the figure. The numerical error for each tidal component is then shown in the right hand plots. All simulations were performed with $\ang{2}$ grid spacing.}
+\label{fig:linTitan}
 \end{figure*}
 
 The obliquity tide shows markedly different displacement and flow patterns than the eccentricity tide (Figure \ref{fig:LTE_b}). Displacement is now anti-symmetric about the equator. Notably, the longitudinal positions of maxima and minima are offset from the Saturnian and sub-Saturnian points. The tide raised by the obliquity tidal potential is also an order of magnitude less than the eccentricity tide. Flow is mainly poleward, converging south of the equator on the Saturn-facing hemisphere, and north of the equator on the opposite hemisphere.
@@ -93,6 +94,22 @@ Titan likely has an ocean that is several hundred kilometres thick \citep{sohl20
 Rossby wave resonances from the obliquity tide appear as the diagonal and vertical features in figures \ref{fig:linObliqTitan} and \ref{fig:botObliqTitan}, respectively. The linear friction resonance moves into unrealistically low coefficients of friction ($\alpha \lesssim$ \SI{e-9}{\per\second}) for oceans deeper than about \SI{10}{\kilo\metre}. However, for bottom friction, the Rossby wave resonance is mainly independent of ocean depth above $h \gtrsim$ \SI{100}{\metre}. If Titan's ocean fell within the $c_D =$ \SIrange{e-2}{e-4} range then this Rossby wave resonance could provide a non-neglible thermal energy component to Titan's interior, regardless of the ocean depth. Unfortunately, $c_D$ is an unknown parameter on Titan and there is no reason to suggest it is similar to Earth's value of \num{0.002}, which happens to fall near the center of this resonance (Figure \ref{fig:botObliqTitan}).
 
 \section{Results - Enceladus \label{sec:results_Enceladus}}
+
+\begin{figure*}[!t]
+\centering
+\begin{subfigure}{0.9\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Eccentricity_error_enc}
+\subcaption{\label{fig:lincEccEncel}}
+\end{subfigure}\\\vspace*{-0.5cm}
+\begin{subfigure}{0.9\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Obliquity_error_enc}
+\subcaption{\label{fig:linObliqEncel}}
+\end{subfigure}
+\vspace*{-0.8cm}
+\caption{Numerical global surface ocean dissipation solution for Titan under the eccentricity and obliquity tides. The logarithm of dissipated energy is shown as function of ocean depth, $h$, and Rayleigh friction coefficient, $\alpha$, on the left hand side of the figure. The numerical error for each tidal component is then shown in the right hand plots. All simulations were performed with $\ang{2}$ grid spacing. \label{fig:linEncel}}
+\end{figure*}
 
 \subsection{Implications for Enceladus}
 
