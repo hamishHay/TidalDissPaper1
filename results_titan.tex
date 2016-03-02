@@ -1,6 +1,6 @@
 \begin{figure*}[!t]
     \centering
-    \begin{subfigure}[t]{0.9\linewidth} % contains the two plots in a single figure
+    \begin{subfigure}[t]{0.85\linewidth} % contains the two plots in a single figure
         \includegraphics[width=\linewidth]{Figures/titan_linear}
         \phantomcaption
         \label{fig:lincEccTitan}
@@ -17,7 +17,7 @@
 
 \begin{figure*}[!t]
     \centering
-    \begin{subfigure}[t]{0.9\linewidth} % contains the two plots in a single figure
+    \begin{subfigure}[t]{0.85\linewidth} % contains the two plots in a single figure
         \includegraphics[width=\linewidth]{Figures/titan_bottom}
         \phantomcaption
         \label{fig:botEccTitan}
@@ -45,12 +45,12 @@ Dissipated surface heat flux averaged over the tidal period was calculated for o
 
 \begin{figure*}[!t]
 \centering
-\begin{subfigure}{0.4\linewidth}
+\begin{subfigure}{0.5\linewidth}
 \centering
 \includegraphics[width=\linewidth]{Figures/Eccentricity_scaling}
 \subcaption{\label{fig:scalEccTitan}}
 \end{subfigure}%
-\begin{subfigure}{0.4\linewidth}
+\begin{subfigure}{0.5\linewidth}
 \centering
 \includegraphics[width=\linewidth]{Figures/Obliquity_scaling}
 \subcaption{\label{fig:scalObliqTitan}}
@@ -97,11 +97,11 @@ We integrate Equation \ref{eq:adot} to estimate the evolution of Titan's semimaj
   
 As expected, the smallest $\tau_a$ occurs for the largest dissipation, namely the gravity wave resonance at \SI{10}{\metre}, with decay times on the order of \SI{100}{\mega\year}. However, as previously mentioned, Titan's ocean is likely in excess of \SI{100}{\kilo\metre} thick, and is thus far from this resonance. Figure \ref{fig:a_evo} shows that for ocean depths $h_0 >$ \SI{1}{\kilo\metre}, the decay time-scale (and dissipation) is effectively independent of ocean depth. This is also predicted by the scaling laws of \citet{chen2013tidal}, and although not shown, this behaviour continues right up to the shallow water limit ($h_0 \lesssim 0.1r$). Thus, for $c_D =$ \SIrange{e-4}{2e-2}, Titan's semimajor axis would shrink to its present day value in less than the age of the Solar System ($\sim$\SI{4.5}{\giga\year}, denoted by the dashed contour in Figure \ref{fig:a_evo}). If Titan originated at a semimajor axis between its current value and Hyperion's value, then we would expect it to have a smaller semimajor axis than that observed today.
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
 \centering
-\includegraphics[width=0.5\linewidth]{Figures/a_decay}
+\includegraphics[width=\linewidth]{Figures/titan_timescale}
 \caption{Semimajor axis decay timescale, $\tau_a$, as a function of ocean depth and bottom friction coefficient for the obliquity tide on Titan. This timescale represents the time taken for the semimajor axis of Titan to shrink from that of Hyperion's to the present day value, $1.21a$ and $a$, respectively. This assumes that dissipated surface heat flux is a constant over time using the values calculated in Figure \ref{fig:botObliqTitan}. Linear drag is also neglected.   \label{fig:a_evo}}
-\end{figure*}
+\end{figure}
 
 Although the initial value of $a$ is not known, the scenario described above is not consistent with the deep ocean estimates of \citep{sohl2003interior} if we assume bottom friction coefficients within an order of magnitude of the canonical Earth value ($c_D =$ \SI{0.002}). Instead, our estimates of the decay time scale suggest that Titan's ocean experiences much less drag than we would expect ($c_D \lesssim$ \SI{e-4}), and as such dissipates an unusually small amount of energy compared to Earth, and potentially other icy satellites. Such small dissipation is likely a feature of its small rotation rate.
 

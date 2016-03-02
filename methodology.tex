@@ -4,7 +4,7 @@ This section describes some of the theory and methods involved in this work. Fir
 
 \subsection{Laplace Tidal Equations \label{subsec:LTE}}
 
-The equations of motion and mass conservation that describe ocean flow in the shallow water limit are known as the Laplace Tidal Equations (LTEs) \citep{lamb1932hydrodynamics}. The main assumption leading to this set of equations is that radial (vertical) ocean flow is negligible when compared to lateral flow, reducing the problem to two dimensions. This is indeed a good approximation for the Earth, where lateral flow length scales span much greater distances than the depth of the ocean. The conservation of mass (eq. \ref{eq:mass}) and momentum (eq. \ref{eq:mom}) that make up the LTEs, including both Rayleigh and bottom friction, are given as \citep{sears1995tidal,tyler2008strong,matsuyama2014tidal}:
+The equations of motion and mass conservation that describe ocean flow in the shallow water limit are known as the Laplace Tidal Equations (LTEs) \citep{lamb1932hydrodynamics}. The main assumption leading to this set of equations is that radial (vertical) ocean flow is negligible when compared to lateral flow, reducing the problem to two dimensions. This is indeed a good approximation for the Earth, where lateral flow length scales span much greater distances than the depth of the ocean. The conservation of mass (eq. \ref{eq:mass}) and momentum (eq. \ref{eq:mom}) that make up the LTEs, including both Rayleigh and bottom drag, are given as \citep{sears1995tidal,tyler2008strong,matsuyama2014tidal}:
 
 %Adds vertical space between equations
 %\setlength{\jot}{8pt}
@@ -22,7 +22,7 @@ Equation \ref{eq:mass} consists of two terms. The first is the time rate of chan
 
 The term on the right hand side of Equation \ref{eq:mom} is an applied force per unit mass. $\nabla U_2$ is the gradient of the degree-2 tide raising potential, discussed in section \ref{subsec:pot}. It is multiplied by Love's reduction factor, $1 + k_2 - h_2$. Love's first number, $k_2$, is a proportionality constant accounting for the additional tidal potential due to the elastic redistribution of mass on the satellite. $h_2$, the second Love number, accounts for the tidal potential arising from solid body surface displacement of the satellite \citep{love1911some}.
 
-The time derivative of velocity is the first term on the left hand side of the momentum equation (eq. \ref{eq:mom}). It is balanced by four force per unit mass terms on the left hand side. The first of these terms is the coriolis acceleration, where $\bm{\Omega}$ is the satellite's rotational angular velocity vector. Rayleigh and bottom friction are described in the next two terms, where $\alpha$ and $c_D$ are the Rayliegh (linear) and bottom (quadratic) friction coefficients, respectively \citep{sears1995tidal,chen2013tidal}. The last term on the left hand side of Equation \ref{eq:mom} is the gravitational restoring acceleration per unit mass. It acts to restore changes in sea surface displacement about the undisturbed ocean depth, $h_0$.
+The time derivative of velocity is the first term on the left hand side of the momentum equation (eq. \ref{eq:mom}). It is balanced by four force per unit mass terms on the left hand side. The first of these terms is the coriolis acceleration, where $\bm{\Omega}$ is the satellite's rotational angular velocity vector. Rayleigh and bottom drag are described in the next two terms, where $\alpha$ and $c_D$ are the Rayliegh (linear) and bottom (quadratic) drag coefficients, respectively \citep{sears1995tidal,chen2013tidal}. The last term on the left hand side of Equation \ref{eq:mom} is the gravitational restoring acceleration per unit mass. It acts to restore changes in sea surface displacement about the undisturbed ocean depth, $h_0$.
 
 \subsection{Tidal Potential \label{subsec:pot}}
 
@@ -50,7 +50,7 @@ A useful parameter in tidal dissipation studies is the quality factor, $Q$. Defi
 Q \equiv 2 \pi \dfrac{\text{max} \left( E_{k} \right)}{E_{diss}} = \dfrac{\Omega}{2 \alpha}
 \end{equation}
 
-where the total time averaged dissipation is $E_{diss}$. This definition is ill-defined, however, as the the kinetic and dissipated energy in the ocean tide are intrinsically related. Large friction coefficients enhance dissipation, but to obey conservation this demands a decrease in the kinetic energy of the system. This coupling makes it difficult to use a definition of $Q$ that is meaningful to the Planetary Science community. We suggest that a more appropriate definition would be using the maximum stored energy in the equilibrium tide (i.e., the theoretical instantaneous tide raised in the absence of dissipation) which is used in dissipation studies of gas giants \citep{goldreich1966q}. For the remainder of this work, however, we prefer to return to simply presenting our results as a function of friction coefficient, rather than potentially misleading readers with alternate definitions of $Q$. 
+where the total time averaged dissipation is $E_{diss}$. This definition is ill-defined, however, as the the kinetic and dissipated energy in the ocean tide are intrinsically related. Large drag coefficients enhance dissipation, but to obey conservation this demands a decrease in the kinetic energy of the system. This coupling makes it difficult to use a definition of $Q$ that is meaningful to the Planetary Science community. We suggest that a more appropriate definition would be using the maximum stored energy in the equilibrium tide (i.e., the theoretical instantaneous tide raised in the absence of dissipation) which is used in dissipation studies of gas giants \citep{goldreich1966q}. For the remainder of this work, however, we return to simply presenting our results as a function of drag coefficient, rather than potentially misleading readers with alternate definitions of $Q$. 
 
 \subsection{Numerical Model \label{subsec:model}}
 
@@ -119,23 +119,23 @@ The next step in the numerical integration is to calculate $\nabla U_2$ across a
 
 Once the tidal acceleration is known, ODIS directly calculates $u$ and $v$ over the grid by solving equations \ref{eq:momu_fd} and \ref{eq:momv_fd} (3). This step is purely explicit as $u$ and $v$ depend only on information from the previous time step, $t$. Following this, $\eta$ is then updated using the new velocity values (4). In contrast to the velocity calculations, this step is semi-implicit as it relies on values from both the current and previous time steps, as shown in Equation \ref{eq:mass_fd}.
 
-After solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin (5). For Rayleigh friction, ODIS calculates and stores global dissipated energy flux as,
+After solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin (5). For Rayleigh drag, ODIS calculates and stores global dissipated energy flux as,
 \begin{equation}
 F_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
 \end{equation}
 
 for $n$ and $m$ grid points in latitude and longitude, respectively. 
 
-The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, for each cell of mass $M$. The factor in front of the summations then averages this quantity over the satellite's surface area giving $F_{\alpha}$ in watts per square metre. For bottom friction the equivalent expression is,
+The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, for each cell of mass $M$. The factor in front of the summations then averages this quantity over the satellite's surface area giving $F_{\alpha}$ in watts per square metre. For bottom drag the equivalent expression is,
 \begin{equation}
 F_{c_D}^{t+1} = \frac{1}{4 \pi h R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}\, . \label{eq:E_cd}
 \end{equation}
 Details of these derivations are discussed in the appendix.
 
-Every time step the previous calculations (2-5) are repeated, beginning from determining $\nabla U_2$. Finally, at the end of each orbit, $F_\alpha$ or $F_{c_D}$ is summed and averaged over the orbital period (6). This gives the orbitally averaged surface heat flux due to tidal dissipation for Rayleigh friction,
+Every time step the previous calculations (2-5) are repeated, beginning from determining $\nabla U_2$. Finally, at the end of each orbit, $F_\alpha$ or $F_{c_D}$ is summed and averaged over the orbital period (6). This gives the orbitally averaged surface heat flux due to tidal dissipation for Rayleigh drag,
 \begin{align}
 \left\langle F_\alpha \right\rangle_{orbit} &= \frac{1}{p}\sum_{t=1}^{p} F_{\alpha}^{t}  \, , \label{eq:E_alpha_orbit}
-\shortintertext{and bottom friction,}
+\shortintertext{and bottom drag,}
 \left\langle F_{c_D} \right\rangle_{orbit} &= \frac{1}{p}\sum_{t=1}^{p} F_{c_D}^{t}  \, , \label{eq:E_cd_orbit}
 \end{align}
 
@@ -155,7 +155,7 @@ where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbita
 \caption{Convergence and error scaling as a function of grid resolution. Plot \ref{fig:conv_a} on the top shows the time evolution of dissipated energy at periapse. The solid line represents different grid resolutions, whereas the dashed line is the anlytically derived dissipated energy. After 500 - 600 orbits, startup oscillations in the solution begcome neglible and the solution has converged. Figure \ref{fig:conv_b} on the bottom shows the error between the numerical and analytical solutions with increasing resolution. The numerical solution falls between 1st and 2nd order convergence with increasing resolution. All simulations are for the obliquity tide using $h = 1 \, \si{\kilo\metre}$ and $\alpha = 10^{-8} \, \si{\per\second}$. \label{fig:conv}}
 \end{figure}
 
-Steps 2-6 are repeated until the model has converged into a periodic solution. Care must be taken when selecting convergence criteria. Simulations involving deep oceans and small friction coefficients will oscillate about their converged solution with periods of 10 - 100 orbits due to the large inertia associated with deep, poorly dissipative oceans (see Figure \ref{fig:conv_a}). These simulations clearly require longer run-time.
+Steps 2-6 are repeated until the model has converged into a periodic solution. Care must be taken when selecting convergence criteria. Simulations involving deep oceans and small drag coefficients will oscillate about their converged solution with periods of 10 - 100 orbits due to the large inertia associated with deep, poorly dissipative oceans (see Figure \ref{fig:conv_a}). These simulations clearly require longer run-time.
 
 
 \subsubsection{Grid Limitations and Resolution Testing \label{subsubsec:grid_lim}}
@@ -181,7 +181,7 @@ All numerical results presented in the following section are for surface oceans 
 
 We first perform both semi-analytical and numerical simulations for Titan under the eccentricity and obliquity tides. For each tidal component 3381 simulations were run for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$\alpha = 10^{-9} - 10^{-5} \, \si{\per\second}$}. The semi-analytical solution for the orbitally averaged surface heat flux was directly compared to the numerical values to reveal any inaccuracies in the numerical model across this parameter space. 
 
-Following testing and verification of the numerical solutions for Rayleigh friction, ODIS was then run using only bottom friction for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$c_D = 10^{-7} - 10^{-1} \, \si{\per\second}$}. These simulations were again run for both the eccentricity and obliquity tides, where 5037 simulations were run for each main tidal component. With results for both Rayleigh and bottom friction we were able to make comparisons about tidal dissipation under these two friction models. This process was then recreated for Enceladus assuming both Rayleigh and bottom friction. The model parameters used for both Titan and Enceladus are shown in Table \ref{tb:param}.
+Following testing and verification of the numerical solutions for Rayleigh drag, ODIS was then run using only bottom drag for \hbox{$h = 1 - 10^4 \, \si{\metre}$} and \hbox{$c_D = 10^{-7} - 10^{-1} \, \si{\per\second}$}. These simulations were again run for both the eccentricity and obliquity tides, where 5037 simulations were run for each main tidal component. With results for both Rayleigh and bottom drag we were able to make comparisons about tidal dissipation under these two drag models. This process was then recreated for Enceladus assuming both Rayleigh and bottom drag. The model parameters used for both Titan and Enceladus are shown in Table \ref{tb:param}.
 
 Numerically solving the LTEs to convergence is a computationally expensive process. As shown in Figure \ref{fig:conv_a}, convergence will only be reached after a significant amount of simulation time. The example given in Figure \ref{fig:conv_a} was run using initial conditions for a stationary, undisturbed ocean. To speed up convergence we employ the technique used by \citep{sears1995tidal}, whereby the final output of one simulation is used as the initial condition for the next simulation. Upon completion, each running process will spawn one to two `child' simulations. These new processes will in turn spawn their own `children' once they are complete. This logical way of solving over such a large parameter space helps to significantly reduce computational run time. Several tests were also run to ensure that a given simulation would converge to a single solution, regardless of initial condition.
 
