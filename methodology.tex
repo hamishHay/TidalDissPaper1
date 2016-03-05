@@ -26,11 +26,11 @@ The time derivative of velocity is the first term on the left hand side of the m
 
 \subsection{Tidal Potential \label{subsec:pot}}
 
-Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively \citep{tyler2011tidal}. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the full degree two tidal potential into two main components, the eccentricity and obliquity tides:
+Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the full degree two tidal potential into two main components, the eccentricity and obliquity tides:
 \begin{align}
 U_2 &= U_{ecc} + U_{obliq}\, . \label{eq:U_2}
 \end{align}
-To first order in eccentricity and obliquity, the two primary tidal components can be expressed as \citep{tobie2005tidal,tyler2011tidal,matsuyama2014tidal},
+To first order in eccentricity and obliquity, the two primary tidal components can be expressed as \citep{tobie2005tidal,tyler2011tidal},
 \begin{multline}
 U_{ecc} = \Omega^2 r^2 e \left\lbrace - \frac{3}{2} P_{20}\left(\cos\theta\right) \cos \left(\Omega t \right) + \frac{1}{8} P_{22}\left( \cos\theta\right) \right. \\ 
 \times \left. \vphantom{\frac{1}{8}} \left[7 \cos \left(2 \phi - \Omega t \right) - \cos \left(2 \phi + \Omega t\right) \right] \right\rbrace, \label{eq:U_ecc}
@@ -40,8 +40,6 @@ U_{obliq} = \frac{1}{2}\Omega^2 r^2 \theta_0 P_{21}\left(\cos\theta\right)\\
 \times \left[ \cos \left(\phi - \Omega t \right) - \cos \left( \phi + \Omega t\right) \right] \, ,\label{eq:U_obliq}
 \end{multline}
 where $r$ is the satellite's radius, $e$ is its eccentricity, and $\theta_0$ is the obliquity in radians. Co-latitude and longitude are given as $\theta$ and $\phi$ respectively. $P_{lm}$ represents the associated Legendre function of degree $l$ and order $m$. The eccentricity tide can be further split into the two terms on the right hand side of Equation \ref{eq:U_ecc}. These terms represent the eccentricity-radial ($U_{20}$) and eccentricity-libration ($U_{22}$) tides respectively, as described by \citet{tyler2011tidal}. We can therefore rewrite equation \ref{eq:U_2} as $U_2 = U_{20} + U_{21} + U_{22}$.
-
-The derivatives of equations \ref{eq:U_ecc} and \ref{eq:U_obliq}, required to solve the LTE, are given in the appendix.
 
 \begin{figure*}[t]
 \centering
@@ -101,7 +99,7 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{
 
 Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to spatial averages, a necessity given the staggered nature of the grid. These expansions are made using the Euler method, and as such are first order accurate in space and time.
 
-All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansions (see appendix). Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
+All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansions. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
 \begin{align}
 \frac{\partial w_{ij}}{\partial \lambda} &\approx \frac{w_{i+\nicefrac{1}{2},j} - w_{i-\nicefrac{1}{2},j}}{\Delta \lambda} \, , \label{eq:gen1}
 \shortintertext{or, }
@@ -114,6 +112,20 @@ Equations \ref{eq:gen1} and \ref{eq:gen2} show that each derivative is evaluated
 
 \subsubsection{Numerical Scheme}
 
+\begin{figure*}[!t]\centering
+\begin{subfigure}{0.5\linewidth}
+\centering
+\includegraphics[width=0.95\linewidth]{Figures/res_test}
+\subcaption{\label{fig:conv_a}}
+\end{subfigure}%\vspace*{-0.7cm}
+\begin{subfigure}{0.5\linewidth}
+\centering
+\includegraphics[width=0.95\linewidth]{Figures/error}
+\subcaption{\label{fig:conv_b}}
+\end{subfigure}\vspace*{-0.7cm}
+\caption{Convergence and error scaling as a function of grid resolution. Plot \ref{fig:conv_a} on the top shows the time evolution of dissipated energy at periapsis. The solid lines represents different grid resolutions, whereas the dashed line is the anlytically derived dissipated energy for Rayleigh drag. Figure \ref{fig:conv_b} on the bottom shows the error between the numerical and analytical solutions with increasing resolution, compared to 1st and 2nd orders of convergence. These simulations are for the obliquity tide using $h = \SI{1}{\kilo\metre}$ and $\alpha = \SI{e-8}{\per\second}$ on Titan. \label{fig:conv}}
+\end{figure*}
+
 ODIS begins its calculations by (1) determining the mass of each volume element in the initial ocean assuming an undisturbed ocean of depth $h_0$. With the mass calculated in each cell, it is then possible to find the dissipated energy in the system.
 
 The next step in the numerical integration is to calculate $\nabla U_2$ across all $u$ and $v$ grid points (2). This gives the initial force per unit mass experienced by a fluid element in the model domain.
@@ -122,12 +134,10 @@ Once the tidal acceleration is known, ODIS directly calculates $u$ and $v$ over 
 
 After solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin (5). For Rayleigh drag, ODIS calculates and stores global dissipated energy flux as,
 \begin{equation}
-F_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
+F_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha \Delta M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
 \end{equation}
 
-for $n$ and $m$ grid points in latitude and longitude, respectively. 
-
-The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, for each cell of mass $M$. The factor in front of the summations then averages this quantity over the satellite's surface area giving $F_{\alpha}$ in watts per square metre. For bottom drag the equivalent expression is
+for $n$ and $m$ grid points in latitude and longitude, respectively. The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, for each cell of mass $\Delta M$. The factor in front of the summations then averages this quantity over the satellite's surface area giving $F_{\alpha}$ in watts per square metre. For bottom drag the equivalent expression is
 \begin{equation}
 F_{c_D}^{t+1} = \frac{1}{4 \pi h_0 R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}\, . \label{eq:E_cd}
 \end{equation}
@@ -142,19 +152,7 @@ Every time step calculations 2-5 are repeated, beginning from determining $\nabl
 
 where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$. These expressions are consistent with \citep{sears1995tidal}.
 
-\begin{figure}[!t]\centering
-\begin{subfigure}{\linewidth}
-\centering
-\includegraphics[width=0.95\linewidth]{Figures/res_test}
-\subcaption{\label{fig:conv_a}}
-\end{subfigure}\vspace*{-0.7cm}
-\begin{subfigure}{\linewidth}
-\centering
-\includegraphics[width=0.95\linewidth]{Figures/error}
-\subcaption{\label{fig:conv_b}}
-\end{subfigure}\vspace*{-0.7cm}
-\caption{Convergence and error scaling as a function of grid resolution. Plot \ref{fig:conv_a} on the top shows the time evolution of dissipated energy at periapsis. The solid lines represents different grid resolutions, whereas the dashed line is the anlytically derived dissipated energy. Figure \ref{fig:conv_b} on the bottom shows the error between the numerical and analytical solutions with increasing resolution, compared to 1st and 2nd orders of convergence. These simulations are for the obliquity tide using $h = \SI{1}{\kilo\metre}$ and $\alpha = \SI{e-8}{\per\second}$ on Titan. \label{fig:conv}}
-\end{figure}
+
 
 Steps 2-6 are repeated until the model has converged into a periodic equilibrium. Care must be taken when selecting convergence criteria. Simulations involving deep oceans and small drag coefficients will oscillate about their converged solution with periods of 10 - 100 orbits due to the large inertia associated with deep, poorly dissipative oceans (see Figure \ref{fig:conv_a}). These simulations clearly require longer run-time. For the most time consuming simulations, we take the mean dissipation over one full oscillatory cycle.
 
@@ -167,10 +165,10 @@ A natural issue arising from the choice of grid is the time step used. As descri
 
 \begin{figure}[!b]
 \includegraphics[width=\linewidth]{Figures/CoordProb}
-\caption{Schematic representation of the ocean tide due to the eccentricity-radial tidal potential ($U_{20}$), at periapsis. Taking the derivative of $v$ across the north pole yields a null result in the spherical coordinate system, despite the clear mass divergence away from the poles leading to $\eta < 0$.\label{fig:coord_prob}}
+\caption{Schematic representation of the ocean tide due to the eccentricity-radial tidal potential ($U_{20}$), at periapsis. Taking the derivative of $v$ across the north pole yields a null result in the spherical coordinate system, despite the clear mass divergence away from the poles leading to $\partial_{\lambda} \eta < 0$.\label{fig:coord_prob}}
 \end{figure}
 
-A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the poles become singularities in space, as the normal directions east and west used to define the velocity components become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide, shown in Figure \ref{fig:coord_prob}. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. In solving for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero.  This forces surface displacement at the pole to zero as well. Yet, as there is divergence away from the pole, it is required that $\eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. %Longitudinal symmetry in $u$ causes the $u$ derivative from Equation \ref{eq:momu_fd} to be also zero.
+A more significant issue arises from the combined choice of coordinate system and grid structure. Nodes located directly at the poles become singularities in space, as the normal directions east and west used to define the velocity components become meaningless. Consider the northward velocity flow near the north pole under the eccentricity-radial tide, shown in Figure \ref{fig:coord_prob}. Conservation of mass and the formation of an equatorial bulge force flow to diverge away from the pole. In solving for the surface displacement node directly at $\lambda = 90^{\circ}$, we must take the derivative of $v$ across the pole (as in Equation \ref{eq:momv_fd}). As each $v$ node located either side of the pole has the same magnitude and, perhaps unintuitively, is orientated in the same direction (southwards), this derivative becomes zero.  This forces surface displacement at the pole to zero as well. Yet, as there is divergence away from the pole, it is required that $\partial_{\lambda} \eta < 0$ to conserve mass. Clearly, the choice of coordinate system and grid do not permit such behaviour at the poles. %Longitudinal symmetry in $u$ causes the $u$ derivative from Equation \ref{eq:momu_fd} to be also zero.
 
 To work around this problem, we employ both first-order accurate one dimensional Euler interpolation and third-order accurate Lagrange interpolation for all $u$ and $\eta$ nodes located at the pole, avoiding the need to directly solve for these points. We then take the mean of the interpolated $\eta$ points and prescribe that as the polar value. For $u$, the mean is taken for the eccentricity tide as eastward velocity tends towards zero at the poles. Average velocity is not computed for the obliquity tide, however, as non-zero eastward velocity components exist at the poles.
 
