@@ -26,7 +26,7 @@ The time derivative of velocity is the first term on the left hand side of the m
 
 \subsection{Tidal Potential \label{subsec:pot}}
 
-Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the full degree two tidal potential into two main components, the eccentricity and obliquity tides:
+Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the full time-dependent degree two tidal potential into two main components, the eccentricity and obliquity tides:
 \begin{align}
 U_2 &= U_{ecc} + U_{obliq}\, . \label{eq:U_2}
 \end{align}
@@ -61,8 +61,6 @@ where the total time averaged dissipation is $E_{diss}$. This definition is ill-
 In this section we outline our two dimensional, finite difference computational fluid dynamics (CFD) model, known as Ocean Dissipation in Icy Satellites (ODIS). In its current form, ODIS is based extensively on the models discussed in and developed by \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. We first provide a description of the numerical grid. An overview of the finite difference scheme itself is the given, before summarising and illustrating limitations of the finite difference scheme and grid choice.
 
 \subsubsection{Discretized Grid \label{subsec:grid}}
-
-
 
 We employ a fixed latitude-longitude grid for our numerical simulations, defined in a spherical coordinate system. The grid is constructed in a staggered manner, meaning that velocity nodes are placed to the east and south of their parent displacement nodes. This is illustrated in Figure \ref{fig:grid}, where we define $u$ and $v$ as the eastward and northward velocity components, respectively. $\Delta \lambda$ is the grid spacing in latitude, whereas $\Delta \phi$ is the grid spacing in longitude. A staggered approach is adopted as it avoids numerical oscillations that grow in the solution by calculating derivatives \textit{between} grid nodes rather than over them. This is discussed further in section \ref{subsec:fd_expan}.
 
