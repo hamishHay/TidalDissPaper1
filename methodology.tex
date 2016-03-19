@@ -110,18 +110,20 @@ Equations \ref{eq:gen1} and \ref{eq:gen2} show that each derivative is evaluated
 
 \subsubsection{Numerical Scheme}
 
-\begin{figure*}[!t]\centering
-\begin{subfigure}{0.5\linewidth}
-\centering
-\includegraphics[width=0.95\linewidth]{Figures/res_test}
-\subcaption{\label{fig:conv_a}}
-\end{subfigure}%\vspace*{-0.7cm}
-\begin{subfigure}{0.5\linewidth}
-\centering
-\includegraphics[width=0.95\linewidth]{Figures/error}
-\subcaption{\label{fig:conv_b}}
-\end{subfigure}\vspace*{-0.7cm}
-\caption{Convergence and error scaling as a function of grid resolution. Plot \ref{fig:conv_a} on the top shows the time evolution of dissipated energy at periapsis. The solid lines represents different grid resolutions, whereas the dashed line is the anlytically derived dissipated energy for Rayleigh drag. Figure \ref{fig:conv_b} on the bottom shows the error between the numerical and analytical solutions with increasing resolution, compared to 1st and 2nd orders of convergence. These simulations are for the obliquity tide using $h = \SI{1}{\kilo\metre}$ and $\alpha = \SI{e-8}{\per\second}$ on Titan. \label{fig:conv}}
+\begin{figure*}[!t]
+    \centering
+    \begin{subfigure}[t]{0.85\linewidth} % contains the two plots in a single figure
+        \includegraphics[width=\linewidth]{Figures/error_converge}
+        \phantomcaption
+        \label{fig:conv_a}
+    \end{subfigure}
+    \begin{subfigure}[t]{0\linewidth} % the hidden unwanted image
+         \includegraphics[width=\linewidth]{Figures/error_converge}
+         \phantomcaption
+         \label{fig:conv_b}   
+    \end{subfigure}
+    \vspace{-0.5cm}
+\caption{Convergence and error scaling as a function of grid resolution. Panel \ref{fig:conv_a} on the left shows the time evolution of dissipated energy at periapsis. The solid lines represents different grid resolutions, whereas the dashed line is the anlytically derived dissipated energy for Rayleigh drag. Panel \ref{fig:conv_b} on the right shows the error between the numerical and analytical solutions with increasing resolution, compared to 1st and 2nd orders of convergence. These simulations are for the obliquity tide using $h = \SI{1}{\kilo\metre}$ and $\alpha = \SI{e-8}{\per\second}$ on Titan. \label{fig:conv}}
 \end{figure*}
 
 ODIS begins its calculations by (1) determining the mass of each volume element in the initial ocean assuming an undisturbed ocean of depth $h_0$. With the mass calculated in each cell, it is then possible to find the dissipated energy in the system.
@@ -148,7 +150,7 @@ Every time step calculations 2-5 are repeated, beginning from determining $\nabl
 \left\langle F_{c_D} \right\rangle_{orbit} &= \frac{1}{p}\sum_{t=1}^{p} F_{c_D}^{t}  \, , \label{eq:E_cd_orbit}
 \end{align}
 
-where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$. These expressions are consistent with \citep{sears1995tidal}.
+where $p = \nicefrac{T}{\Delta t}$, the total number of time steps in the orbital period, $T$. These expressions are consistent with \citet{sears1995tidal}.
 
 
 
