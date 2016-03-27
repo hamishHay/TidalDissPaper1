@@ -2,9 +2,27 @@
 
 \subsection{Rayleigh Drag} \label{sec:ray_enc}
 
+
+
 As with our Titan results, we calculated globally averaged surface heat flux for over 3000 simulations in $h_0$ - $\alpha$ parameter space. These results are shown for the eccentricity and obliquity tides in Figure \ref{fig:linEncel}.
 
 There are several more gravity wave resonances found for Enceladus than Titan in both tidal components, as shown in Figure \ref{fig:lincEccEncel}. The eccentricity tide excites resonances at $h_0 =$ \SIlist{1.3;1.9;3.8;8.7;29;50;360}{m}; a total of 7 resonances, whereas Titan only has 3 (Figure \ref{fig:lincEccTitan}). Increasing the resolution of the parameter space would almost certainly reveal more resonances, but this is only likely for oceans with $h_0 < \SI{10}{\metre}$. As is the case with the Titan results in section \ref{sec:results_Titan}, we again find excellent agreement between our numerical results and the semi-analytical solutions of \citet{matsuyama2014tidal} over the majority of the explored parameter space. The ocean resonances are found for the same ocean thickness in both solutions, with only their magnitudes exhibiting up to \SI{10}{\percent} difference for the deepest resonance.
+
+\begin{figure*}[!t]
+    \centering
+    \begin{subfigure}[t]{0.85\linewidth} % contains the two plots in a single figure
+        \includegraphics[width=\linewidth]{Figures/enceladus_linear}
+        \phantomcaption
+        \label{fig:lincEccEncel}
+    \end{subfigure}
+    \begin{subfigure}[t]{0\linewidth} % the hidden unwanted image
+         \includegraphics[width=\linewidth]{Figures/enceladus_linear}
+         \phantomcaption
+         \label{fig:linObliqEncel} 
+    \end{subfigure}
+    \vspace{-0.5cm}
+\caption{Time and surface averaged ocean dissipation for Enceladus under the eccentricity (left) and obliquity (right) tides when applying Rayleigh drag. The logarithm of dissipated energy is shown as function of ocean thickness, $h_0$, and bottom drag coefficient, $c_D$. All simulations were performed with \SIrange{1}{3}{\degree} grid resolution. \label{fig:linEncel}}
+\end{figure*}
 
 The most dissipative eccentricity tide resonance also requires the thickest ocean ($h_0 = \SI{360}{\metre}$), with an average dissipative surface heat flux of \SI{4.6}{\watt\per\square\metre} at $\alpha\sim$ \SI{2e-6}{\per\second}, three orders of magnitude more dissipative than Titan's largest resonance. This is equivalent to a total power output of $\sim$ \SI{3610}{\giga\watt}, well in excess of the observed value of (at least) \SI{5}{\giga\watt} by two to three orders of magnitude \citep{spencer2006cassini,howett2011high, spencer2013new}. Note that we do not resolve the maxima of these resonances with the resolution of our explored parameter space, and so this is an underestimate of the total power released through this resonance.
 
