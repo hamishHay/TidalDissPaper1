@@ -119,18 +119,12 @@ Dissipation due to the eccentricity tide is significant enough to reverse the ou
 
 For the obliquity tide, inward migration occurs in a much smaller region of parameter space, and ceases all together for $Q = \num{2.3e-4}$ as shown by the lack of the black dotted contour in Figure \ref{fig:a_evo_obliq}. The maximum rate of inward migration found is $\SI{8.5e-11}{\Rsat\per\year}$, almost an order of magnitude less than that due to tides raised on Saturn alone. The Rossby-wave resonance lies in the region of outward migration (outside of the dashed contour). While not sufficient to totally reverse migration inwards, the maximum dissipation from this Rossby-wave resonance acts to dampen the rate of migration by \SI{40}{\percent} ($da/dt = \SI{4.6e-12}{\Rsat\per\year}$). Over the age of the Solar System this reduces the total increase in semimajor axis from \SIrange{0.035}{0.021}{\Rsat}. The maximum dampening corresponds to the highest dissipation, found between $c_D=$ \numrange{7e-4}{e-3} (figures \ref{fig:botObliqTitan} and \ref{fig:a_evo_obliq}). If we assume that Titan's bottom drag coefficent is around the terrestrial value (\num{2e-3} \citep{egbert2001estimates}), then we would expect to see at most \SI{40}{\percent} less outward orbital migration than expected in the absence of obliquity ocean tide dissipation. Furthermore, if Titan's obliquity was significantly higher in the past then it may have been possible to shift the orbit from outward to inward migration as a result of this Rossby-wave resonance. The same argument is not true of the eccentricity tide due to the negligible dissipation contributed by eccentricity for a thick ocean on Titan. It should be noted that using the most recent $k_{2s}/Q_s$ estimate of \num[separate-uncertainty = true]{2.3(07)e-4} \citep{lainey2012strong} removes any possibility of inward migration due to obliquity tides because of the dominance of the $(da/dt)_s$ term in equation \ref{eq:adot_total}. Additionally, our rough estimates of migration distance assume that $Q_s$ is a constant over time, which is unlikely to be the case \citep{fuller2016resonance}.
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.95\linewidth]{Figures/eccentricity}
-\caption{Characteristic eccentricity damping timescale for Titan, based on eccentricity tide ocean dissipation. The dashed contour represents the age of the Solar System, \SI{4.5}{\giga\year} \label{fig:edotTitan}}
-\end{figure}
-
-The affect of tidal torques on Titan's eccentricity is difficult to estimate as this requires decomposition of the simulated tides into their spherical harmonic components. This is an interesting complication, as although the applied tidal forcing is purely degree-2, the ocean does not necessarily respond with a degree-2 form. This is especially true for thin oceans. However, we can use the relationship between $da/dt$ and $de/dt$ to express the rate of change of eccentricity to dissipated energy. The orbital angular momentum of the system is \citep{murray1999solar},
+The affect of tidal torques on Titan's eccentricity is difficult to estimate as this requires decomposition of the simulated tides into their spherical harmonic components. This is an interesting complication, as although the applied tidal forcing is purely degree-2, the ocean does not necessarily have a purely degree-2 response. This is especially true for thin oceans. However, we can use the relationship between $da/dt$ and $de/dt$ to express the rate of change of eccentricity to dissipated energy. The orbital angular momentum of the system is \citep{murray1999solar},
 \begin{equation}\label{eq:ang_mom}
 L = m \sqrt{G M a (1-e^2)} \, .
 \end{equation}
 
-As this quantity is conserved, its time derivative gives us a useful relationship between rates of change of semimajor axis and eccentricity;
+As this quantity is conserved, its time derivative gives us a useful relationship between the rates of change of semimajor axis and eccentricity;
 \begin{equation}\label{eq:adot_edot}
 \dfrac{da}{dt}(1-e^2) = 2 \dfrac{de}{dt}ae
 \end{equation}
@@ -140,8 +134,32 @@ Substituting Titan's contribution to $da/dt$ from equation \ref{eq:adot_t} yield
 e\dfrac{de}{dt} = - \dfrac{a (1-e^2)}{GMm} \dfrac{dE}{dt}
 \end{equation}
 
-We calculate $de/dt$ for the eccentricity tide results in Figure \ref{fig:botEccTitan}, and use that to estimate a timescale over which the current eccentricity of 0.0288 dampens, $\tau_e = e/\dot{e}$. This is a first order estimate as both $dE/dt$ itself depends on the eccentricity. It is useful though to determine which areas of our considered parameter space fail to dampen Titan's eccentricity in a reasonable time period.
+We calculate $de/dt$ for the eccentricity tide dissipation results in Figure \ref{fig:botEccTitan}, and use that to estimate a characteristic time scale over which the current eccentricity of 0.0288 dampens, $\tau_e = e/\dot{e}$. This is a first order estimate as $dE/dt$ itself depends on the eccentricity. It is useful though to determine which areas of our explored parameter space fail to dampen Titan's eccentricity in a reasonable time period, as these areas will be broadly consistent with the substantially non-zero eccentricity observed today.
+
+\begin{figure}[!b]
+\centering
+\includegraphics[width=0.95\linewidth]{Figures/eccentricity}
+\caption{Characteristic eccentricity damping timescale for Titan, based on eccentricity tide ocean dissipation. The dashed contour represents the age of the Solar System, \SI{4.5}{\giga\year} \label{fig:edotTitan}}
+\end{figure}
+
+The characteristic eccentricity decay time scale is shown in Figure \ref{fig:edotTitan}, where the dashed contour represents the age of the Solar System. Inward of the contour, decay times are less than \SI{4.5}{\giga\year}, with the $h_0 = \SI{22}{\metre}$ resonance having the shortest time scale of as little as \SI{1}{\mega\year}. Clearly, this resonance would result in a much smaller eccentricity than we observe today. Outside of the region enclosed by the dashed contour, decay time scales exceed the maximum likely age of Titan, which can be no greater than the age of the Solar System. If we consider the thick ocean scenarios of $\gtrsim \SI{100}{\kilo\metre}$ from \citet{baland2014titan, sohl2014structural} then we would expect decay time scales on the order \SI{e9}{\giga\year}, corresponding to virtually no change in eccentricity over the age of the Solar System. Again, this is consistent with the high eccentricity observed today. Clearly, ocean dissipation has a negligible effect on Titan's eccentricity, and any change in $e$ likely comes from dissipation in the solid regions of the satellite instead. 
 
 We do not consider the effect of tidal dissipation on Titan's eccentricity. Dissipation within Titan will of course dampen eccentricity over time, but as mentioned already there are no resonant ocean configurations for thick oceans on Titan due to the eccentricity tide (Figure \ref{fig:botEccTitan}). Consequently, there is a negligible affect on Titan's eccentricity from tides raised by eccentricity. This is a result of the low drag experienced in thick oceans in the absence of resonances, and is consistent with Titan's relatively high present day eccentricity of \num{0.0288}. Additionally, a consistent consideration of tidal effects on eccentricity requires decomposition of the simulated tides into their radial components. This is an interesting complication, as although the applied tidal forcing is only degree-2, the ocean response is not always degree-2, which is especially true for thin oceans.
+
+\begin{figure*}[!b]
+    \centering
+    \begin{subfigure}[t]{0.85\linewidth} % contains the two plots in a single figure
+        \includegraphics[width=\linewidth]{Figures/enceladus_linear}
+        \phantomcaption
+        \label{fig:lincEccEncel}
+    \end{subfigure}
+    \begin{subfigure}[t]{0\linewidth} % the hidden unwanted image
+         \includegraphics[width=\linewidth]{Figures/enceladus_linear}
+         \phantomcaption
+         \label{fig:linObliqEncel} 
+    \end{subfigure}
+    \vspace{-0.5cm}
+\caption{Time and surface averaged ocean dissipation for Enceladus under the eccentricity (left) and obliquity (right) tides when applying Rayleigh drag. The logarithm of dissipated energy is shown as function of ocean thickness, $h_0$, and bottom drag coefficient, $c_D$. All simulations were performed with \SIrange{1}{3}{\degree} grid resolution. \label{fig:linEncel}}
+\end{figure*}
 
 To summarise the above discussion, if we assume the thick ocean scenario from \citet{sohl2014structural} and \citet{baland2014titan}, then Figure \ref{fig:a_evo} indicates that eccentricity and obliquity induced gravity-wave resonances will not significantly reduce the rate of semimajor axis change for Titan. For optimal bottom drag coefficients, however, the ocean thickness independent Rossby-wave resonance is capable of reducing the Saturn induced outward migration rate by up to \SI{40}{\percent}, regardless of the ocean thickness.
