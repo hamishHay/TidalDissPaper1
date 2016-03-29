@@ -27,29 +27,35 @@ The time derivative of velocity is the first term on the left hand side of the m
 \subsection{Tidal Potential \label{subsec:pot}}
 
 Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the full time-dependent degree two tidal potential into two main components, the eccentricity and obliquity tides:
+
 \begin{align}
 U_2 &= U_{ecc} + U_{obliq}\, . \label{eq:U_2}
 \end{align}
+
 To first order in eccentricity and obliquity, the two primary tidal components can be expressed as \citep{tobie2005tidal,tyler2011tidal},
-\begin{multline}
+
+\begin{equation}
 U_{ecc} = \Omega^2 R^2 e \left\lbrace - \frac{3}{2} P_{20}\left(\cos\theta\right) \cos \left(\Omega t \right) + \frac{1}{8} P_{22}\left( \cos\theta\right) \right. \\ 
 \times \left. \vphantom{\frac{1}{8}} \left[7 \cos \left(2 \phi - \Omega t \right) - \cos \left(2 \phi + \Omega t\right) \right] \right\rbrace, \label{eq:U_ecc}
-\end{multline} and,
-\begin{multline}
+\end{equation} and,
+
+\begin{equation}
 U_{obliq} = \frac{1}{2}\Omega^2 R^2 \theta_0 P_{21}\left(\cos\theta\right)\\
 \times \left[ \cos \left(\phi - \Omega t \right) - \cos \left( \phi + \Omega t\right) \right] \, ,\label{eq:U_obliq}
-\end{multline}
+\end{equation}
+
 where $r$ is the satellite's radius, $e$ is its eccentricity, and $\theta_0$ is the obliquity in radians. Co-latitude and longitude are given as $\theta$ and $\phi$ respectively. $P_{lm}$ represents the associated Legendre function of degree $l$ and order $m$. The eccentricity tide can be further split into the two terms on the right hand side of Equation \ref{eq:U_ecc}. These terms represent the eccentricity-radial ($U_{20}$) and eccentricity-libration ($U_{22}$) tides respectively, as described by \citet{tyler2011tidal}. We can therefore rewrite equation \ref{eq:U_2} as $U_2 = U_{20} + U_{21} + U_{22}$.
 
-\begin{figure*}[t]
+\begin{figure}[t]
 \centering
 \includegraphics[width=0.8\linewidth]{Figures/GridDiagram}
 \caption{The staggered grid structure used in ODIS. A single cell is show on the right of the figure, where surface displacement, $\eta$, represents a cell centered quantity. $u$ velocity nodes are staggered eastward of $\eta$, whereas $v$ velocity nodes are staggered southwards. Both $u$ and $v$ are defined at the cell walls. Lines of meridian merge to singularities at the poles, where a single $\eta$ and multiple $u$ nodes are stored.\label{fig:grid}}
-\end{figure*}
+\end{figure}
 
 \subsection{Tidal Quality Factor}
 
 A useful parameter for understanding tidal dissipation is the quality factor, $Q$. Defined as the ratio of maximum energy stored to the total energy dissipated in a purely elastic body, small values of $Q$ correspond to a dissipative environment \citep{goldreich1966q}. \citet{tyler2011tidal} and \citet{matsuyama2014tidal}, however, use the kinetic energy $E_k$ of the fluid system to represent the energy stored in the tide;
+
 \begin{equation}\label{eq:Q}
 Q \equiv 2 \pi \dfrac{\text{max} \left( E_{k} \right)}{E_{diss}} = \dfrac{\Omega}{2 \alpha}
 \end{equation}
@@ -73,19 +79,20 @@ ODIS stores three separate 2D arrays for $\eta$, $u$ and $v$. They are accessed 
 In order to solve the LTEs, we expand equations \ref{eq:mass} and \ref{eq:mom} in a semi-implicit finite difference scheme in spherical coordinates \citep{sears1995tidal}. Expanding $\bm{u}$ into its components and assuming $\eta \ll h$, the momentum equation becomes,
 
 \vspace{-0.6cm}
-\begin{multline}
+\begin{equation}
 u_{ij}^{t+1} \approx  \left[ \,2 \Omega \bar{v}_{ij} \sin{\lambda_i} \vphantom{\frac{c_D}{h_0}\sqrt{\left(u_{ij}^{t}\right)^2}} - \alpha u_{ij}^{t} \right. \\ 
-- \frac{c_D}{h}\sqrt{\left(u_{ij}^{t}\right)^2 + \left(\bar{v}_{ij}^{t}\right)^2}\cdot\left(u_{ij}^{t}\right)^2 - \frac{g}{R \cos{\lambda_i}} \frac{\partial \eta_{ij}^{t}}{\partial \phi_j} \\  
+- \frac{c_D}{h_0}\sqrt{\left(u_{ij}^{t}\right)^2 + \left(\bar{v}_{ij}^{t}\right)^2}\cdot\left(u_{ij}^{t}\right)^2 - \frac{g}{R \cos{\lambda_i}} \frac{\partial \eta_{ij}^{t}}{\partial \phi_j} \\  
 + \left.\left(1 + k_2 - h_2\right) \frac{1}{R \cos{\lambda_i}} \frac{\partial U_{2,ij}^{t}}{\partial \phi_j} \right]  \Delta t + u_{ij}^{t} \, , \label{eq:momu_fd}
-\end{multline}
+\end{equation}
 \vspace{-0.6cm}
-\begin{multline}
+\begin{equation}
 v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{\frac{c_D}{h}\sqrt{\left(u_{ij}^{t}\right)^2}} - \alpha v_{ij}^{t} \right. \\ 
 - \frac{c_D}{h_0}\sqrt{\left(\bar{u}_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2}\cdot\left(v_{ij}^{t}\right)^2 - \frac{g}{R} \frac{\partial \eta_{ij}^{t}}{\partial \lambda_i} \\  
 + \left.\left(1 + k_2 - h_2\right) \frac{1}{R} \frac{\partial U_{2,ij}^{t}}{\partial \lambda_i} \right]  \Delta t + v_{ij}^{t} \, , \label{eq:momv_fd}
-\end{multline}
+\end{equation}
 
 \noindent and the continuity equation becomes, 
+
 \begin{equation}
 \eta_{ij}^{t+1} \approx 
 -\frac{h_0}{R \cos{\lambda_i}}\left(
@@ -98,9 +105,12 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{
 Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to spatial averages, a necessity given the staggered nature of the grid. These expansions are made using the Euler method, and as such are first order accurate in space and time.
 
 All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansion. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
+
 \begin{align}
 \frac{\partial w_{ij}}{\partial \lambda} &\approx \frac{w_{i+\nicefrac{1}{2},j} - w_{i-\nicefrac{1}{2},j}}{\Delta \lambda} \, , \label{eq:gen1}
-\shortintertext{or, }
+\end{align} or,
+
+\begin{align}
 \frac{\partial w_{ij}}{\partial \phi} &\approx \frac{w_{i,j+\nicefrac{1}{2}} - w_{i,j-\nicefrac{1}{2}}}{\Delta \phi} \, , \label{eq:gen2}
 \end{align}
 
@@ -112,7 +122,7 @@ Equations \ref{eq:gen1} and \ref{eq:gen2} show that each derivative is evaluated
 
 \begin{figure*}[!t]
     \centering
-    \begin{subfigure}[t]{0.85\linewidth} % contains the two plots in a single figure
+    \begin{subfigure}[t]{0.95\linewidth} % contains the two plots in a single figure
         \includegraphics[width=\linewidth]{Figures/error_converge}
         \phantomcaption
         \label{fig:conv_a}
@@ -133,19 +143,25 @@ The next step in the numerical integration is to calculate $\nabla U_2$ across a
 Once the tidal acceleration is known, ODIS directly calculates $u$ and $v$ over the grid by solving equations \ref{eq:momu_fd} and \ref{eq:momv_fd} (3). This step is purely explicit as $u$ and $v$ depend only on information from the previous time step, $t$. Following this, $\eta$ is then updated using the new velocity values (4). In contrast to the velocity calculations, this step is semi-implicit as it relies on values from both the current and previous time steps, as shown in Equation \ref{eq:mass_fd} \citep{sears1995tidal}.
 
 After solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin (5). For Rayleigh drag, ODIS calculates and stores global dissipated energy flux as,
+
 \begin{equation}
 F_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha \Delta M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
 \end{equation}
 
 for $n$ and $m$ grid points in latitude and longitude, respectively. The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, for each cell of mass $\Delta M$. The factor in front of the summations then averages this quantity over the satellite's surface area giving $F_{\alpha}$ in watts per square metre. For bottom drag the equivalent expression is
+
 \begin{equation}
 F_{c_D}^{t+1} = \frac{1}{4 \pi h_0 R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}\, . \label{eq:E_cd}
 \end{equation}
 
 Every time step calculations 2-5 are repeated, beginning with determining $\nabla U_2$. Finally, at the end of each orbit, $F_\alpha$ or $F_{c_D}$ is summed and averaged over the orbital period (6). This gives the time and surface averaged heat flux due to tidal dissipation for Rayleigh drag,
+
 \begin{align}
 \left\langle F_\alpha \right\rangle_{orbit} &= \frac{1}{p}\sum_{t=1}^{p} F_{\alpha}^{t}  \, , \label{eq:E_alpha_orbit}
-\shortintertext{and bottom drag,}
+\end{align} 
+and bottom drag,
+
+\begin{align}
 \left\langle F_{c_D} \right\rangle_{orbit} &= \frac{1}{p}\sum_{t=1}^{p} F_{c_D}^{t}  \, , \label{eq:E_cd_orbit}
 \end{align}
 
@@ -161,7 +177,8 @@ As with any numerical solution there are errors associated with discretisation o
 A natural issue arising from the choice of grid is the time step used. As described in section \ref{subsec:grid}, the fixed latitude-longitude grid causes meridian lines to converge at the poles. Nodes near each pole therefore have much smaller spatial separations than those at the equator. In order to satisfy the Courant-Friedrichs-Lewy (CFL) condition required for numerical stability, we are forced to select sufficiently small time-steps based on the minimum node spacing and characteristic ocean flow time-scale \citep{arakawa1977computational,sears1995tidal}. Such a constraint on the time step is often referred to as the ``pole problem''. Several workarounds to ease the time step have been applied throughout the literature \citep{comblen2009finite}. For example, it is common to apply a Fourier filter to remove high wavenumber components of the solution near the poles \citep{murray2002fourier}, or to use the spectral transform method as reviewed by \citet{swarztrauber1996spectral}. In this work, however, we apply none of these methods, and obey the CFL condition by selecting the appropriate time step for the model resolution.
 
 \begin{figure}[!b]
-\includegraphics[width=\linewidth]{Figures/CoordProb}
+\centering
+\includegraphics[width=0.7\linewidth]{Figures/CoordProb}
 \caption{Schematic representation of the ocean tide due to the eccentricity-radial tidal potential ($U_{20}$), at periapsis. Taking the derivative of $v$ across the north pole yields a zero result in the spherical coordinate system, despite the clear mass divergence away from the poles which should result in $\partial_{\lambda} \eta < 0$.\label{fig:coord_prob}}
 \end{figure}
 

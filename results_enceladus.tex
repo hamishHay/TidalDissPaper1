@@ -1,17 +1,28 @@
+\begin{figure*}[!b]
+    \centering
+    \begin{subfigure}[t]{0.95\linewidth} % contains the two plots in a single figure
+        \includegraphics[width=\linewidth]{Figures/enceladus_linear}
+        \phantomcaption
+        \label{fig:lincEccEncel}
+    \end{subfigure}
+    \begin{subfigure}[t]{0\linewidth} % the hidden unwanted image
+         \includegraphics[width=\linewidth]{Figures/enceladus_linear}
+         \phantomcaption
+         \label{fig:linObliqEncel} 
+    \end{subfigure}
+    \vspace{-0.5cm}
+\caption{Time and surface averaged ocean dissipation for Enceladus under the eccentricity (left) and obliquity (right) tides when applying Rayleigh drag. The logarithm of dissipated energy is shown as function of ocean thickness, $h_0$, and bottom drag coefficient, $c_D$. All simulations were performed with \SIrange{1}{3}{\degree} grid resolution. \label{fig:linEncel}}
+\end{figure*}
 
 \section{Ocean Dissipation in Enceladus \label{sec:results_Enceladus}}
 
 \subsection{Rayleigh Drag} \label{sec:ray_enc}
 
-
-
 As with our Titan results, we calculated globally averaged surface heat flux for over 3000 simulations in $h_0$ - $\alpha$ parameter space. These results are shown for the eccentricity and obliquity tides in Figure \ref{fig:linEncel}.
 
 There are several more gravity wave resonances found for Enceladus than Titan in both tidal components, as shown in Figure \ref{fig:lincEccEncel}. The eccentricity tide excites resonances at $h_0 =$ \SIlist{1.3;1.9;3.8;8.7;29;50;360}{m}; a total of 7 resonances, whereas Titan only has 3 (Figure \ref{fig:lincEccTitan}). Increasing the resolution of the parameter space would almost certainly reveal more resonances, but this is only likely for oceans with $h_0 < \SI{10}{\metre}$. As is the case with the Titan results in section \ref{sec:results_Titan}, we again find excellent agreement between our numerical results and the semi-analytical solutions of \citet{matsuyama2014tidal} over the majority of the explored parameter space. The ocean resonances are found for the same ocean thickness in both solutions, with only their magnitudes exhibiting up to \SI{10}{\percent} difference for the deepest resonance.
 
-
-
-The most dissipative eccentricity tide resonance also requires the thickest ocean ($h_0 = \SI{360}{\metre}$), with an average dissipative surface heat flux of \SI{4.6}{\watt\per\square\metre} at $\alpha\sim$ \SI{2e-6}{\per\second}, three orders of magnitude more dissipative than Titan's largest resonance. This is equivalent to a total power output of $\sim$ \SI{3610}{\giga\watt}, well in excess of the observed value of (at least) \SI{5}{\giga\watt} by two to three orders of magnitude \citep{spencer2006cassini,howett2011high, spencer2013new}. Note that we do not resolve the maxima of these resonances with the resolution of our explored parameter space, and so this is an underestimate of the total power released through this resonance.
+The most dissipative eccentricity tide resonance also requires the thickest ocean ($h_0 = \SI{360}{\metre}$), with an average dissipative surface heat flux of \SI{4.6}{\watt\per\square\metre} at $\alpha\sim$ \SI{2e-6}{\per\second}, twice as dissipative than Titan's thickest gravity-wave resonance. This is equivalent to a total power output of $\sim$ \SI{3.6}{\tera\watt}, well in excess of the observed value of (at least) \SI{5}{\giga\watt} by two to three orders of magnitude \citep{spencer2006cassini,howett2011high, spencer2013new}. Note that we do not resolve the maxima of these resonances with the resolution of our explored parameter space, and so this is an underestimate of the total power released through this resonance.
 
 The stark colour difference between the eccentricity and obliquity tide plots in Figure \ref{fig:linEncel} is a result of Enceladus' negligible obliquity ($\theta_0 \sim$ \num{e-4} degrees \citep{chen2011obliquity, baland2016obliquity}). This causes average surface dissipation to range from \SIrange{e-7}{e-14}{\watt\per\square\metre} over our explored parameter space, which has an almost negligible effect on the thermal and orbital evolution of the satellite. Gravity wave resonances are found at $h_0 =$ \SIlist{1.6;2.7;5.5;18;160}{\metre}, with the characteristic Rossby-wave resonance extending diagonally across the parameter space from around $h_0 = \SI{500}{\metre}$.
 
@@ -19,7 +30,7 @@ Away from thin oceans, we once again find excellent agreement between the numeri
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=0.95\linewidth]{Figures/enceladus_bottom}
+    \includegraphics[width=0.55\linewidth]{Figures/enceladus_bottom}
 \caption{As for Figure \ref{fig:linEncel}, but for the bottom drag regime. The obliquity tide is also ignored. \label{fig:botEncel}}
 \end{figure}
 
@@ -31,7 +42,7 @@ Bottom drag results for the eccentricity tide on Enceladus are shown in Figure \
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.85\linewidth]{Figures/enceladus_scaling}
+\includegraphics[width=0.55\linewidth]{Figures/enceladus_scaling}
 \caption{Comparison of the ODIS numerical results (solid lines) and those calculated using the scaling laws (dashed lines) derived in \citet{chen2013tidal}, for Enceladus under the eccentricity tide. The colours represent different values of bottom drag coefficient. \label{fig:scalEncel}}
 \end{figure}
 
