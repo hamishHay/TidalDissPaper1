@@ -29,6 +29,12 @@ We neglect running the obliquity tide bottom drag case for Enceladus. As mention
 
 Bottom drag results for the eccentricity tide on Enceladus are shown in Figure \ref{fig:botEncel}. The gravity-wave resonances are found at identical ocean thicknesses to the Rayleigh drag results in Figure \ref{fig:lincEccEncel}. There is, however, a much greater contrast in dissipation magnitude in this parameter space when compared to the Rayleigh drag regime. Dissipation drops off rapidly by many orders of magnitude with increasing ocean thickness away from the \SI{360}{\metre} resonance. This is expected given the velocity squared dependence and inverse proportionality to ocean thickness in the bottom drag term in Equation \ref{eq:mom}. 
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.85\linewidth]{Figures/enceladus_scaling}
+\caption{Comparison of the ODIS numerical results (solid lines) and those calculated using the scaling laws (dashed lines) derived in \citet{chen2013tidal}, for Enceladus under the eccentricity tide. The colours represent different values of bottom drag coefficient. \label{fig:scalEncel}}
+\end{figure}
+
 \subsection{Comparison with Scaling Laws}
 
 The bottom drag eccentricity tide results for Enceladus are compared to \citet{chen2013tidal} scaling laws in Figure \ref{fig:scalEncel}. As was the case with Titan, we find poor agreement for resonant ocean configurations, with increasingly good agreement away from resonances. The scaling laws cannot take into account the resonant ocean configurations due to the non-linearity of these features. However, the general trend of decreasing dissipation with increasing ocean thickness is captured by the scaling laws and agrees well with our numerical results. This agreement provides further validation to the numerical model and techniques employed in this work.
@@ -39,8 +45,4 @@ Eccentricity is the only significant contributor to ocean dissipation in Encelad
 
 The amplitude of forced libration on Enceladus \citep{thomas2015enceladus}, as well as the negative mass anomaly observed at the SPT \citep{iess2014gravity, mckinnon2015effect} indicate that its subsurface ocean is global in extent and deeper beneath the SPT. This variable ocean thickness is neglected in our model, and may lead to localised heating at the boundary between thin and thick oceans. The effect on resonance ocean configurations is unknown. Incorporating a variable ocean thickness into the LTEs is only possible numerically, and will be one focus of future work.
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.85\linewidth]{Figures/enceladus_scaling}
-\caption{Comparison of the ODIS numerical results (solid lines) and those calculated using the scaling laws (dashed lines) derived in \citet{chen2013tidal}, for Enceladus under the eccentricity tide. The colours represent different values of bottom drag coefficient. \label{fig:scalEncel}}
-\end{figure}
+

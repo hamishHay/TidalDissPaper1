@@ -74,21 +74,7 @@ Away from resonances and in thick oceans, there is excellent agreement between t
 
 \subsection{Implications for Titan}
 
-\begin{figure*}[!b]
-    \centering
-    \begin{subfigure}[t]{0.85\linewidth} % contains the two plots in a single figure
-        \includegraphics[width=\linewidth]{Figures/titan_adot}
-        \phantomcaption
-        \label{fig:a_evo_ecc}
-    \end{subfigure}
-    \begin{subfigure}[t]{0\linewidth} % the hidden unwanted image
-         \includegraphics[width=\linewidth]{Figures/titan_adot}
-         \phantomcaption
-         \label{fig:a_evo_obliq} 
-    \end{subfigure}
-    \vspace{-0.5cm}
-\caption{Rate of change of semimajor axis for Titan due to tidal dissipation in both Titan's ocean and Saturn, for each tidal component. The colour scale represents $\dot{a}$ assuming $k_{2s}/Q_s = \num{1.5e-5}$, where the dashed contour represents the transition from inward to outward tidal migration. The same transition is represented by the dotted contour when assuming $k_{2s}/Q_s = \num[separate-uncertainty = true]{2.3(07)e-4}$.\label{fig:a_evo}}
-\end{figure*}
+
 
 Titan likely has an ocean that is on the order of \SI{100}{\kilo\metre} thick \citep{sohl2014structural,baland2014titan}. All of the eccentricity tide resonances occur in oceans much thinner than this, suggesting that - despite the substantial free eccentricity - there is little dissipation from this tidal component in heating Titan's ocean.
 
@@ -111,7 +97,21 @@ where the subscript $s$ denotes quantities for Saturn; the degree-2 Love number 
 \dfrac{da}{dt} = \left( \dfrac{da}{dt} \right)_s + \left( \dfrac{da}{dt} \right)_t\label{eq:adot_total}
 \end{equation}. 
 
-
+\begin{figure*}[!b]
+    \centering
+    \begin{subfigure}[t]{0.85\linewidth} % contains the two plots in a single figure
+        \includegraphics[width=\linewidth]{Figures/titan_adot}
+        \phantomcaption
+        \label{fig:a_evo_ecc}
+    \end{subfigure}
+    \begin{subfigure}[t]{0\linewidth} % the hidden unwanted image
+         \includegraphics[width=\linewidth]{Figures/titan_adot}
+         \phantomcaption
+         \label{fig:a_evo_obliq} 
+    \end{subfigure}
+    \vspace{-0.5cm}
+\caption{Rate of change of semimajor axis for Titan due to tidal dissipation in both Titan's ocean and Saturn, for each tidal component. The colour scale represents $\dot{a}$ assuming $k_{2s}/Q_s = \num{1.5e-5}$, where the dashed contour represents the transition from inward to outward tidal migration. The same transition is represented by the dotted contour when assuming $k_{2s}/Q_s = \num[separate-uncertainty = true]{2.3(07)e-4}$.\label{fig:a_evo}}
+\end{figure*}
 
 A plot of the total $da/dt$ from equation \ref{eq:adot_total} as a function of ocean thickness and bottom drag coefficient is shown in Figure \ref{fig:a_evo}. The colour contours are calculated using $k_{2s}/Q_s = \num{1.5e-5}$, which is approaching the upper limit of estimated $Q_s$ values \citep{peale1980tidal,meyer2007tidal}. The dotted and dashed black contours represent $da/dt=0$ \si{\Rsat\per\year} using $k_{2s}/Q_s = \num[separate-uncertainty = true]{2.3(07)e-4}$ \citep{lainey2012strong} and $k_{2s}/Q_s = \num{1.5e-5}$, respectively. The \citet{lainey2012strong} value is the most recent $k_{2s}/Q_s$ estimate for Saturn. The regions enclosed by the black contour lines represent inward migration of Titan, when the semimajor axis decreases as $da/dt < 0$. Outside of this, the semimajor axis increases with time. 
 
@@ -124,12 +124,7 @@ The affect of tidal torques on Titan's eccentricity are difficult to estimate as
 L = m \sqrt{G M a (1-e^2)} \, .
 \end{equation}
 
-As this quantity is conserved, its time derivative gives us a useful relationship between the rates of change of semimajor axis and eccentricity;
-\begin{equation}\label{eq:adot_edot}
-\dfrac{da}{dt}(1-e^2) = 2 \dfrac{de}{dt}ae
-\end{equation}
-
-Substituting Titan's contribution to $da/dt$ from equation \ref{eq:adot_t} yields,
+As this quantity is conserved, its time derivative combined with Titan's contribution to $da/dt$ from equation \ref{eq:adot_t} yields,
 \begin{equation}\label{eq:adot_edot}
 e\dfrac{de}{dt} = - \dfrac{a (1-e^2)}{GMm} \dfrac{dE}{dt}
 \end{equation}
