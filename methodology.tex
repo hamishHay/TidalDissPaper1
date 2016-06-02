@@ -48,7 +48,7 @@ where $r$ is the satellite's radius, $e$ is its eccentricity, and $\theta_0$ is 
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.8\linewidth]{Figures/GridDiagram}
+\includegraphics[width=0.8\linewidth]{Figures/GridDiagram_revision}
 \caption{The staggered grid structure used in ODIS. A single cell is show on the right of the figure, where surface displacement, $\eta$, represents a cell centered quantity. $u$ velocity nodes are staggered eastward of $\eta$, whereas $v$ velocity nodes are staggered southwards. Both $u$ and $v$ are defined at the cell walls. Lines of meridian merge to singularities at the poles, where a single $\eta$ and multiple $u$ nodes are stored.\label{fig:grid}}
 \end{figure}
 
@@ -68,7 +68,7 @@ In this section we outline our two dimensional, finite difference computational 
 
 \subsubsection{Discretized Grid \label{subsec:grid}}
 
-We employ a fixed latitude-longitude grid for our numerical simulations, defined in a spherical coordinate system. The grid is constructed in a staggered manner, meaning that velocity nodes are placed to the east and south of their parent displacement nodes. This is illustrated in Figure \ref{fig:grid}, where we define $u$ and $v$ as the eastward and northward velocity components, respectively. $\Delta \lambda$ is the grid spacing in latitude, whereas $\Delta \phi$ is the grid spacing in longitude. A staggered approach is adopted as it avoids numerical oscillations that grow in the solution by calculating derivatives \textit{between} grid nodes rather than over them. This is discussed further in section \ref{subsec:fd_expan}.
+We employ a fixed latitude-longitude grid for our numerical simulations, defined in a spherical coordinate system. The grid is constructed in a staggered manner, meaning that velocity nodes are placed to the east and south of their parent displacement nodes. \textbf{This is identical to the Arakawa ``C'' grid introduced by \citet{arakawa1977computational}}. This is illustrated in Figure \ref{fig:grid}, where we define $u$ and $v$ as the eastward and northward velocity components, respectively. $\Delta \lambda$ is the grid spacing in latitude, whereas $\Delta \phi$ is the grid spacing in longitude. A staggered approach is adopted as it avoids numerical oscillations that grow in the solution by calculating derivatives \textit{between} grid nodes rather than over them. This is discussed further in section \ref{subsec:fd_expan}.
 
 As is clear from Figure \ref{fig:grid}, lines of meridian all converge to single points at either pole. Consequently, the model is forced to go from $m$ longitudinal grid points immediately surrounding the pole to merely a single point at the pole itself. Accordingly, single values of $\eta$ are stored at each pole, whereas multiple $u$ values are required to maintain numerical stability. 
 
@@ -80,13 +80,13 @@ In order to solve the LTEs, we expand equations \ref{eq:mass} and \ref{eq:mom} i
 
 \vspace{-0.6cm}
 \begin{equation}
-u_{ij}^{t+1} \approx  \left[ \,2 \Omega \bar{v}_{ij} \sin{\lambda_i} \vphantom{\frac{c_D}{h_0}\sqrt{\left(u_{ij}^{t}\right)^2}} - \alpha u_{ij}^{t} \right. \\ 
+u_{ij}^{t+1} \approx  \left[ \,2 \Omega \bar{v}_{ij}^{\textbf{t}} \sin{\lambda_i} \vphantom{\frac{c_D}{h_0}\sqrt{\left(u_{ij}^{t}\right)^2}} - \alpha u_{ij}^{t} \right. \\ 
 - \frac{c_D}{h_0}\sqrt{\left(u_{ij}^{t}\right)^2 + \left(\bar{v}_{ij}^{t}\right)^2}\cdot\left(u_{ij}^{t}\right)^2 - \frac{g}{R \cos{\lambda_i}} \frac{\partial \eta_{ij}^{t}}{\partial \phi_j} \\  
 + \left.\left(1 + k_2 - h_2\right) \frac{1}{R \cos{\lambda_i}} \frac{\partial U_{2,ij}^{t}}{\partial \phi_j} \right]  \Delta t + u_{ij}^{t} \, , \label{eq:momu_fd}
 \end{equation}
 \vspace{-0.6cm}
 \begin{equation}
-v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{\frac{c_D}{h}\sqrt{\left(u_{ij}^{t}\right)^2}} - \alpha v_{ij}^{t} \right. \\ 
+v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij}^{\textbf{t}} \sin{\lambda_i} \vphantom{\frac{c_D}{h}\sqrt{\left(u_{ij}^{t}\right)^2}} - \alpha v_{ij}^{t} \right. \\ 
 - \frac{c_D}{h_0}\sqrt{\left(\bar{u}_{ij}^{t}\right)^2 + \left(v_{ij}^{t}\right)^2}\cdot\left(v_{ij}^{t}\right)^2 - \frac{g}{R} \frac{\partial \eta_{ij}^{t}}{\partial \lambda_i} \\  
 + \left.\left(1 + k_2 - h_2\right) \frac{1}{R} \frac{\partial U_{2,ij}^{t}}{\partial \lambda_i} \right]  \Delta t + v_{ij}^{t} \, , \label{eq:momv_fd}
 \end{equation}
@@ -102,21 +102,21 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij} \sin{\lambda_i} \vphantom{
 + \eta_{ij}^{t}\, . \label{eq:mass_fd}
 \end{equation}
 
-Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to spatial averages, a necessity given the staggered nature of the grid. These expansions are made using the Euler method, and as such are first order accurate in space and time.
+Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to spatial averages, a necessity given the staggered nature of the grid. \textbf{The spatial derivatives are computed as central differences because the grid is staggered, and as such are second order accurate. Temporal expansions are made using the Euler method and are first order accurate in time.}
 
 All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansion. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
 
 \begin{align}
-\frac{\partial w_{ij}}{\partial \lambda} &\approx \frac{w_{i+\nicefrac{1}{2},j} - w_{i-\nicefrac{1}{2},j}}{\Delta \lambda} \, , \label{eq:gen1}
+\frac{\partial w_{ij}^{\textbf{t+1}}}{\partial \lambda} &\approx \frac{w_{i+\textbf{1},j}^{\textbf{t}} - w_{i-\textbf{1},j}^{\textbf{t}}}{\Delta \lambda} \, , \label{eq:gen1}
 \end{align} or,
 
 \begin{align}
-\frac{\partial w_{ij}}{\partial \phi} &\approx \frac{w_{i,j+\nicefrac{1}{2}} - w_{i,j-\nicefrac{1}{2}}}{\Delta \phi} \, , \label{eq:gen2}
+\frac{\partial w_{ij}^{\textbf{t+1}}}{\partial \phi} &\approx \frac{w_{i,j+\textbf{1}}^{\textbf{t}} - w_{i,j-\textbf{1}}^{\textbf{t}}}{\Delta \phi} \, , \label{eq:gen2}
 \end{align}
 
 \noindent where $w$ represents $u$, $v$ or $\eta$.
 
-Equations \ref{eq:gen1} and \ref{eq:gen2} show that each derivative is evaluated halfway between the nodes where $w$ is stored. Consequently, any derivative of $w$ is calculated at a position held by a different variable because the grid is staggered. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$ as $u_{i,j-\nicefrac{1}{2}}$ and $u_{i,j+\nicefrac{1}{2}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is shown clearly on the right of Figure \ref{fig:grid}.
+Equations \ref{eq:gen1} and \ref{eq:gen2} show that each derivative is evaluated halfway between the nodes where $w$ is stored. Consequently, any derivative of $w$ is calculated at a position held by a different variable because the grid is staggered. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$ as $u_{i,j-\textbf{1}}$ and $u_{i,j+\textbf{1}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is shown clearly on the right of Figure \ref{fig:grid}.
 
 \subsubsection{Numerical Scheme}
 
@@ -133,7 +133,7 @@ Equations \ref{eq:gen1} and \ref{eq:gen2} show that each derivative is evaluated
          \label{fig:conv_b}   
     \end{subfigure}
     \vspace{-0.5cm}
-\caption{Convergence and error scaling as a function of grid resolution. Panel \ref{fig:conv_a} on the left shows the time evolution of the orbit-averaged dissipated energy at periapsis. The solid lines represents different grid resolutions, whereas the dashed line is the anlytically derived dissipated energy for Rayleigh drag from \citet{matsuyama2014tidal}. Panel \ref{fig:conv_b} on the right shows the error between the numerical and analytical solutions with increasing resolution, compared to 1st and 2nd orders of convergence. These simulations are for the obliquity tide using $h = \SI{1}{\kilo\metre}$ and $\alpha = \SI{e-8}{\per\second}$ on Titan. \label{fig:conv}}
+\caption{Convergence and error scaling as a function of grid resolution. Panel \ref{fig:conv_a} on the left shows the time evolution of the orbit-averaged dissipated energy at periapsis. The solid lines represents different grid resolutions, whereas the dashed line is the semi-anlytically derived dissipated energy for Rayleigh drag from \citet{matsuyama2014tidal}. Panel \ref{fig:conv_b} on the right shows the \textbf{dissipation} error between the numerical and semi-analytical solutions with increasing resolution,\textbf{ compared to slopes with 1st and 2nd order convergence}. These simulations are for the obliquity tide using $h = \SI{1}{\kilo\metre}$ and $\alpha = \SI{e-8}{\per\second}$ on Titan. \label{fig:conv}}
 \end{figure*}
 
 ODIS begins its calculations by (1) determining the mass of each volume element in the initial ocean assuming an undisturbed ocean of thickness $h_0$. With the mass calculated in each cell, it is then possible to find the dissipated energy in the system.
@@ -145,10 +145,10 @@ Once the tidal acceleration is known, ODIS directly calculates $u$ and $v$ over 
 After solutions for $u$, $v$, and $\eta$ are found at the new time step, $t+1$, the energy calculations begin (5). For Rayleigh drag, ODIS calculates and stores global dissipated energy flux as,
 
 \begin{equation}
-F_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha \Delta M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
+F_{\alpha}^{t+1} = \frac{1}{4 \pi R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} \alpha \textbf{M}_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right] \, , \label{eq:E_alpha}
 \end{equation}
 
-for $n$ and $m$ grid points in latitude and longitude, respectively. The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, for each cell of mass $\Delta M$. The factor in front of the summations then averages this quantity over the satellite's surface area giving $F_{\alpha}$ in watts per square metre. For bottom drag the equivalent expression is
+for $n$ and $m$ grid points in latitude and longitude, respectively. The summed terms in Equation \ref{eq:E_alpha} give the total dissipated energy in the system across the current time step, \textbf{for the total ocean column mass $\textbf{M}$ within each cell}. The factor in front of the summations then averages this quantity over the satellite's surface area giving $F_{\alpha}$ in watts per square metre. For bottom drag the equivalent expression is
 
 \begin{equation}
 F_{c_D}^{t+1} = \frac{1}{4 \pi h_0 R^2 }\sum_{i=1}^{n} \sum_{j=1}^{m} c_D M_{ij} \left[\left(u_{ij}^{t+1}\right)^2 + \left(v_{ij}^{t+1}\right)^2\right]^{\nicefrac{3}{2}}\, . \label{eq:E_cd}
