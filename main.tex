@@ -1,4 +1,4 @@
-\documentclass[preprint,3p,twocolumn,times,authoryear]{elsarticle}
+\documentclass[review,times,authoryear]{elsarticle}
 
 \usepackage{wrapfig}
 \usepackage[font=small]{caption}
@@ -23,14 +23,19 @@
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
 
 \usepackage{siunitx}
-\sisetup{separate-uncertainty}%,range-units = single}
+\sisetup{separate-uncertainty}
 \DeclareSIUnit\year{yr}
+\DeclareSIUnit\AU{AU}
+\DeclareSIUnit\Rsat{\textit{R}\textsubscript{sat}}
 
 \usepackage[colorlinks]{hyperref}
 
 \bibliographystyle{model2-names}\biboptions{authoryear}
 
 \journal{Icarus}
+
+\usepackage{lineno}
+\linenumbers
 
 \begin{document}
 
@@ -42,11 +47,19 @@
 
 \begin{frontmatter}
 
-\title{Numerically Modelling Ocean Dissipation in Titan and Enceladus: A Comparison of Rayleigh and Bottom Drag}
+%\title{Numerically Modelling Ocean Dissipation in Titan and Enceladus: A Comparison of Rayleigh and Bottom Drag}
+\title{Numerically Modelling Tidal Dissipation using Bottom Drag in the Oceans of Titan and Enceladus}
 
-\author[label1]{Hamish C. F. C. Hay}
+\author[label1]{Hamish C. F. C. Hay\corref{cor1}}
+\ead{hhay@lpl.arizona.edu}
 \author[label1]{Isamu Matsuyama}
 \address[label1]{Lunar and Planetary Laboratory, University of Arizona, Tucson, AZ 85719, United States}
+
+\cortext[cor1]{Corresponding author}
+
+\begin{keyword}
+Satellites \sep Ocean tides \sep Bottom drag\sep Titan \sep Enceladus 
+\end{keyword}
 
 \begin{abstract}
 
@@ -69,6 +82,6 @@
 \section*{References}
 \bibliography{mybibfile}
 
-\input{./appendix.tex}
+%\input{./appendix.tex}
 
 \end{document}
