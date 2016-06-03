@@ -1,10 +1,47 @@
 \appendix
 
-\section{Finite Difference Energy Expressions}
+\section{Laplace Tidal Equations in Spherical Coordinates \label{app:coords}}
 
-For a system experiencing both Rayleigh and bottom friction, the full dissipated energy over an orbit is given by,
+To convert the Laplace Tidal Equations to a spherical coordinate system we must make use of the following well-known identities for the gradient and divergence operators,
 \begin{equation}
-F = \frac{\rho}{4 \pi T} \iint \left[h \alpha \left(u^2 + v^2 \right) + c_D \left(u^2 + v^2 \right)^{\nicefrac{3}{2}}\right]d\Omega dt,
+\nabla f = \frac{1}{R} \partial_{\lambda} f \bm{\hat{\lambda}}  
++ \frac{1}{R \cos{\lambda}} \partial_{\lambda} f \bm{\hat{\phi}}
+\end{equation}
+\begin{equation}
+\nabla \cdot \bm{A} = -\frac{1}{R \cos{\lambda}} \partial_{\lambda} \left( \cos{\lambda}\, A_{\lambda} \right) + \frac{1}{R \cos{\lambda}} \partial_{\phi} A_{\phi}
 \end{equation}
 
-\noindent where $\Omega$ is the solid angle and we assume that $h \ll R$.
+where $\bm{A}$ is some vector quantity tangent to the spherical surface, $f$ is a scalar quantity, and $\bm{\hat{\lambda}}$ and $\bm{\hat{\phi}}$ are the latitude and longitude unit vectors, also tangent to the surface.
+Defining $\bm{u} = \left(u, v \right) = (u_{\phi}, -u_{\lambda} ) $ and using the fact that $\bm{\Omega} = \Omega \bm{\hat{k}}$, where $\bm{\hat{k}}$ is the cartesian unit vector aligned with the rotation axis, then the continuity equation can be rewritten as,
+\begin{equation}
+\partial_t \eta + \frac{h_0}{R \cos{\lambda}} \left( \partial_{\lambda}
+\left(v \cos{\lambda} \right) +  \partial_{\phi} u \right) = 0 \, .
+\end{equation}
+
+\noindent Similarly, the momentum equation becomes, 
+\begin{equation}
+\partial_t u - 2 \Omega v \sin{\lambda}
++ \alpha u
++\frac{c_D}{h_0} \left(u^2 + v^2 \right)^{\nicefrac{1}{2}} u
++ \frac{g}{R \cos{\lambda}} \partial_{\phi} \eta
+= 
+(1 + k_2 - h_2) \frac{1}{R \cos{\lambda}} \partial_{\phi} U_2
+\end{equation}
+\begin{equation}
+\partial_t v + 2 \Omega u \sin{\lambda}
++ \alpha v
++\frac{c_D}{h_0} \left(u^2 + v^2 \right)^{\nicefrac{1}{2}} v
++ \frac{g}{R} \partial_{\lambda} \eta
+= 
+(1 + k_2 - h_2) \frac{1}{R} \partial_{\lambda} U_2
+\end{equation}
+
+%
+%\section{Finite Difference Energy Expressions \}
+%
+%For a system experiencing both Rayleigh and bottom friction, the full dissipated energy over an orbit is given by,
+%\begin{equation}
+%F = \frac{\rho}{4 \pi T} \iint \left[h \alpha \left(u^2 + v^2 \right) + c_D \left(u^2 + v^2 \right)^\nicefrac{3}{2} \right}d\Omega dt,
+%\end{equation}
+%
+%\noindent where $\Omega$ is the solid angle and we assume that $h \ll R$.
