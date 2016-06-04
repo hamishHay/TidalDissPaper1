@@ -11,8 +11,9 @@ To convert the Laplace Tidal Equations to a spherical coordinate system we must 
 \nabla \cdot \bm{A} = -\frac{1}{R \cos{\lambda}} \partial_{\lambda} \left( \cos{\lambda}\, A_{\lambda} \right) + \frac{1}{R \cos{\lambda}} \partial_{\phi} A_{\phi}
 \end{equation}
 
-where $\bm{A}$ is some vector quantity tangent to the spherical surface, $f$ is a scalar quantity, and $\bm{\hat{\lambda}}$ and $\bm{\hat{\phi}}$ are the latitude and longitude unit vectors, also tangent to the surface.
-Defining $\bm{u} = \left(u, v \right) = (u_{\phi}, -u_{\lambda} ) $ and using the fact that $\bm{\Omega} = \Omega \bm{\hat{k}}$, where $\bm{\hat{k}}$ is the cartesian unit vector aligned with the rotation axis, then the continuity equation can be rewritten as,
+where $\bm{A}$ is some vector quantity tangent to the spherical surface, $f$ is a scalar quantity, and $\bm{\hat{\lambda}}$ and $\bm{\hat{\phi}}$ are the latitude and longitude unit vectors, also tangent to the surface. Note that we ignore any component of the divergence and gradient operators in the radial direction in accordance with the shallow water assumptions.
+
+Defining $\bm{u} = \left(u, v \right) = (u_{\phi}, -u_{\lambda} ) $ and using the fact that $\bm{\Omega} = \Omega \bm{\hat{k}}$, where $\bm{\hat{k}}$ is the Cartesian unit vector aligned with the rotation axis, then the continuity equation can be rewritten as,
 \begin{equation}
 \partial_t \eta + \frac{h_0}{R \cos{\lambda}} \left( \partial_{\lambda}
 \left(v \cos{\lambda} \right) +  \partial_{\phi} u \right) = 0 \, .

@@ -34,6 +34,10 @@ The time derivative of velocity is the first term on the left hand side of the m
 
 \noindent \textbf{respectively.}
 
+\subsection{\textbf{Applicability of the Laplace Tidal Equations} \label{subsec:applicability}}
+
+\textbf{Some discussion of how readily the LTEs can be applied to icy satellites is required. Clearly, no icy satellite contains a global or near-global surface ocean of any kind. Instead, all oceans in the Solar System, with the exception of Earth, are located beneath an ice shell. The presence of an ice shell will most likely limit the extent to which a subsurface ocean can respond to an applied tidal forcing. As such, we can consider the results presented in this paper as upper limits to the amount of possible energy dissipation through the action of surface waves. }   
+
 
 \subsection{Tidal Potential \label{subsec:pot}}
 
@@ -87,7 +91,7 @@ ODIS stores three separate 2D arrays for $\eta$, $u$ and $v$. They are accessed 
 
 \subsubsection{Finite Difference Expansions \label{subsec:fd_expan}}
 
-In order to solve the LTEs, we expand equations \ref{eq:mass_lin} and \ref{eq:mom_lin} in a semi-implicit finite difference scheme in spherical coordinates \citep{sears1995tidal}. \textbf{Details of the coordinate transform for these equations are given in Appendix \ref{app:coords}.} Expanding $\bm{u}$ into its components and assuming $\eta \ll h_0$, the momentum equation becomes,
+In order to solve the LTEs, we expand equations \ref{eq:mass_lin} and \ref{eq:mom_lin} in a semi-implicit finite difference scheme in spherical coordinates \citep{sears1995tidal}. \textbf{Details of the coordinate transform for these equations are given in \ref{app:coords}.} Expanding $\bm{u}$ into its components and assuming $\eta \ll h_0$, the momentum equation becomes,
 
 \vspace{-0.6cm}
 \begin{equation}
