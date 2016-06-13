@@ -26,22 +26,26 @@ The time derivative of velocity is the first term on the left hand side of the m
 
 \vspace{-0.5cm}
 \begin{gather}
-\partial_t \eta + \nabla \cdot \left(h_0 \bm{u}\right) = 0\, , \label{eq:mass_lin}\\
+\partial_t \eta + h_0 \nabla \cdot \bm{u} = 0\, , \label{eq:mass_lin}\\
 \begin{aligned} 
 \partial_t \bm{u} + 2 \bm{\Omega} \times \bm{u} + \alpha\bm{u} + \frac{c_D}{h_0} \left|\bm{u}\right| \bm{u}  + g \nabla \eta = (1 + k_2 - h_2) \nabla U_2 \, , \label{eq:mom_lin}\\
 \end{aligned} 
 \end{gather}
 
-\noindent \textbf{respectively.}
+\noindent \textbf{respectively.} \textbf{The assumption that $\eta \ll h_0$ is valid over much of the parameter space explored in sections \ref{sec:results_Titan} and \ref{sec:results_Enceladus}. However, as the ocean thickness approaches gravity-wave resonant configurations, this assumption breaks down. A more rigorous approach would instead solve equations \ref{eq:mass} and \ref{eq:mom} directly. Without such an assumption, the maximum ocean displacement would likely be reduced, limiting (but not removing) the dissipative nature of gravity-wave resonances. The small displacement assumption has been made in this work in order to validate the numerical model against the semi-analytical solutions of \citet{matsuyama2014tidal}. The assumption linearises the problem, which is necessary for the semi-analytical models from \citet{tyler2011tidal} and \citet{matsuyama2014tidal}. In future work this shall be addressed.}      
 
 \subsection{\textbf{Applicability of the Laplace Tidal Equations} \label{subsec:applicability}}
 
-\textbf{Some discussion of how readily the LTEs can be applied to icy satellites is required. Clearly, no icy satellite contains a global or near-global surface ocean of any kind. Instead, all oceans in the Solar System, with the exception of Earth, are located beneath an ice shell. The presence of an ice shell will most likely limit the extent to which a subsurface ocean can respond to an applied tidal forcing. As such, we can consider the results presented in this paper as upper limits to the amount of possible energy dissipation through the action of surface waves. }   
+\textbf{Some discussion of how readily the LTEs can be applied to icy satellites is required. Clearly, no icy satellite contains a global or near-global surface ocean of any kind. Instead, all oceans in the Solar System, with the exception of Earth, are located beneath an ice shell. As the thickness of the ice shell increases the overburden pressure on the ocean also increases. Additionally, the rigidity of the shell will also increase. Both of these will limit the ability to which a subsurface ocean can respond to an applied tidal forcing. As such, we can consider the results presented in this paper as upper limits to the amount of possible energy dissipation through the action of surface gravity-waves. However, for thin ice shells ($<\SI{10}{\kilo\metre}$) (can we do an OOM calculation here?) the ability of the solid lid to resist changes in the ocean surface is small, and we would still expect the ocean surface to respond to the tidal forcing, albeit in a dampened manner.}   
+
+\textbf{As mentioned by \citet{tyler2008strong}, ocean dynamics are not purely expressed through changes in ocean surface height and gravity-waves. Another class of ocean oscillation, the Rossby-wave, is expected to develop as a result of coriolis forces acting on the flow in the rotating reference frame. There is no lateral divergence associated with this type of flow, so no changes in ocean surface height develop. This type of flow can readily exist under a thick and rigid ice shell. It is therefore useful, while not perfectly accurate, to investigate ocean dissipation in icy satellites using the numerical model described here where we assume a surface ocean. Additionally, there are situations where assuming a surface ocean is appropriate. For example, tidal dissipation in the magma oceans of the proto-Earth and proto-Moon played a large role in the thermal and orbital evolution of those bodies, as recently explored by \citet{chen2016tidal}.}
+
+\textbf{The intention of this paper is to provide a stepping stone for further development of this model by incorporating an ice shell into our code. Assuming a surface ocean is a natural place to begin.}
 
 
 \subsection{Tidal Potential \label{subsec:pot}}
 
-Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the full time-dependent degree two tidal potential into two main components, the eccentricity and obliquity tides:
+Finite eccentricity and obliquity cause libration of the satellite's tidal bulge in longitude and latitude, respectively. It is this libration that primarily induces ocean flow. We therefore find it convenient to split the time-dependent degree two tidal potential into two main components, the eccentricity and obliquity tides:
 
 \begin{align}
 U_2 &= U_{ecc} + U_{obliq}\, . \label{eq:U_2}
@@ -117,7 +121,7 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij}^{\textbf{t}} \sin{\lambda_
 + \eta_{ij}^{t}\, . \label{eq:mass_fd}
 \end{equation}
 
-Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to spatial averages, a necessity given the staggered nature of the grid. \textbf{The spatial derivatives are computed as central differences because the grid is staggered, and as such are second order accurate. Temporal expansions are made using the Euler method and are first order accurate in time.}
+Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and $j$ represent the $i\text{th}$ and $j\text{th}$ latitude and longitude nodes within the grid. The time index is given by $t$, and $\Delta t$ represents the time-step. Overbars correspond to spatial averages, a necessity given the staggered nature of the grid. Spatial and temporal expansions are made using the Euler method and are first order accurate in space and time.
 
 All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansion. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
 
@@ -173,13 +177,13 @@ Steps 2-6 are repeated until the model has converged into a periodic equilibrium
 
 \begin{figure*}[!t]
     \centering
-    \begin{subfigure}[t]{0.95\linewidth} % contains the two plots in a single figure
-        \includegraphics[width=\linewidth]{Figures/error_converge}
+    \begin{subfigure}[t]{\linewidth} % contains the two plots in a single figure
+        \includegraphics[width=\linewidth]{Figures/convergence2}
         \phantomcaption
         \label{fig:conv_a}
     \end{subfigure}
     \begin{subfigure}[t]{0\linewidth} % the hidden unwanted image
-         \includegraphics[width=\linewidth]{Figures/error_converge}
+         \includegraphics[width=\linewidth]{Figures/convergence2}
          \phantomcaption
          \label{fig:conv_b}   
     \end{subfigure}
