@@ -32,7 +32,7 @@ The time derivative of velocity is the first term on the left hand side of the m
 \end{aligned} 
 \end{gather}
 
-\noindent \textbf{respectively.} \textbf{The assumption that $\eta \ll h_0$ is valid over much of the parameter space explored in sections \ref{sec:results_Titan} and \ref{sec:results_Enceladus}. However, as the ocean thickness approaches gravity-wave resonant configurations, this assumption breaks down. A more rigorous approach would instead solve equations \ref{eq:mass} and \ref{eq:mom} directly. Without such an assumption, the maximum ocean displacement would likely be reduced, limiting (but not removing) the dissipative nature of gravity-wave resonances. The small displacement assumption has been made in this work in order to validate the numerical model against the semi-analytical solutions of \citet{matsuyama2014tidal}. The assumption linearises the problem, which is necessary for the semi-analytical models from \citet{tyler2011tidal} and \citet{matsuyama2014tidal}. In future work this shall be addressed.}      
+\noindent \textbf{respectively.} \textbf{The assumption that $\eta \ll h_0$ is valid over much of the parameter space explored in sections \ref{sec:results_Titan} and \ref{sec:results_Enceladus}. However, as the ocean thickness approaches gravity-wave resonant configurations, this assumption breaks down. A more rigorous approach would instead solve equations \ref{eq:mass} and \ref{eq:mom} directly. Without such an assumption, the maximum ocean displacement would likely be reduced, limiting (but not removing) the dissipative nature of gravity-wave resonances. The small displacement assumption has been made in this work in order to verify the numerical model against the semi-analytical solutions of \citet{matsuyama2014tidal}. The assumption linearises the problem, which is necessary for the semi-analytical models from \citet{tyler2011tidal} and \citet{matsuyama2014tidal}. In future work this shall be addressed.}      
 
 \subsection{\textbf{Applicability of the Laplace Tidal Equations} \label{subsec:applicability}}
 
@@ -114,9 +114,9 @@ v_{ij}^{t+1} \approx  \left[ \,-2 \Omega \bar{u}_{ij}^{\textbf{t}} \sin{\lambda_
 
 \begin{equation}
 \eta_{ij}^{t+1} \approx 
--\frac{h_0}{R \cos{\lambda_i}}\left(
+-\frac{h_0}{R \cos{\lambda_i}}\left[
 \frac{\partial \left(v_{ij}^{t+1} \cos{\lambda_i}\right)}{\partial	\lambda_i}  
-+\frac{\partial u_{ij}^{t+1}}{\partial	\phi_j}\right)
++\frac{\partial u_{ij}^{t+1}}{\partial	\phi_j}\right]
 \Delta t
 + \eta_{ij}^{t}\, . \label{eq:mass_fd}
 \end{equation}
@@ -126,16 +126,16 @@ Latitude and longitude are denoted by $\lambda$ and $\phi$ respectively. $i$ and
 All derivatives of the degree-2 tidal potential (equations \ref{eq:U_ecc} and \ref{eq:U_obliq}) have analytical solutions, and thus do not require further finite difference expansion. Derivatives of all other quantities, however, do require further expansion. The expansions take the general form of either,
 
 \begin{align}
-\frac{\partial w_{ij}^{\textbf{t+1}}}{\partial \lambda} &\approx \frac{w_{i+\textbf{1},j}^{\textbf{t}} - w_{i-\textbf{1},j}^{\textbf{t}}}{\Delta \lambda} \, , \label{eq:gen1}
+\frac{\partial w_{ij}^{\textbf{t}}}{\partial \lambda} &\approx \frac{w_{i+\nicefrac{1}{2},j}^{\textbf{t}} - w_{i-\nicefrac{1}{2},j}^{\textbf{t}}}{\Delta \lambda} \, , \label{eq:gen1}
 \end{align} or,
 
 \begin{align}
-\frac{\partial w_{ij}^{\textbf{t+1}}}{\partial \phi} &\approx \frac{w_{i,j+\textbf{1}}^{\textbf{t}} - w_{i,j-\textbf{1}}^{\textbf{t}}}{\Delta \phi} \, , \label{eq:gen2}
+\frac{\partial w_{ij}^{\textbf{t}}}{\partial \phi} &\approx \frac{w_{i,j+\nicefrac{1}{2}}^{\textbf{t}} - w_{i,j-\nicefrac{1}{2}}^{\textbf{t}}}{\Delta \phi} \, , \label{eq:gen2}
 \end{align}
 
 \noindent where $w$ represents $u$, $v$ or $\eta$.
 
-Equations \ref{eq:gen1} and \ref{eq:gen2} show that each derivative is evaluated halfway between the nodes where $w$ is stored. Consequently, any derivative of $w$ is calculated at a position held by a different variable because the grid is staggered. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$ as $u_{i,j-\textbf{1}}$ and $u_{i,j+\textbf{1}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is shown clearly on the right of Figure \ref{fig:grid}.
+Equations \ref{eq:gen1} and \ref{eq:gen2} show that each derivative is evaluated halfway between the nodes where $w$ is stored. Consequently, any derivative of $w$ is calculated at a position held by a different variable because the grid is staggered. For example, $\partial_\phi u_{ij}$ is always evaluated at the position held by $\eta_{ij}$ as $u_{i,j-\nicefrac{1}{2}}$ and $u_{i,j+\nicefrac{1}{2}}$ lie to the left and right of $\eta_{ij}$,  respectively. This is shown clearly on the right of Figure \ref{fig:grid}.
 
 \subsubsection{Numerical Scheme}
 
