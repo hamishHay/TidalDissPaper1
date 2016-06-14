@@ -46,3 +46,20 @@ Defining $\bm{u} = \left(u, v \right) = (u_{\phi}, -u_{\lambda} ) $ and using th
 %\end{equation}
 %
 %\noindent where $\Omega$ is the solid angle and we assume that $h \ll R$.
+
+
+\section{Quantifying Numerical Error \label{app:error}}
+
+Numerical error is quantified in two distinct ways in this manuscript. Local error, such as that plotted in Figure \ref{fig:spatial_error}, is simply the percentage error:
+\begin{equation}
+E_i = \dfrac{\left| x_{i, num} - x_{i, anlyt} \right| }{x_{anlyt}} \times 100 \, .
+\end{equation}
+
+To investigate global error at a particular simulation time, such as that shown in figures \ref{fig:temporal_error} and \ref{fig:spatial_convergence}, we use the normalised $L_1$, $L_2$, and $L_{\infty}$ error norms:
+\begin{align}
+L_1 &= \dfrac{1}{N}\sum_1^N \left| x_{i, num} - x_{i, anlyt} \right| \, , \\
+L_2 &= \left( \dfrac{1}{N}\sum_1^N \left| x_{i, num} - x_{i, anlyt} \right|^2 \right)^{\nicefrac{1}{2}}\, , \\
+L_{\infty} &= \text{max} \left| x_{i, num} - x_{i, anlyt} \right|\, ,
+\end{align}
+
+\noindent where $N$ is the total number of grid points in the model domain, and $i$ is the index of each cell. The normalised approach is common in CFD problems as it allows one to estimate the convergence order of the implemented numerical method. 
