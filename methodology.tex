@@ -6,10 +6,6 @@ This section describes some of the theory and methods involved in this work. The
 
 The equations of motion and continuity that describe ocean tidal flow in the shallow water limit are known as the Laplace Tidal Equations (LTEs) \citep{lamb1932hydrodynamics}. The main assumption leading to this set of equations is that radial (vertical) ocean flow is negligible when compared to lateral flow, reducing the problem to two dimensions. This is indeed a good approximation at the planetary scale, where lateral flow length scales span significantly greater distances than the thickness of an ocean. The conservation of mass (eq. \ref{eq:mass}) and momentum (eq. \ref{eq:mom}) that make up the LTEs, including both Rayleigh and bottom drag, are given as \citep{sears1995tidal,tyler2008strong,matsuyama2014tidal}:
 
-%Adds vertical space between equations
-%\setlength{\jot}{8pt}
-%environment centres all equations
-
 \vspace{-0.5cm}
 \begin{gather}
 \partial_t \eta + \nabla \cdot \left(h \bm{u}\right) = 0\, , \label{eq:mass}\\
@@ -61,7 +57,7 @@ U_{obliq} = \frac{1}{2}\Omega^2 R^2 \theta_0 P_{21}\left(\cos\theta\right)\\
 \times \left[ \cos \left(\phi - \Omega t \right) - \cos \left( \phi + \Omega t\right) \right] \, ,\label{eq:U_obliq}
 \end{equation}
 
-where $r$ is the satellite's radius, $e$ is its eccentricity, and $\theta_0$ is the obliquity in radians. Co-latitude and longitude are given as $\theta$ and $\phi$ respectively. $P_{lm}$ represents the associated Legendre function of degree $l$ and order $m$. The eccentricity tide can be further split into the two terms on the right hand side of Equation \ref{eq:U_ecc}. These terms represent the eccentricity-radial ($U_{20}$) and eccentricity-libration ($U_{22}$) tides respectively, as described by \citet{tyler2011tidal}. We can therefore rewrite equation \ref{eq:U_2} as $U_2 = U_{20} + U_{21} + U_{22}$.
+where $r$ is the satellite's radius, $e$ is its eccentricity, and $\theta_0$ is the obliquity in radians. Co-latitude and longitude are given as $\theta$ and $\phi$ respectively. $P_{lm}$ represents the associated Legendre function of degree $l$ and order $m$. The eccentricity tide can be further split into the two terms on the right hand side of Equation \ref{eq:U_ecc}. These terms represent the eccentricity-radial ($U_{20}$) and eccentricity-libration ($U_{22}$) tides respectively, as described by \citet{tyler2011tidal}. We can therefore rewrite equation \ref{eq:U_2} as $U_2 = U_{20} + U_{21} + U_{22}$. \textbf{This study considers all three tidal components, in contrast to \citet{sears1995tidal} whom only investigated the eccentricity-libration tide.}
 
 \subsection{Tidal Quality Factor}
 
@@ -75,7 +71,8 @@ where the total time averaged dissipation is $E_{diss}$. This definition is ill-
 
 \subsection{Numerical Model \label{subsec:model}}
 
-In this section we outline our two dimensional, finite difference computational fluid dynamics (CFD) model, known as Ocean Dissipation in Icy Satellites (ODIS). In its current form, ODIS is based extensively on the models discussed in and developed by \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}. Firstly, we provide a description of the numerical grid. An overview of the finite difference scheme itself is then given, before summarising and illustrating limitations of the finite difference scheme and grid choice. Details and results of numerical testing is given in \ref{app:error_tests}.  
+In this section we outline our two dimensional, finite difference computational fluid dynamics (CFD) model, known as Ocean Dissipation in Icy Satellites (ODIS). In its current form, ODIS is based extensively on the models discussed in and developed by \citet{zahel1973diurnalk,zahel1978influence} and \citet{sears1994tidal,sears1995tidal}.
+Firstly, we provide a description of the numerical grid. An overview of the finite difference scheme itself is then given, before summarising and illustrating limitations of the finite difference scheme and grid choice. Details and results of numerical testing is given in \ref{app:error_tests}.  
 
 \subsubsection{Discretized Grid \label{subsec:grid}}
 
@@ -83,13 +80,11 @@ We employ a fixed latitude-longitude grid for our numerical simulations, defined
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.8\linewidth]{Figures/GridDiagram_revision}
+\includegraphics[width=0.8\linewidth]{Figures/GridDiagram}
 \caption{The staggered grid structure used in ODIS. A single cell is show on the right of the figure, where surface displacement, $\eta$, represents a cell centered quantity. $u$ velocity nodes are staggered eastward of $\eta$, whereas $v$ velocity nodes are staggered southwards. Both $u$ and $v$ are defined at the cell walls. Lines of meridian merge to singularities at the poles, where a single $\eta$ and multiple $u$ nodes are stored.\label{fig:grid}}
 \end{figure}
 
 As is clear from Figure \ref{fig:grid}, lines of meridian all converge to single points at either pole. Consequently, the model is forced to go from $m$ longitudinal grid points immediately surrounding the pole to merely a single point at the pole itself. Accordingly, single values of $\eta$ are stored at each pole, whereas multiple $u$ values are stored to maintain numerical stability. 
-
-%ODIS stores three separate 2D arrays for $\eta$, $u$ and $v$. They are accessed in a parent-child configuration, whereby the velocity nodes immediately east and south of a displacement node are the children to their parent $\eta$. Both $u$ and $v$ at the southern and eastern walls of the cell in Figure \ref{fig:grid} are children to the central $\eta$ node. % This is of little importance to the model's computations, but does lend some insight into the infrastructure of ODIS.
 
 \subsubsection{Finite Difference Expansions \label{subsec:fd_expan}}
 
@@ -174,7 +169,7 @@ Steps 2-6 are repeated until the model has converged into a periodic equilibrium
 
 A natural issue arising from the choice of grid is the time step used. As described in section \ref{subsec:grid}, the fixed latitude-longitude grid causes meridian lines to converge at the poles. Nodes near each pole therefore have much smaller spatial separations than those at the equator. In order to satisfy the Courant-Friedrichs-Lewy (CFL) condition required for numerical stability, we are forced to select sufficiently small time-steps based on the minimum node spacing and characteristic ocean flow time-scale \citep{arakawa1977computational,sears1995tidal}. \textbf{The maximum speed information can travel around the model domain is at the shallow water gravitational wave speed, $\sqrt{gh_0}$ \citep{lamb1932hydrodynamics}. Correspondingly, the CFL constraint on the time step is $\Delta t \leqslant \Delta x / \sqrt{gh_0}$, where $\Delta x$ is the minimum node separation in the model domain. Note that this means the maximum time step for numerical stability is a function of the ocean thickness as well as grid resolution. As $\Delta x$ is smallest surrounding the poles, this forces a severe constraint on the time step. This constraint is often referred} to as the ``pole problem''. \textbf{For a \SI{1}{\degree} resolution grid with a \SI{10}{\kilo\metre} thick ocean on Titan and Enceladus, the maximum possible time step is \SI{6.7}{\second} and \SI{2.3}{\second}, respectively.} Several workarounds to ease the time step have been applied throughout the literature \citep{comblen2009finite}. For example, it is common to apply a Fourier filter to remove high wavenumber components of the solution near the poles \citep{murray2002fourier}, or to use the spectral transform method as reviewed by \citet{swarztrauber1996spectral}. In this work, however, we apply none of these methods, and obey the CFL condition by selecting the appropriate time step for the model resolution and ocean thickness.
 
-\begin{figure}[!b]
+\begin{figure}[!t]
 \centering
 \includegraphics[width=0.6\linewidth]{Figures/CoordProb}
 \caption{Schematic representation of the ocean tide due to the eccentricity-radial tidal potential ($U_{20}$), at periapsis. Taking the derivative of $v$ across the north pole yields a zero result in the spherical coordinate system, despite the clear mass divergence away from the poles which should result in $\partial_{\lambda} \eta < 0$.\label{fig:coord_prob}}
@@ -186,13 +181,11 @@ To work around this problem, we employ both first-order accurate one dimensional
 
 \subsection{Model Runs and Parameters \label{subsec:param}}
 
-\input{./param_table.tex}
-
 We first perform both semi-analytical and numerical simulations for Titan and Enceladus under the eccentricity and obliquity tides. For each tidal component over 3000 simulations were run for $h_0 = $ \SIrange{1}{e4}{\metre} and $\alpha = $ \SIrange{e-5}{e-9}{\per\second}. Such resolution is necessary to capture resonant features. The semi-analytical solution for the time averaged surface heat flux from \citet{matsuyama2014tidal} was directly compared to the numerical values to reveal any inaccuracies in the numerical solution across this parameter space. 
 
 Following testing and verification of the numerical solutions for Rayleigh drag, ODIS was then run using only bottom drag for $h_0 = $ \SIrange{1}{e4}{\metre} and $c_D = $ \numrange{e-1}{e-7}. These simulations were again run for both the eccentricity and obliquity tides. With results for both Rayleigh and bottom drag we were able to compare tidal dissipation between these two drag regimes. The model parameters used for both Titan and Enceladus are shown in Table \ref{tb:param}.
 
 Numerically solving the LTEs to convergence can be a computationally expensive process. As shown in the fourth test in \ref{app:error_tests}, convergence will sometimes only be reached after a significant amount of simulation time. To speed up convergence we employ the technique used by \citet{sears1995tidal}, whereby the final output of one simulation is used as the initial condition for the next simulation. Upon completion, each simulation spawns one to two `child' simulations. These new simulations will in turn spawn their own `children' once they are complete. This method of solving over such a large parameter space helps to significantly reduce computational run and spin-up time. Several tests were also performed to ensure that a given simulation would converge to a single solution, regardless of initial condition.
 
-
+\input{./param_table.tex}
 

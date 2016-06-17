@@ -25,7 +25,7 @@ Dissipated surface heat flux averaged over the tidal period was calculated over 
 
 Figure \ref{fig:linObliqTitan} illustrates the dissipated surface heat flux for the obliquity tide on Titan. Two resonant ocean thicknesses are found for this tidal component, $h_0 \sim$ \SIlist{1;10}{\metre}. The latter resonance is the most dissipative with an average surface heat flux of $\sim \num{4e-3}\, \si{\watt\per\square\metre}$. There is also an excited Rossby-wave resonance orientated diagonally across $h_0 \sim$ \SIrange{10}{e4}{\metre} and \hbox{$\alpha \sim$ \SIrange{e-6}{e-9}{\per\second}}. The maximum average surface heat flux occurring along the length of this resonance is $\sim \SI{e-4}{\watt\per\square\metre}$. 
 
-Numerical error over this parameter space was also computed using the semi-analytical solutions from \citet{matsuyama2014tidal}. The eccentricity tide is accurate to within \SI{1}{\percent} over much of the parameter space, with resonances being the least accurate (in terms of absolute value). Resonances that occur in the thickest oceans differ from the analytical solution by \SIrange{1}{20}{\percent}. We ignore discrepancies in thin oceans ($h_0 \leq 10 \, \si{\metre}$) as bathymetry of the ocean floor for any icy satellite will likely be comparable to or exceed the ocean thickness, directly violating the assumptions made in the LTEs. It should also be noted that resonances found below $h_0 = 10 \, \si{\metre}$ typical have displacements greater than the thickness of the ocean. \textbf{While such situations clearly have no physical meaning, they are nonetheless mathematically possible. We therefore cannot consider the results in this part of the parameter space. It should be noted that for best comparison of the numerical model to the \citet{matsuyama2014tidal} solutions, it is still useful to solve this part of the parameter space, even if the results are unphysical. The small amplitude assumption, discussed in section \ref{subsec:LTE}, is almost certainly a factor that allows the development of such large tidal displacements in the numerical and semi-analytical solutions. This is because non-linearities in the model are unable to play a more significant role in the solution. In this work, it is important to include this assumption for best verification of the numerical results with the semi-analytical solutions. Future versions of ODIS shall proceed without the small amplitude assumption.}
+Numerical error over this parameter space was also computed using the semi-analytical solutions from \citet{matsuyama2014tidal}. The eccentricity tide is accurate to within \SI{1}{\percent} over much of the parameter space, with resonances being the least accurate (in terms of absolute value). Resonances that occur in the thickest oceans differ from the analytical solution by \SIrange{1}{20}{\percent}. We ignore discrepancies in thin oceans ($h_0 \leq 10 \, \si{\metre}$) as bathymetry of the ocean floor for any icy satellite will likely be comparable to or exceed the ocean thickness, directly violating the assumptions made in the LTEs. It should also be noted that resonances found below $h_0 = 10 \, \si{\metre}$ typical have displacements greater than the thickness of the ocean. \textbf{While such situations clearly have no physical meaning, they are nonetheless mathematically possible. We therefore cannot consider the results in this part of the parameter space. It should be noted that for best comparison of the numerical model to the \citet{matsuyama2014tidal} solutions, it is still useful to solve this part of the parameter space, even if the results are unphysical. The small amplitude assumption, discussed in section \ref{subsec:LTE}, breaks down for such large tidal displacements. The unphysical result may arise because non-linearities in the model are unable to play a more significant role in the solution. In this work, it is important to include this assumption for best verification of the numerical results with the semi-analytical solutions. Future versions of ODIS shall proceed without the small amplitude assumption.}
 
 \subsection{Bottom Drag \label{subsec:botTitan}}
 
@@ -79,18 +79,21 @@ Titan likely has an ocean that is on the order of \SI{100}{\kilo\metre} thick \c
 Rossby-wave resonances from the obliquity tide appear as the diagonal and vertical features in figures \ref{fig:linObliqTitan} and \ref{fig:botObliqTitan}, respectively. The linear drag regime sees this resonance move into very small Rayleigh drag coefficients ($\alpha \lesssim$ \SI{e-9}{\per\second}) for oceans thicker than about \SI{10}{\kilo\metre}. However, for bottom drag, the Rossby-wave resonance is mainly independent of ocean thickness above $h_0 \gtrsim$ \SI{1}{\kilo\metre}. If Titan's ocean has a bottom drag coefficient of $c_D =$ \numrange{e-2}{e-4} then this Rossby-wave resonance would result in a total power output of \SIrange{5}{12}{\giga\watt}. The resonance therefore presents a mechanism for dissipating significant thermal energy in Titan's interior, regardless of the ocean thickness. To gain an insight into the significance of such an effect, we consider Titan's changing semimajor axis.
 
 For a bound orbit the total energy is given as $-GMm/2a$ \citep{murray1999solar}. Differentiating this expression with respect to time gives a relationship between the dissipated energy and changing semimajor axis,
+
 \begin{equation}
 \left( \dfrac{da}{dt} \right)_t = \dfrac{2a^2}{GM m}\dfrac{dE}{dt}.
 \label{eq:adot_t}
 \end{equation}
 
 where $M$ and $m$ represent the mass of Saturn and Titan, respectively. The universal gravitational constant is $G$, and dissipated energy is $dE/dt$. Note that as $dE/dt < 0$, the semimajor axis decays with time. In contrast, the semimajor axis of most bodies tends to increase over time due to tides raised by the satellite on its primary. We therefore also include the rate of change of semimajor axis due to tides raised on Saturn \citep{kaula1964tidal,goldreich1966q}:
+
 \begin{equation}
 \left( \dfrac{da}{dt} \right)_s = 3 \dfrac{k_{2s}}{Q_s}\left(\dfrac{G}{M}\right)^{\sfrac{1}{2}} \dfrac{m R_s^5}{a^{\sfrac{11}{2}}}   
 \label{eq:adot_s}
 \end{equation}
 
 where the subscript $s$ denotes quantities for Saturn; the degree-2 Love number $k_{2s}$, tidal quality factor $Q_s$, and radius, $R_s$. Estimates for $k_{2s}/Q_s$ vary between approximately \numrange{e-4}{e-5} \citep{peale1980tidal,lainey2012strong}. The total time derivative of semimajor axis is then given by summing equations \ref{eq:adot_t} and \ref{eq:adot_s},
+
 \begin{equation}
 \dfrac{da}{dt} = \left( \dfrac{da}{dt} \right)_s + \left( \dfrac{da}{dt} \right)_t \, .\label{eq:adot_total}
 \end{equation}
@@ -120,11 +123,13 @@ For the obliquity tide, inward migration occurs in a much smaller region of para
 As the resonance becomes independent of ocean thickness in the thick ocean limit, it provides a means of estimating the bottom drag coefficient of Titan's ocean provided $da/dt$ can be measured. Currently, no such measurement is available. It should be noted that using the most recent $k_{2s}/Q_s$ estimate of \num[separate-uncertainty = true]{2.3(07)e-4} \citep{lainey2012strong} removes any possibility of inward migration under the current setup due to obliquity tides because of the dominance of the $(da/dt)_s$ term in equation \ref{eq:adot_total}. Additionally, our rough estimates of migration distance assume that $Q_s$ is a constant over time, which is unlikely to be the case \citep{fuller2016resonance}.
 
 The affect of tidal torques on Titan's eccentricity is difficult to estimate as this requires decomposition of the simulated tides into their spherical harmonic components. This is an interesting complication, as although the applied tidal forcing is purely degree-2, the ocean does not necessarily have a purely degree-2 response despite a uniform global ocean. This is especially true for thin oceans. However, we can use the relationship between $da/dt$ and $de/dt$ to express the rate of change of eccentricity in terms of dissipated energy. The orbital angular momentum of the system is \citep{murray1999solar},
+
 \begin{equation}\label{eq:ang_mom}
 L = m \sqrt{G M a (1-e^2)} \, .
 \end{equation}
 
 As this quantity is conserved, its time derivative combined with Titan's contribution to $da/dt$ from equation \ref{eq:adot_t} yields,
+
 \begin{equation}\label{eq:adot_edot}
 e\dfrac{de}{dt} = - \dfrac{a (1-e^2)}{GMm} \dfrac{dE}{dt}
 \end{equation}
